@@ -1,42 +1,104 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* /app/globals.css */
+
+/* Normalize.css のインポート */
+@import "normalize.css/normalize.css";
+
+/* カスタムフォントの定義 */
+/* Caveat-VariableFont_wght.ttf は public/assets/fonts/ ディレクトリに配置してください */
+@font-face {
+  font-family: "Caveat";
+  src: url("/font/Caveat-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* その他のグローバルスタイル */
+html {
+  box-sizing: border-box; /* 全ての要素のBox Modelを一貫させる */
+  -webkit-text-size-adjust: 100%; /* iOSでのテキストサイズ調整を無効化 */
+  line-height: 1.15; /* 行間の基本設定 */
 }
 
-html,
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* 全ての要素がhtmlからbox-sizingを継承 */
+}
+
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* 基本フォント設定 */
+  font-size: 16px;
+  color: #333; /* 基本のテキスト色 */
+  background-color: #f5f5f5; /* ページの背景色 */
+  min-height: 100vh; /* 少なくともビューポートの高さいっぱい */
+  overflow-x: hidden; /* 横スクロールの防止 */
+}
+
+#__next {
+  height: 100vh; /* Next.jsのルート要素がビューポート全体を占めるように */
+  display: flex;
+  flex-direction: column;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: inherit; /* リンクの色を親要素から継承 */
+  text-decoration: none; /* デフォルトの下線を削除 */
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+a:hover {
+  text-decoration: underline; /* ホバー時に下線を表示 */
+}
+span {
+  border-bottom: none;
+}
+/* ボタンのデフォルトスタイルをリセット */
+button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 100%;
+}
+
+/* GlobalStyles.ts の代替となる共通クラスをここに定義することも可能です */
+.container {
+  flex: 1; /* body/html/div#__next が min-height: 100vh のため、ここでは flex-grow で残りを埋める */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.contents {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.absoluteBox {
+  flex: 1;
+  position: relative; /* 子要素のabsoluteの基準になることが多い */
+  display: flex; /* Flexboxコンテナにする */
+  flex-direction: column; /* 内部コンテンツを縦に並べるため */
+  align-items: center; /* 横方向の中心に配置 */
+}
+
+.mainContents {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 縦方向の中心に配置 */
+  align-items: center; /* 横方向の中心に配置 */
+  width: 100%; /* 親要素の幅に合わせる */
+}
+
+.scrollContainer {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* アイテム間のスペース */
 }

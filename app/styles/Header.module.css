@@ -1,0 +1,71 @@
+/*
+ * Header.module.css
+ * Next.js (App Router) 用のCSS Modulesスタイル定義
+ * React Nativeのスタイルオブジェクトから変換
+ */
+
+.absoluteBox {
+  /*
+   * React Nativeのflex: 1は、親要素の利用可能なスペースを埋めることを意味します。
+   * absolute配置の場合、通常はtop, bottom, left, rightを0に設定して親要素にフィットさせます。
+   * また、justifyContentとalignItemsが機能するようにdisplay: flexを設定します。
+   */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0; /* 必要に応じて、親要素の基準で配置 */
+  bottom: 0; /* 必要に応じて、親要素の基準で配置 */
+  display: flex; /* 子要素の配置のためにflexコンテナにする */
+  justify-content: center; /* 主軸（デフォルトはrow）方向の中央揃え */
+  align-items: center; /* 交差軸（デフォルトはcolumn）方向の中央揃え */
+}
+
+.header {
+  width: 100%;
+  background-color: #6f4e37;
+  /* top: 0; は、position: fixed または position: absolute と組み合わせて使われます。
+   * このスタイルが適用される要素がヘッダーであれば、通常はposition: fixed;も設定します。
+   * ここでは元のスタイルのみを変換します。
+   */
+  top: 0;
+  height: 80px; /* px単位を明示 */
+}
+
+/*
+ * .buttons は元のスタイルで空なので、ここではコメントアウトまたは空のままにします。
+ * もしこのクラスに特定のスタイルが必要であれば、ここに追加してください。
+ */
+/* .buttons {} */
+
+.headerButtons {
+  display: flex; /* flex-direction, justifyContent, alignItemsが機能するように設定 */
+  flex-direction: row; /* React Nativeのデフォルトがcolumnなので、rowを明示 */
+  justify-content: space-around;
+  align-items: center;
+  height: 100%; /* 親要素（.header）の高さに合わせる場合 */
+}
+
+.button {
+  width: 100px; /* px単位を明示 */
+  text-align: center; /* テキストを中央揃えにする場合 */
+  display: flex; /* 子要素（アイコンなど）の配置のためにflexコンテナにする */
+  justify-content: center; /* 主軸（デフォルトはrow）方向の中央揃え */
+  align-items: center; /* 交差軸（デフォルトはcolumn）方向の中央揃え */
+  /* React NativeのTouchableOpacityに適用されるスタイルは、
+   * Webではaタグやbuttonタグ、またはdivタグに適用されることが多いです。
+   * textDecorationLineはテキストに適用されるため、.buttonTextで設定します。
+   */
+}
+
+.buttonText {
+  color: #d2b48c;
+  font-size: 12px; /* px単位を明示 */
+  margin-top: 2px; /* px単位を明示 */
+  text-decoration: underline; /* Webではtext-decorationプロパティを使用 */
+}
+
+.border {
+  width: 1px; /* px単位を明示 */
+  height: 60px; /* px単位を明示 */
+  background-color: #d2b48c;
+}
