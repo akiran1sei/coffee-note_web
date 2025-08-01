@@ -1,0 +1,14 @@
+.appTitle {
+  width: 100%;
+  display: flex; /* `alignItems` を使うために必要 */
+  justify-content: center; /* Flexboxで中央寄せする場合 */
+  align-items: center;
+}
+
+.appTitleText {
+  width: 100%;
+  text-align: center;
+  font-family: "Caveat", sans-serif;
+  color: #d2b48c;
+  font-size: 48px;
+}

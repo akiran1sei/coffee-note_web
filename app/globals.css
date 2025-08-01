@@ -1,10 +1,58 @@
-/* /app/globals.css */
-
-/* Normalize.css のインポート */
+/*
+* =============================================
+* Normalize & Base Styles
+* normalize.css のインポートと、HTML要素のベーススタイルを定義します。
+* =============================================
+*/
 @import "normalize.css/normalize.css";
 
-/* カスタムフォントの定義 */
-/* Caveat-VariableFont_wght.ttf は public/assets/fonts/ ディレクトリに配置してください */
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+:root {
+  /* Colors */
+  --color-primary: #6f4e37;
+  --color-primary-dark: #4f3325; /* プライマリーカラーのシャドウ */
+  --color-primary-light: #8e6d4c; /* プライマリーカラーのハイライト */
+
+  --color-secondary: #d2b48c;
+  --color-secondary-dark: #b2946c; /* セカンダリーカラーのシャドウ */
+  --color-secondary-light: #f2d4ac; /* セカンダリーカラーのハイライト */
+
+  --color-background: #f5f5f5;
+  --color-background-dark: #e0e0e0; /* 背景色のシャドウ */
+
+  --color-text-dark: #333;
+  --color-text-light: #f5f5f5;
+
+  /* Spacing */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 60px;
+
+  /* Font Sizes */
+  --font-size-sm: 16px;
+  --font-size-lg: 48px;
+
+  /* Border Radius */
+  --border-radius-sm: 10px;
+}
+
+/*
+* =============================================
+* Global Typography & Font Definitions
+* 全体的なフォント設定とカスタムフォントを定義します。
+* =============================================
+*/
 @font-face {
   font-family: "Caveat";
   src: url("/font/Caveat-VariableFont_wght.ttf") format("truetype");
@@ -12,49 +60,38 @@
   font-style: normal;
 }
 
-/* その他のグローバルスタイル */
-html {
-  box-sizing: border-box; /* 全ての要素のBox Modelを一貫させる */
-  -webkit-text-size-adjust: 100%; /* iOSでのテキストサイズ調整を無効化 */
-  line-height: 1.15; /* 行間の基本設定 */
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit; /* 全ての要素がhtmlからbox-sizingを継承 */
-}
-
 body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* 基本フォント設定 */
-  font-size: 16px;
-  color: #333; /* 基本のテキスト色 */
-  background-color: #f5f5f5; /* ページの背景色 */
-  min-height: 100vh; /* 少なくともビューポートの高さいっぱい */
-  overflow-x: hidden; /* 横スクロールの防止 */
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dark);
+  background-color: var(--color-background);
+  min-height: 100vh;
+  line-height: 1.5; /* 行間をより読みやすく調整 */
+  overflow-x: hidden;
 }
 
-#__next {
-  height: 100vh; /* Next.jsのルート要素がビューポート全体を占めるように */
-  display: flex;
-  flex-direction: column;
-}
-
+/*
+* =============================================
+* Global Elements
+* リンクやボタンなど、HTMLの標準要素に対するグローバルなスタイルです。
+* =============================================
+*/
 a {
-  color: inherit; /* リンクの色を親要素から継承 */
-  text-decoration: none; /* デフォルトの下線を削除 */
+  color: inherit;
+  text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline; /* ホバー時に下線を表示 */
+  text-decoration: underline;
 }
+
 span {
   border-bottom: none;
 }
-/* ボタンのデフォルトスタイルをリセット */
+
 button {
   background-color: transparent;
   border: none;
@@ -63,42 +100,7 @@ button {
   font-family: inherit;
   font-size: 100%;
 }
-
-/* GlobalStyles.ts の代替となる共通クラスをここに定義することも可能です */
-.container {
-  flex: 1; /* body/html/div#__next が min-height: 100vh のため、ここでは flex-grow で残りを埋める */
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.contents {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.absoluteBox {
-  flex: 1;
-  position: relative; /* 子要素のabsoluteの基準になることが多い */
-  display: flex; /* Flexboxコンテナにする */
-  flex-direction: column; /* 内部コンテンツを縦に並べるため */
-  align-items: center; /* 横方向の中心に配置 */
-}
-
-.mainContents {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* 縦方向の中心に配置 */
-  align-items: center; /* 横方向の中心に配置 */
-  width: 100%; /* 親要素の幅に合わせる */
-}
-
-.scrollContainer {
+img {
   width: 100%;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* アイテム間のスペース */
+  vertical-align: middle;
 }

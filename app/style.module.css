@@ -1,120 +1,76 @@
-/* src/app/styles.module.css */
-
-.container {
-  /* React Nativeのflex: 1は、Webではheight: 100% と display: flex; flex-direction: column; で置き換えられることが多い */
-  height: 100vh; /* ビューポートの高さ全体に広がるように設定 */
+.appContainer {
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  min-height: 100vh;
+  background-color: var(--color-background);
 }
 
-.contents {
-  flex-grow: 1; /* 親要素の残りのスペースを埋める */
+.pageWrapper {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
 .mainContents {
-  flex-grow: 1; /* 親要素の残りのスペースを埋める */
+  flex-grow: 1;
   display: flex;
-  flex-direction: column; /* 縦方向の中心に配置するため */
-  justify-content: center; /* 縦方向の中心に配置 */
-  align-items: center; /* 横方向の中心に配置 */
-}
-
-.title {
-  width: 100%;
-  display: flex; /* align-itemsが機能するように */
-  align-items: center; /* 横方向の中央に配置 */
-  justify-content: center; /* Flexアイテムが一つでも中央に */
-}
-
-.titleText {
-  width: 100%; /* 親要素の幅いっぱいに広がる */
-  text-align: center; /* テキスト中央揃え */
-  /* fontFamily は @font-face でグローバルに定義し、ここではfont-familyプロパティとして指定 */
-  font-family: "Caveat", sans-serif; /* Fallbackフォントも指定 */
-  color: #d2b48c;
-  font-size: 48px; /* px単位を明示 */
-}
-
-.homeButtons {
-  display: flex;
-  flex-direction: column; /* 縦方向にボタンを並べる */
-  align-items: center; /* 横方向の中心にボタンを配置 */
-}
-
-.button {
-  text-decoration: underline; /* TextコンポーネントからLinkに適用する場合 */
-  background-color: #6f4e37;
-  border-radius: 10px; /* px単位を明示 */
-  margin-top: 10px; /* px単位を明示 */
-  margin-bottom: 10px; /* px単位を明示 */
-  padding: 0; /* IconButtonのデフォルトpaddingをリセットする場合 */
-  border: none; /* ボタンのデフォルトボーダーを削除 */
-  cursor: pointer; /* クリック可能であることを示す */
-  display: flex; /* IconButtonがflexアイテムになるため */
-  justify-content: center; /* アイコンを中央に配置 */
-  align-items: center; /* アイコンを中央に配置 */
-  color: #d2b48c; /* アイコンの色をボタンテキストの色と合わせる */
-}
-
-.settingContainer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  display: flex; /* 子要素の配置のために */
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  padding: 10px; /* 設定ボタンと端の間に少し余白 */
+  align-items: center;
+  width: 100%;
 }
-
-.settingContainerWrap {
-  background-color: #d2b48c;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+.homeButtons {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative; /* 子要素のabsolute配置の基準 */
-  width: auto; /* コンテンツに合わせて幅を調整 */
-  height: auto; /* コンテンツに合わせて高さを調整 */
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
-  padding-bottom: 60px; /* 閉じるボタンのためのスペース */
+}
+.scrollContainer {
+  width: 100%;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
-.settingButton {
-  text-decoration: unset;
-  border-radius: 10px;
-  margin-top: 20px;
-  margin-bottom: 5px; /* px単位を明示 */
-  padding: 5px 10px; /* クリックしやすいようにパディングを追加 */
-  background-color: transparent; /* 背景色なし */
-  border: none; /* ボーダーなし */
-  cursor: pointer;
+.pageTitleBox {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.settingButtonClose {
+.settingPanel {
+  width: auto;
+  height: auto;
   position: absolute;
   bottom: 0;
-  right: 10px;
-  padding: 0; /* IconButtonのデフォルトpaddingをリセットする場合 */
-  border: none;
-  background: none;
-  cursor: pointer;
+  right: 0;
+  padding: var(--spacing-sm);
 }
 
+.settingPanelContent {
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+
+  padding: var(--spacing-sm);
+}
+.settingPanelItem {
+  margin: var(--spacing-sm) auto;
+  text-align: center;
+}
+.settingPanelItem:last-child {
+  text-align: right;
+}
 .settingButtonText {
-  color: #f5f5f5;
-  font-size: 16px; /* px単位を明示 */
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
 }
 
-.pageTitle {
-  width: 100%;
-  height: 80px; /* px単位を明示 */
-  display: flex; /* タイトルを中央揃えにするため */
-  justify-content: center;
+.absoluteBox {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
