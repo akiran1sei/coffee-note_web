@@ -5,6 +5,9 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link"; // expo-router の Link を next/link に変更
 import styles from "./style.module.css"; // CSS Modulesをインポート
 import Image from "next/image";
+import { LinkIconButtonWithShadow } from "./components/buttons/page";
+import { AppTitle } from "./components/title/page";
+
 // Next.jsではexpo-fontの代わりにCSSでフォントを読み込むため、useEffect内のフォント読み込みロジックは不要
 // react-native-get-random-values もWebでは不要
 
@@ -45,77 +48,59 @@ export default function Index() {
     return <LoadingComponent />;
   } else {
     return (
-      <div className={styles.container}>
-        <div className={styles.contents}>
+      <div className={styles.appContainer}>
+        <div className={styles.pageWrapper}>
           <div className={styles.mainContents}>
             <div className={styles.pageTitle}>
-              <div className={styles.title}>
-                <p className={styles.titleText}>Coffee Note</p>
-                {/* Textをpタグに変更 */}
-              </div>
+              <AppTitle value="Coffee Note" />
             </div>
+
             <div className={styles.homeButtons}>
               {/* Create ボタン */}
-              <Link href="/create" className={styles.button}>
-                <Image
-                  src="./images/add.svg"
-                  alt="Add Icon"
-                  width={50}
-                  height={50}
-                  style={{ fill: "#D2B48C" }}
-                />
-                {/* アイコンをImageコンポーネントで表示 */}
-                {/* plusをaddに変更 */}
-                {/* <span className={styles.buttonText}>Create</span> */}
-              </Link>
+              <LinkIconButtonWithShadow value="create" />
               {/* List ボタン */}
-              <Link href="/list" className={styles.button}>
-                <Image
-                  src="./images/lists.svg"
-                  alt="List Icon"
-                  width={50}
-                  height={50}
-                  style={{ fill: "#D2B48C" }}
-                />
-                {/* アイコンをImageコンポーネントで表示 */}
-                {/* view-listをlistに変更 */}
-                {/* <span className={styles.buttonText}>List</span> */}
-              </Link>
+              <LinkIconButtonWithShadow value="list" />
             </div>
-            <div className={styles.settingContainer}>
+            <div className={styles.settingPanel}>
               {switchState ? (
-                <div className={styles.settingContainerWrap}>
-                  <Link
-                    href="/settings/PrivacyPolicyJP"
-                    className={styles.settingButton}
-                  >
-                    {/* TouchableOpacityをLinkに変更 */}
-                    <span className={styles.settingButtonText}>
-                      プライバシーポリシー
-                    </span>
-                  </Link>
-                  <Link
-                    href="/settings/TermsAndConditionsJP"
-                    className={styles.settingButton}
-                  >
-                    {/* TouchableOpacityをLinkに変更 */}
-                    <span className={styles.settingButtonText}>利用規約</span>
-                  </Link>
-                  <button /* TouchableOpacityをbuttonタグに変更 */
-                    className={styles.settingButtonClose}
-                    onClick={() => {
-                      // onPressをonClickに変更
-                      handleSwitch();
-                    }}
-                  >
-                    <Image
-                      src="./images/close.svg"
-                      alt="Close Icon"
-                      width={30}
-                      height={30}
-                      style={{ fill: "#f5f5f5" }}
-                    />
-                  </button>
+                <div className={styles.settingPanelContent}>
+                  <div className={styles.settingPanelItem}>
+                    <Link
+                      href="/settings/PrivacyPolicyJP"
+                      className={styles.settingButton}
+                    >
+                      {/* TouchableOpacityをLinkに変更 */}
+                      <span className={styles.settingButtonText}>
+                        プライバシーポリシー
+                      </span>
+                    </Link>
+                  </div>
+                  <div className={styles.settingPanelItem}>
+                    <Link
+                      href="/settings/TermsAndConditionsJP"
+                      className={styles.settingButton}
+                    >
+                      {/* TouchableOpacityをLinkに変更 */}
+                      <span className={styles.settingButtonText}>利用規約</span>
+                    </Link>
+                  </div>
+                  <div className={styles.settingPanelItem}>
+                    <button /* TouchableOpacityをbuttonタグに変更 */
+                      className={styles.settingButtonClose}
+                      onClick={() => {
+                        // onPressをonClickに変更
+                        handleSwitch();
+                      }}
+                    >
+                      <Image
+                        src="./images/close.svg"
+                        alt="Close Icon"
+                        width={30}
+                        height={30}
+                        style={{ fill: "#f5f5f5" }}
+                      />
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <button /* TouchableOpacityをbuttonタグに変更 */

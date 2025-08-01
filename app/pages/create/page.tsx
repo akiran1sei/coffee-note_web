@@ -1,4 +1,4 @@
-export function CreatePage() {
+const CreatePage = () => {
   return (
     <div>
       <h1>Create Page</h1>
@@ -6,4 +6,5 @@ export function CreatePage() {
       {/* 他のコンテンツやコンポーネントをここに追加 */}
     </div>
   );
-}
+};
+export default CreatePage;
