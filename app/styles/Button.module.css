@@ -4,36 +4,59 @@
   height: auto;
   padding: 5px;
   margin: 10px auto;
-  text-decoration-line: underline;
+  text-decoration-line: unset;
   background-color: var(--color-primary);
   border-radius: 10px;
 }
 .iconButton:hover {
   background-color: var(--color-secondary-dark);
 }
-.iconButton:active {
-  text-decoration: underline;
+
+.buttonShadow {
+  box-shadow: 3px 3px 3px var(--color-primary-light);
+}
+.buttonShadow:active {
   transform: translate(3px, 3px);
   box-shadow: inset 3px 3px 3px var(--color-background-dark);
   background: var(--color-background);
 }
-.buttonShadow {
-  box-shadow: 3px 3px 3px var(--color-primary-light);
-}
 .mainButton {
-  background-color: var(--color-primary);
   border-radius: var(--border-radius-sm);
   margin: var(--spacing-sm) 0;
-  padding: 0;
   border: none;
   cursor: pointer;
   color: var(--color-secondary);
-  text-decoration: underline;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-decoration: unset;
+  display: inline-block;
 }
 
+.largeButton {
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+.middleButton {
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+.smallButton {
+  padding: var(--spacing-xs);
+}
+.btn-main {
+  background-color: var(--color-main);
+}
+.btn-danger {
+  background-color: var(--color-danger);
+}
+.btn-warning {
+  background-color: var(--color-warning);
+}
+.btn-success {
+  background-color: var(--color-success);
+}
+.btn-secondary {
+  background-color: var(--color-secondary);
+}
+.buttonText {
+  color: var(--color-text-light);
+}
 .settingButton {
   text-decoration: none;
   border-radius: var(--border-radius-sm);
