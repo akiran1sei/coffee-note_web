@@ -1,13 +1,14 @@
 import { MainButton, MainLinkButton } from "@/app/components/buttons/page";
+import { UpperButton } from "@/app/components/buttons/upper/page";
 
 const ListPage = () => {
   const value = `/list`;
   return (
     <div>
-      <h1>List Page</h1>
-      <p>This is the list page content.</p>
+      {/* <h1>List Page</h1>
+      <p>This is the list page content.</p> */}
       {/* 他のコンテンツやコンポーネントをここに追加 */}
-      <MainButton sizeValue="large" textValue="削除" buttonColor="btn-danger" />
+      {/* <MainButton sizeValue="large" textValue="削除" buttonColor="btn-danger" />
       <MainButton
         sizeValue="middle"
         textValue="削除"
@@ -59,7 +60,8 @@ const ListPage = () => {
         textValue="編集"
         buttonColor="btn-warning"
         urlValue={`/pages/${value}`}
-      />
+      /> */}
+      <UpperButton />
     </div>
   );
 };

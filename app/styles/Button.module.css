@@ -57,6 +57,50 @@
 .buttonText {
   color: var(--color-text-light);
 }
+
+.scrollButtonWrapper {
+  position: absolute;
+  z-index: 50;
+  padding: 20px;
+  border-radius: 9999px; /* rounded-full */
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dededecc;
+  transition: none; /* ドラッグ中はアニメーションを無効にする */
+  cursor: grab;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+.scrollButton {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 9999px; /* rounded-full */
+  background-color: #4a90e2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: transform 0.2s;
+  border: none;
+}
+
+.scrollButton:active {
+  transform: scale(0.95);
+}
+
+.scrollButtonText {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .settingButton {
   text-decoration: none;
   border-radius: var(--border-radius-sm);
