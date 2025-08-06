@@ -91,6 +91,7 @@ export default function Index() {
                         // onPressをonClickに変更
                         handleSwitch();
                       }}
+                      aria-label="閉じる"
                     >
                       <Image
                         src="./images/close.svg"
@@ -108,6 +109,7 @@ export default function Index() {
                     // onPressをonClickに変更
                     handleSwitch();
                   }}
+                  aria-label="設定アイコン"
                 >
                   <Image
                     src="./images/settings.svg"
