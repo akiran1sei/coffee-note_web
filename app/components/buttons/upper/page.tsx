@@ -2,71 +2,119 @@
 // 1. 必要なフックと型をインポート
 import styles from "@/app/styles/Button.module.css";
 import { useState, useRef, useEffect } from "react";
+
 export const UpperButton = () => {
   // 2. 必要なステートとuseRefを定義
-  const [isDragging, setIsDragging] = useState(false);
+  const [isMouseDragging, setIsMouseDragging] = useState(false);
+  const [isTouchDragging, setIsTouchDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const offset = useRef({ x: 0, y: 0 });
+  const mouseOffset = useRef({ x: 0, y: 0 });
+  const touchOffset = useRef({ x: 0, y: 0 });
   const wrapperRef = useRef<HTMLDivElement>(null);
-  // 3. onMouseDownイベントハンドラを定義
-  const handleInteractionStart = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
-    // オプション：ブラウザのデフォルト挙動（スクロールなど）をキャンセル
 
-    // 4. refがnullでないかチェック
-    if (wrapperRef.current) {
-      setIsDragging(true);
-      // 6. ボタンの現在地（DOM要素のクライアント領域）を取得
+  // 3. マウスダウンイベントハンドラを定義
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (wrapperRef.current && !isTouchDragging) {
+      setIsMouseDragging(true);
+
       const rect = wrapperRef.current.getBoundingClientRect();
-      // イベントオブジェクトに'touches'プロパティがあるかでタッチイベントかを判定
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-      // 7. マウスカーソルとボタンの左上隅の差分（オフセット）を計算
-      // オフセットを計算
-      const currentOffset = {
-        x: clientX - rect.left,
-        y: clientY - rect.top,
+      const currentPosition = {
+        x: rect.left,
+        y: rect.top,
       };
-      offset.current = currentOffset;
-      // ここでsetPositionも呼び出し、positionを更新する
-      setPosition({
-        x: clientX - currentOffset.x,
-        y: clientY - currentOffset.y,
-      });
+
+      console.log("マウス - ボタンの現在座標:", currentPosition);
+
+      // マウスカーソルとボタンの相対位置を計算
+      mouseOffset.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
     }
   };
+
+  // 4. タッチスタートイベントハンドラを定義
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+
+    if (wrapperRef.current && !isMouseDragging) {
+      setIsTouchDragging(true);
+
+      const rect = wrapperRef.current.getBoundingClientRect();
+      const touch = e.touches[0];
+      const currentPosition = {
+        x: rect.left,
+        y: rect.top,
+      };
+
+      console.log("タッチ - ボタンの現在座標:", currentPosition);
+
+      // タッチ位置とボタンの相対位置を計算
+      touchOffset.current = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top,
+      };
+    }
+  };
+
+  // 5. マウス操作用のuseEffect
   useEffect(() => {
-    const handleInteractionMove = (e: MouseEvent | TouchEvent) => {
-      // ブラウザのデフォルト挙動をキャンセル
+    const handleMouseMove = (e: MouseEvent) => {
       e.preventDefault();
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
       setPosition({
-        x: clientX - offset.current.x,
-        y: clientY - offset.current.y,
+        x: e.clientX - mouseOffset.current.x,
+        y: e.clientY - mouseOffset.current.y,
       });
     };
-    const handleInteractionUp = () => {
-      setIsDragging(false);
+
+    const handleMouseUp = () => {
+      setIsMouseDragging(false);
     };
 
-    if (isDragging) {
-      // ドラッグ中は、documentにイベントリスナーを追加
-      document.addEventListener("mousemove", handleInteractionMove);
-      document.addEventListener("mouseup", handleInteractionUp);
-      document.addEventListener("touchmove", handleInteractionMove);
-      document.addEventListener("touchend", handleInteractionUp);
+    if (isMouseDragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
     }
-    // クリーンアップ関数
+
     return () => {
-      // isDraggingがfalseになったり、コンポーネントがアンマウントされたときに実行される
-      document.removeEventListener("mousemove", handleInteractionMove);
-      document.removeEventListener("mouseup", handleInteractionUp);
-      document.removeEventListener("touchmove", handleInteractionMove);
-      document.removeEventListener("touchend", handleInteractionUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging]);
+  }, [isMouseDragging]);
+
+  // 6. タッチ操作用のuseEffect
+  useEffect(() => {
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      setPosition({
+        x: touch.clientX - touchOffset.current.x,
+        y: touch.clientY - touchOffset.current.y,
+      });
+    };
+
+    const handleTouchEnd = () => {
+      setIsTouchDragging(false);
+    };
+
+    if (isTouchDragging) {
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      document.addEventListener("touchend", handleTouchEnd);
+    }
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isTouchDragging]);
+
+  // 現在ドラッグ中かどうかを判定
+  const isDragging = isMouseDragging || isTouchDragging;
 
   return (
     <div
@@ -74,8 +122,8 @@ export const UpperButton = () => {
         isDragging ? styles.dragging : ""
       }`}
       ref={wrapperRef}
-      onMouseDown={handleInteractionStart}
-      onTouchStart={handleInteractionStart}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,
         position: "fixed",
