@@ -1,4 +1,117 @@
-.listPageComponents {
+/* 
+
+--------------------top page--------------------
+
+*/
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.pageWrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContents {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.homeButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.scrollContainer {
+  width: 100%;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.pageTitleBox {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.settingPanel {
+  width: auto;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: var(--spacing-sm);
+}
+
+.settingPanelContent {
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+
+  padding: var(--spacing-sm);
+}
+.settingPanelItem {
+  margin: var(--spacing-sm) auto;
+  text-align: center;
+}
+.settingPanelItem:last-child {
+  text-align: right;
+}
+.settingButtonText {
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
+}
+
+.absoluteBox {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* 
+
+--------------------list page--------------------
+
+*/
+.listPageContents {
+  position: relative;
+  top: 80px;
+}
+/* 
+
+--------------------create page--------------------
+
+*/
+.createPageContents {
+  position: relative;
+  top: 80px;
+}
+/* 
+
+--------------------item page--------------------
+
+*/
+.itemPageContents {
+  position: relative;
+  top: 80px;
+}
+/* 
+
+--------------------update page--------------------
+
+*/
+.updatePageContents {
   position: relative;
   top: 80px;
 }

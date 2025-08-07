@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link"; // expo-router の Link を next/link に変更
-import styles from "./style.module.css"; // CSS Modulesをインポート
+import styles from "@/app/styles/Pages.module.css"; // CSS Modulesをインポート
 import Image from "next/image";
 import { LinkIconButtonWithShadow } from "./components/buttons/page";
 import { AppTitle } from "./components/title/page";

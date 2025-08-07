@@ -1,5 +1,5 @@
 import "./globals.css";
-import styles from "@/app/styles/Pages.module.css";
+import styles from "@/app/styles/Layout.module.css";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,9 +15,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <div className={styles.container}>
-          <main className={styles.main}>
-            <div className={styles.pagesContainer}>{children}</div>
+        <div className={styles.l_container}>
+          <main className={styles.l_main}>
+            <div className={styles.l_pagesContainer}>{children}</div>
           </main>
         </div>
       </body>
