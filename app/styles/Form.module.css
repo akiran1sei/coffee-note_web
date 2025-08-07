@@ -1,0 +1,176 @@
+/* InputComponent */
+
+.inputContainer {
+  width: 90%;
+  margin: 10px auto;
+}
+
+.label {
+  display: block;
+  width: 100%;
+  background-color: #d2b48c;
+  color: #333;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+}
+
+.input {
+  width: 100%;
+  height: auto;
+  color: #333;
+  border: unset;
+}
+.inputBox {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid #d2b48c;
+  margin-top: -1px;
+  padding: 10px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.input::placeholder {
+  color: #aaa;
+}
+/* 新しいrange inputのスタイルを追加 */
+.rangeInput {
+  -webkit-appearance: none; /* Chrome, Safari用: デフォルトスタイルを無効化 */
+  appearance: none; /* 全ブラウザ用 */
+  width: 100%;
+  height: 8px; /* トラックの高さ */
+  background: #f0f0f0; /* トラックの背景色 */
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: -1px; /* inputとの重なりを解消 */
+  box-sizing: border-box;
+  /* トラックにボーダーを追加 */
+  border: 1px solid #d2b48c;
+}
+
+/* スライダーのつまみ（thumb）のスタイル */
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; /* つまみの幅 */
+  height: 20px; /* つまみの高さ */
+  background: #d2b48c;
+  border-radius: 50%;
+  border: 1px solid #d2b48c;
+  margin-top: -6px; /* つまみをトラックの中央に配置 */
+}
+
+.rangeInput::-moz-range-thumb {
+  /* Firefox用 */
+  width: 20px;
+  height: 20px;
+  background: #d2b48c;
+  border-radius: 50%;
+  border: 1px solid #d2b48c;
+  cursor: pointer;
+}
+
+.sliderContainer {
+  background-color: #fff;
+  padding-bottom: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin-top: -1px;
+  align-items: center;
+  border-width: 1px;
+  border-color: #d2b48c;
+  border-style: solid;
+}
+.valueTextContainer {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.valueText {
+  color: #333;
+  margin-vertical: 10px; /* CSSにはこのプロパティはないため、margin-topとmargin-bottomに分割 */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sliderAndButtons {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.button {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 0 10px;
+  box-shadow: 2px 2px 2px rgba(51, 48, 0, 0.3);
+  elevation: 3; /* CSSにはこのプロパティはないため、box-shadowを使用 */
+  border: none;
+}
+
+.sliderWrapper {
+  width: 60%;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.slider {
+  width: 100%;
+  height: 50px;
+}
+
+.tickContainer {
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  margin-bottom: 5px;
+}
+
+.tick {
+  width: 6px;
+  background-color: #d2b48c;
+  align-items: center;
+}
+
+.majorTick {
+  height: 12px;
+  width: 6px;
+}
+
+.minorTick {
+  height: 6px;
+}
+
+.activeTick {
+  background-color: #333;
+  width: 6px;
+}
+
+.tickLabel {
+  color: #a67b5b;
+  font-size: 12px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  position: absolute;
+  top: -20px;
+}
