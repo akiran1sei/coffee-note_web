@@ -5,3 +5,38 @@
 }
 .l_main {
 }
+
+.absoluteBox {
+  flex: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+}
+
+.mainContents {
+  width: 100%;
+  max-width: 700px; /* `maxWidth: screenWidth > 768 ? 700 : "100%"` に相当 */
+  margin-left: auto;
+  margin-right: auto;
+  top: 200px;
+  bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .mainContents {
+    max-width: 100%;
+  }
+}
+
+.scrollContainer {
+  align-items: stretch; /* CSSでは通常 `align-items: stretch;` はデフォルトの動作です */
+}
+
+.sectionTitle {
+  color: #5d4037;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
