@@ -15,7 +15,7 @@ export const translationMap: { [key: string]: string } = {
   抽出時間: "extractionTime",
   酸味: "acidity",
   苦味: "bitterness",
-  総合: "overall",
+  全体の評価: "overall",
   コク: "body",
   アロマ: "aroma",
   後味: "aftertaste",

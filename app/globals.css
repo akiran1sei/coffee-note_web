@@ -48,8 +48,7 @@ html {
   --color-success: #28a745;
 
   /* リセットなど、目立たせないサブアクションに */
-  --color-secondary: #6c757d;
-
+  --color-subtle: #6c757d; /* 名前を 'color-subtle' に変更しました */
   /* Spacing */
   --spacing-xs: 5px;
   --spacing-sm: 10px;

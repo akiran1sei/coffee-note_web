@@ -4,8 +4,9 @@ import {
   InputComponent,
   NumberComponent,
 } from "@/app/components/form/InputComponent/page";
-import { ChartComponent } from "@/app/components/form/ChartComponent/page";
+import { RangeComponent } from "@/app/components/form/RangeComponent/page";
 import { translationMap } from "@/app/utils/translations";
+import { ChartComponent } from "@/app/components/form/ChartComponent/page";
 const CreatePage = () => {
   const [formValue, setFormValue] = useState({
     coffeeName: "",
@@ -66,20 +67,7 @@ const CreatePage = () => {
         }}
         labelText="waterAmount"
       />
-      <ChartComponent
-        dataTitle="酸味"
-        value={formValue.chart.acidity}
-        onChange={(value: number) => {
-          setFormValue({
-            ...formValue,
-            chart: { ...formValue.chart, acidity: value },
-          });
-        }}
-        labelText="acidity"
-        min={0}
-        max={5}
-        step={0.5}
-      />
+      <ChartComponent />
     </div>
   );
 };
