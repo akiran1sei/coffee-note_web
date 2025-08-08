@@ -1,3 +1,24 @@
+.chartContainer {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom-width: 1px;
+  border-bottom-color: #e0e0e0;
+}
+
+.sectionTitle {
+  color: #5d4037;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
 .inputContainer {
   width: 90%;
   margin: 10px auto;
@@ -46,13 +67,6 @@
   box-sizing: border-box;
   /* トラックにボーダーを追加 */
   border: 1px solid var(--color-secondary);
-}
-.rangeInput::-moz-range-track {
-  /* background: var(--color-secondary); */
-}
-
-.rangeInput::-webkit-slider-runnable-track {
-  /* background: var(--color-secondary); */
 }
 
 /* スライダーのつまみ（thumb）のスタイル */
@@ -178,4 +192,169 @@
   font-weight: 500;
   position: absolute;
   top: -20px;
+}
+
+/* CoffeeSelects.module.css */
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selectContainer {
+  width: 90%;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.label {
+  display: block;
+  width: 100%;
+  background-color: #d2b48c;
+  color: #333;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.pickerWrapper {
+  width: 100%;
+  background-color: #fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid #d2b48c;
+  margin-top: -1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.select {
+  width: 100%;
+  background-color: transparent;
+  color: #333;
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+}
+
+.pickerWrapper::after {
+  content: "▼";
+  font-size: 1rem;
+  color: #d2b48c;
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.inputContainer {
+  width: 90%;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.otherInput {
+  width: 100%;
+  background-color: #fff;
+  color: #333;
+  border-radius: 10px;
+  border: 1px solid #d2b48c;
+  padding: 15px;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.radioContainer {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttonGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-radius: 8px;
+  border: 1px solid #6f4e37;
+  overflow: hidden;
+}
+
+.button {
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.rightButton {
+  border-left: 1px solid #6f4e37;
+}
+
+.selectedButton {
+  background-color: #6f4e37;
+}
+
+.buttonText {
+  font-size: 16px;
+  color: #6f4e37;
+  font-weight: bold;
+}
+
+.selectedButtonText {
+  color: #fff;
+}
+
+.selectedValueText {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+}
+
+.fixedContainer {
+  width: 100%;
+  background-color: #f0f0f0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid #d2b48c;
+  margin-top: -1px;
+  padding: 15px;
+  text-align: center;
+}
+
+.fixedText {
+  font-size: 16px;
+  color: #666;
+  font-weight: bold;
 }
