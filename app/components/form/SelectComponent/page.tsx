@@ -355,17 +355,12 @@ export const CoffeeProcessingSelect: React.FC<SelectProps> = ({
     </div>
   );
 };
-
 export const CoffeeTypesSelect: React.FC<SelectProps> = ({
   dataTitle,
   onChange,
   value,
   labelText,
 }) => {
-  const [showOtherInput, setShowOtherInput] = useState(false);
-  const [otherInputValue, setOtherInputValue] = useState("");
-  const [selectedValue, setSelectedValue] = useState(value || "");
-
   const options = [
     { label: "アラビカ種", value: "アラビカ種" },
     { label: "カネフォラ種", value: "カネフォラ種" },
@@ -374,36 +369,50 @@ export const CoffeeTypesSelect: React.FC<SelectProps> = ({
     { label: "不明", value: "不明" },
   ];
 
-  useEffect(() => {
-    const isOtherSelected = selectedValue === "その他";
-    setShowOtherInput(isOtherSelected);
-    if (!isOtherSelected) {
-      setOtherInputValue("");
-      onChange(selectedValue);
-    }
-  }, [selectedValue, onChange]);
+  const [showOtherInput, setShowOtherInput] = useState(false);
+  const [otherInputValue, setOtherInputValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState(value || "");
 
+  // 親からの value を監視し、内部状態を初期化する
   useEffect(() => {
-    if (value) {
-      const isStandardOption = options.some((option) => option.value === value);
-      if (isStandardOption) {
-        setSelectedValue(value);
-      } else if (value !== "選択していません。") {
-        setSelectedValue("その他");
-        setOtherInputValue(value);
-      }
+    const isStandardOption = options.some((option) => option.value === value);
+
+    if (isStandardOption) {
+      setSelectedValue(value);
+      setOtherInputValue("");
+    } else if (value && value !== "選択していません。") {
+      setSelectedValue("その他");
+      setOtherInputValue(value);
+    } else {
+      setSelectedValue("");
+      setOtherInputValue("");
     }
   }, [value]);
 
+  // selectedValue の変更を監視し、入力欄の表示を切り替える
+  useEffect(() => {
+    setShowOtherInput(selectedValue === "その他");
+  }, [selectedValue]);
+
+  // ドロップダウンの変更を処理する
   const handlePickerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(e.target.value);
+    const newValue = e.target.value;
+    setSelectedValue(newValue);
+    // 「その他」が選択された場合、入力欄の値は空にしておく
+    if (newValue === "その他") {
+      setOtherInputValue("");
+      onChange(""); // 親には空を通知
+    } else {
+      onChange(newValue); // 親に選択された値を通知
+    }
   };
 
+  // 「その他」の入力欄の変更を処理する
   const handleOtherInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOtherInputValue(e.target.value);
-    if (selectedValue === "その他") {
-      onChange(e.target.value);
-    }
+    const newValue = e.target.value;
+    setOtherInputValue(newValue);
+    // 親には入力された値を通知
+    onChange(newValue);
   };
 
   return (
