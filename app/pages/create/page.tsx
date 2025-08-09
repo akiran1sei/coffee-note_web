@@ -14,6 +14,7 @@ import {
   CoffeeTypesSelect,
   HierarchicalCoffeeSelect,
 } from "@/app/components/form/SelectComponent/page";
+import { MeasuredTimeInputComponent } from "@/app/components/form/MeasuredTimeInputComponent/page";
 const CreatePage = () => {
   const [extractionMethod, setExtractionMethod] = useState("");
   const [equipment, setEquipment] = useState("");
@@ -27,6 +28,7 @@ const CreatePage = () => {
     extractionMethod: "選択していません。",
     extractionMaker: "選択していません。",
     grindSize: "選択していません。",
+    extractionTime: 0,
     temperature: 0,
     coffeeAmount: 0,
     waterAmount: 0,
@@ -129,6 +131,17 @@ const CreatePage = () => {
           });
         }}
         labelText="waterAmount"
+      />
+      <MeasuredTimeInputComponent
+        dataTitle="抽出時間"
+        onChange={(value: number) => {
+          setFormValue({
+            ...formValue,
+            extractionTime: value,
+          });
+        }}
+        value={formValue.extractionTime}
+        labelText="extractionTime"
       />
       <TastingEvaluationComponent />
     </div>
