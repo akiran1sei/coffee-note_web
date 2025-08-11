@@ -12,13 +12,21 @@ interface TimeInputProps {
   labelText: string;
 }
 
+// 0から59までの配列を生成するヘルパー関数
+const generateOptions = (max: number) => {
+  const options = [];
+  for (let i = 0; i <= max; i++) {
+    options.push(i);
+  }
+  return options;
+};
+
 export const MeasuredTimeInputComponent: React.FC<TimeInputProps> = ({
   dataTitle,
   onChange,
   value,
   labelText,
 }) => {
-  // 分と秒を別々のstateで管理する
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
@@ -31,50 +39,70 @@ export const MeasuredTimeInputComponent: React.FC<TimeInputProps> = ({
   }, [value]);
 
   // 分の入力が変更されたときのハンドラ
-  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMinutes = e.target.value === "" ? 0 : Number(e.target.value);
+  const handleMinutesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMinutes = Number(e.target.value);
     setMinutes(newMinutes);
-    // 合計秒数を計算し、親コンポーネントに通知
     onChange(newMinutes * 60 + seconds);
   };
 
   // 秒の入力が変更されたときのハンドラ
-  const handleSecondsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSeconds = e.target.value === "" ? 0 : Number(e.target.value);
+  const handleSecondsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSeconds = Number(e.target.value);
     setSeconds(newSeconds);
-    // 合計秒数を計算し、親コンポーネントに通知
     onChange(minutes * 60 + newSeconds);
   };
 
+  // 分と秒のオプションを生成
+  const minuteOptions = generateOptions(5);
+  const secondOptions = generateOptions(59);
+
   return (
     <div className={styles.inputContainer}>
-      <label className={styles.label} htmlFor={labelText}>
-        {dataTitle}
-      </label>
-      <div className={styles.inputBox}>
-        {/* 分の入力 */}
-        <input
-          className={styles.input}
-          id={`${labelText}-minutes`}
-          type="number"
-          onChange={handleMinutesChange}
-          value={minutes === 0 ? "" : minutes} // 0の場合は空文字にすることで、プレースホルダーが表示されるように
-          placeholder="0"
-          min="0"
-        />
-        <span>分</span>
-        {/* 秒の入力 */}
-        <input
-          className={styles.input}
-          id={`${labelText}-seconds`}
-          type="number"
-          onChange={handleSecondsChange}
-          value={seconds === 0 ? "" : seconds} // 0の場合は空文字にすることで、プレースホルダーが表示されるように
-          placeholder="0"
-          min="0"
-          max="59" // 秒は59までを推奨
-        />
-        <span>秒</span>
+      <div className={styles.inputTimeBox}>
+        {/* 分の選択 */}
+        <div className={styles.inputGroup}>
+          <label className={styles.label} htmlFor={`${labelText}-minutes`}>
+            {dataTitle}（分）
+          </label>
+          <div className={styles.inputBox}>
+            <select
+              className={styles.input}
+              id={`${labelText}-minutes`}
+              onChange={handleMinutesChange}
+              value={minutes}
+            >
+              <optgroup label="分">
+                {minuteOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
+          </div>
+        </div>
+        {/* 秒の選択 */}
+        <div className={styles.inputGroup}>
+          <label className={styles.label} htmlFor={`${labelText}-minutes`}>
+            {dataTitle}（秒）
+          </label>
+          <div className={styles.inputBox}>
+            <select
+              className={styles.input}
+              id={`${labelText}-seconds`}
+              onChange={handleSecondsChange}
+              value={seconds}
+            >
+              <optgroup label="秒">
+                {secondOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
+          </div>
+        </div>
       </div>
       <p>
         合計時間は {minutes} 分 {seconds} 秒です。

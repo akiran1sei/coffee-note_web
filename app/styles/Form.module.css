@@ -53,6 +53,18 @@
 .input::placeholder {
   color: #aaa;
 }
+.inputTimeBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+}
+.inputGroup {
+  width: 100%;
+  margin-top: -1px;
+  padding: 10px;
+  box-sizing: border-box;
+}
 /* 新しいrange inputのスタイルを追加 */
 /* スライダー全体に対して適用 */
 
