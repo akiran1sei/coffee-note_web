@@ -13,8 +13,10 @@ import {
   CoffeeProcessingSelect,
   CoffeeTypesSelect,
   HierarchicalCoffeeSelect,
+  MinuteSecondComponent,
+  HourComponent,
 } from "@/app/components/form/SelectComponent/page";
-import { MeasuredTimeInputComponent } from "@/app/components/form/MeasuredTimeInputComponent/page";
+
 const CreatePage = () => {
   const [extractionMethod, setExtractionMethod] = useState("");
   const [equipment, setEquipment] = useState("");
@@ -70,7 +72,6 @@ const CreatePage = () => {
         }}
         labelText="roastingDegree"
       />
-
       <CoffeeTypesSelect
         dataTitle="品種"
         onChange={(value: string) => {
@@ -132,17 +133,25 @@ const CreatePage = () => {
         }}
         labelText="waterAmount"
       />
-      <MeasuredTimeInputComponent
-        dataTitle="抽出時間"
-        onChange={(value: number) => {
-          setFormValue({
-            ...formValue,
-            extractionTime: value,
-          });
-        }}
-        value={formValue.extractionTime}
-        labelText="extractionTime"
-      />
+      {extractionMethod === "水出し" ? (
+        <HourComponent
+          dataTitle="水出し抽出時間（時間）"
+          onChange={(value: number) =>
+            setFormValue({ ...formValue, extractionTime: value })
+          }
+          value={formValue.extractionTime}
+          labelText="extractionTime"
+        />
+      ) : (
+        <MinuteSecondComponent
+          dataTitle="抽出時間"
+          onChange={(value: number) =>
+            setFormValue({ ...formValue, extractionTime: value })
+          }
+          value={formValue.extractionTime}
+          labelText="extractionTime"
+        />
+      )}
       <TastingEvaluationComponent />
     </div>
   );
