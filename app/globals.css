@@ -57,11 +57,23 @@ html {
   --spacing-xl: 60px;
 
   /* Font Sizes */
+  /* スモール */
   --font-size-sm: 16px;
-  --font-size-lg: 48px;
+
+  /* ミディアム */
+  --font-size-md: 20px;
+
+  /* ラージ */
+  --font-size-lg: 32px;
+
+  /* エクストララージ */
+  --font-size-xl: 48px;
 
   /* Border Radius */
   --border-radius-sm: 10px;
+
+  /* Icon width */
+  --icon-width: 50px;
 }
 
 /*
@@ -119,5 +131,6 @@ button {
 }
 img {
   width: 100%;
+  height: auto;
   vertical-align: middle;
 }
