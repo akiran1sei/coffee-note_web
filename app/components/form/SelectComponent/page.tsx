@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "@/app/styles/Form.module.css";
-
+import { translationMap } from "@/app/utils/translations";
 // 階層的選択のためのインターフェース
 interface HierarchicalSelectProps {
   labelText: string;
@@ -136,6 +136,7 @@ export const HierarchicalCoffeeSelect: React.FC<HierarchicalSelectProps> = ({
             onChange={handlePrimaryChange}
             className={styles.select}
             id={labelText}
+            name={translationMap[primaryTitle] || primaryTitle}
           >
             <option value="">選択してください</option>
             {primaryOptions.map((method) => (
@@ -158,6 +159,7 @@ export const HierarchicalCoffeeSelect: React.FC<HierarchicalSelectProps> = ({
               onChange={(e) => onSecondaryChange(e.target.value)}
               className={styles.select}
               id={labelText}
+              name={translationMap[secondaryTitle] || secondaryTitle}
             >
               <option value="">選択してください</option>
               {secondaryOptions.map((equipment) => (
@@ -343,6 +345,7 @@ export const CoffeeProcessingSelect: React.FC<SelectProps> = ({
           onChange={(e) => onChange(e.target.value)}
           className={styles.select}
           id={labelText}
+          name={translationMap[dataTitle] || dataTitle}
         >
           <option value="">選択してください</option>
           {methods().map((method) => (
@@ -426,6 +429,7 @@ export const CoffeeTypesSelect: React.FC<SelectProps> = ({
           onChange={handlePickerChange}
           className={styles.select}
           id={labelText}
+          name={translationMap[dataTitle] || dataTitle}
         >
           <option value="">選択してください</option>
           {options.map((option) => (
@@ -502,6 +506,7 @@ export const HourComponent: React.FC<TimeInputProps> = ({
           id={`${labelText}-hours`}
           onChange={handleHoursChange}
           value={hours}
+          name={translationMap[dataTitle] || dataTitle}
         >
           <optgroup label="時間">
             {hourOptions.map((option) => (
@@ -575,6 +580,7 @@ export const MinuteSecondComponent: React.FC<TimeInputProps> = ({
               id={`${labelText}-minutes`}
               onChange={handleMinutesChange}
               value={minutes}
+              name={translationMap[dataTitle] || dataTitle}
             >
               <optgroup label="分">
                 {minuteOptions.map((option) => (

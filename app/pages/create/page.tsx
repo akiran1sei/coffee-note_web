@@ -16,6 +16,7 @@ import {
   MinuteSecondComponent,
   HourComponent,
 } from "@/app/components/form/SelectComponent/page";
+import { TextAreaComponent } from "@/app/components/form/TextAreaComponent/page";
 
 const CreatePage = () => {
   const [extractionMethod, setExtractionMethod] = useState("");
@@ -153,6 +154,14 @@ const CreatePage = () => {
         />
       )}
       <TastingEvaluationComponent />
+      <TextAreaComponent
+        dataTitle="メモ"
+        onChange={(value: string) => {
+          setFormValue({ ...formValue, memo: value });
+        }}
+        value={formValue.memo}
+        labelText="memo"
+      />
     </div>
   );
 };
