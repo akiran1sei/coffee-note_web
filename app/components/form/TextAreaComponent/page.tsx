@@ -28,11 +28,14 @@ export const TextAreaComponent: React.FC<TextAreaProps> = ({
       </label>
       <div className={styles.textareaBox}>
         <textarea
+          className={styles.textarea}
           name={translationMap[dataTitle] || dataTitle}
           id={labelText}
           onChange={handleTextareaChange}
           value={value}
           placeholder="入力してください"
+          rows={4}
+          cols={50}
         />
       </div>
     </div>
