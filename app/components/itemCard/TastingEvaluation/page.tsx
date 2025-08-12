@@ -71,9 +71,9 @@ export const TastingEvaluationComponent =
     };
     const Radar = MyNivoRadar();
     return (
-      <div className={styles.chartContainer}>
-        <h2 className={styles.sectionTitle}>テイスティング・評価</h2>
-        <div className={styles.chartBox}>
+      <div className={styles.infoContainer}>
+        <h2 className={styles.infoTitle}>テイスティング・評価</h2>
+        <div className={styles.infoWrapper}>
           {Radar}
           <RangeComponent
             dataTitle="酸味"
