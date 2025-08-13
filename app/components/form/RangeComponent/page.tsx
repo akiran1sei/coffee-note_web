@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "@/app/styles/Form.module.css";
 import { translationMap } from "@/app/utils/translations";
-
+import { OnClickButton } from "@/app/components/buttons/page";
 interface rangeProps {
   dataTitle: string;
   onChange: (value: number) => void;
@@ -36,9 +36,11 @@ export const RangeComponent: React.FC<rangeProps> = ({
     newValue = Math.max(min, Math.min(max, newValue));
     onChange(parseFloat(newValue.toFixed(1)));
   };
-
+  console.log("dataTitle", dataTitle);
+  const className = translationMap[dataTitle] || dataTitle;
+  console.log("className", className);
   return (
-    <div className={styles.inputContainer}>
+    <div className={`${styles.inputContainer} ${styles[className]}`}>
       <label className={styles.label} htmlFor={labelText}>
         {dataTitle}
       </label>
@@ -47,12 +49,10 @@ export const RangeComponent: React.FC<rangeProps> = ({
           <span className={styles.valueText}>{value.toFixed(1)}</span>
         </div>
         <div className={styles.sliderAndButtons}>
-          <button
-            className={styles.button}
+          <OnClickButton
+            textValue="remove"
             onClick={() => handleButtonClick("decrement")}
-          >
-            -
-          </button>
+          />
           <div className={styles.sliderWrapper}>
             <div className={styles.tickContainer}>
               {tickValues.map((tick) => (
@@ -80,12 +80,11 @@ export const RangeComponent: React.FC<rangeProps> = ({
               step={step}
             />
           </div>
-          <button
-            className={styles.button}
+
+          <OnClickButton
+            textValue="add"
             onClick={() => handleButtonClick("increment")}
-          >
-            +
-          </button>
+          />
         </div>
       </div>
     </div>

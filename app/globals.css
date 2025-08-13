@@ -73,7 +73,8 @@ html {
   --border-radius-sm: 10px;
 
   /* Icon width */
-  --icon-width: 50px;
+  --icon-pc-width: 50px;
+  --icon-sp-width: 25px;
 }
 
 /*

@@ -26,7 +26,7 @@ export const TastingEvaluationComponent =
 
     const MyNivoRadar = () => {
       return (
-        <div style={{ height: 400 }}>
+        <div className={styles.chartContainer} style={{ height: 400 }}>
           <ResponsiveRadar
             data={data}
             keys={["chardonay"]}
@@ -72,8 +72,10 @@ export const TastingEvaluationComponent =
     const Radar = MyNivoRadar();
     return (
       <div className={styles.infoContainer}>
-        <h2 className={styles.infoTitle}>テイスティング・評価</h2>
-        <div className={styles.infoWrapper}>
+        <h2 className={`${styles.infoTitle} ${styles.tastingTitle}`}>
+          テイスティング・評価
+        </h2>
+        <div className={`${styles.infoWrapper} ${styles.tastingWrapper}`}>
           {Radar}
           <RangeComponent
             dataTitle="酸味"

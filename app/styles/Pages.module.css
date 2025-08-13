@@ -1,7 +1,5 @@
-/* 
-
+/*
 --------------------top page--------------------
-
 */
 .appContainer {
   display: flex;
@@ -24,11 +22,13 @@
   align-items: center;
   width: 100%;
 }
+
 .homeButtons {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .scrollContainer {
   width: 100%;
   padding: var(--spacing-lg);
@@ -57,16 +57,18 @@
 .settingPanelContent {
   background-color: var(--color-secondary);
   border-radius: var(--border-radius-sm);
-
   padding: var(--spacing-sm);
 }
+
 .settingPanelItem {
   margin: var(--spacing-sm) auto;
   text-align: center;
 }
+
 .settingPanelItem:last-child {
   text-align: right;
 }
+
 .settingButtonText {
   color: var(--color-text-light);
   font-size: var(--font-size-sm);
@@ -79,39 +81,51 @@
   flex-direction: column;
   align-items: center;
 }
-/* 
 
+/*
 --------------------list page--------------------
-
 */
 .listPageContents {
   position: relative;
   top: 80px;
 }
-/* 
 
+/*
 --------------------create page--------------------
-
 */
 .createPageContents {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
   position: relative;
   top: 80px;
 }
-/* 
 
+/*
 --------------------item page--------------------
-
 */
 .itemPageContents {
   position: relative;
   top: 80px;
 }
-/* 
 
+/*
 --------------------update page--------------------
-
 */
 .updatePageContents {
   position: relative;
   top: 80px;
+}
+
+/* タブレット用 */
+@media screen and (min-width: 600px) {
+}
+
+/* PC用 */
+@media screen and (min-width: 960px) {
+  /*
+--------------------create page--------------------
+*/
 }

@@ -1,11 +1,14 @@
 import { MainButton, MainLinkButton } from "@/app/components/buttons/page";
+import { PageTitle } from "@/app/components/title/page";
 
 import styles from "@/app/styles/Pages.module.css";
 const ListPage = () => {
   const value = `/list`;
   return (
     <div className={styles.listPageContents}>
-      <h1>List Page</h1>
+      <h1>
+        <PageTitle value="List Page" />
+      </h1>
       <MainButton sizeValue="large" textValue="削除" buttonColor="btn-danger" />
       <MainButton
         sizeValue="middle"

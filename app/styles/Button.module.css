@@ -1,3 +1,14 @@
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .iconButton {
   display: inline-block;
   width: auto;
@@ -8,18 +19,28 @@
   background-color: var(--color-primary);
   border-radius: 10px;
 }
+
 .iconButton:hover {
   background-color: var(--color-secondary-dark);
+}
+
+.iconWrapper {
+  display: inline-block;
+  width: var(--icon-sp-width);
+  height: var(--icon-sp-width);
+  overflow: hidden;
 }
 
 .buttonShadow {
   box-shadow: 3px 3px 3px var(--color-primary-light);
 }
+
 .buttonShadow:active {
   transform: translate(3px, 3px);
   box-shadow: inset 3px 3px 3px var(--color-background-dark);
   background: var(--color-background);
 }
+
 .mainButton {
   border-radius: var(--border-radius-sm);
   margin: var(--spacing-sm) 0;
@@ -33,27 +54,35 @@
 .largeButton {
   padding: var(--spacing-md) var(--spacing-lg);
 }
+
 .middleButton {
   padding: var(--spacing-xs) var(--spacing-md);
 }
+
 .smallButton {
   padding: var(--spacing-xs);
 }
+
 .btn-main {
   background-color: var(--color-main);
 }
+
 .btn-danger {
   background-color: var(--color-danger);
 }
+
 .btn-warning {
   background-color: var(--color-warning);
 }
+
 .btn-success {
   background-color: var(--color-success);
 }
+
 .btn-secondary {
   background-color: var(--color-secondary);
 }
+
 .buttonText {
   color: var(--color-text-light);
 }
@@ -62,14 +91,14 @@
   position: absolute;
   z-index: 50;
   padding: 20px;
-  border-radius: 9999px; /* rounded-full */
+  border-radius: 9999px;
   width: 100px;
   height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #dededecc;
-  transition: none; /* ドラッグ中はアニメーションを無効にする */
+  transition: none;
   cursor: grab;
 }
 
@@ -81,7 +110,7 @@
   position: relative;
   width: 60px;
   height: 60px;
-  border-radius: 9999px; /* rounded-full */
+  border-radius: 9999px;
   background-color: #4a90e2;
   display: flex;
   justify-content: center;
@@ -111,6 +140,7 @@
   border: none;
   cursor: pointer;
 }
+
 .settingButtonClose {
   position: absolute;
   bottom: 0;
@@ -119,4 +149,16 @@
   border: none;
   background: none;
   cursor: pointer;
+}
+
+/* タブレット用 */
+@media screen and (min-width: 600px) {
+  .iconWrapper {
+    width: var(--icon-pc-width);
+    height: var(--icon-pc-width);
+  }
+}
+
+/* PC用 */
+@media screen and (min-width: 960px) {
 }

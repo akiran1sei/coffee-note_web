@@ -28,25 +28,28 @@ export const LinkIconButton: React.FC<IconButtonType> = ({ value }) => {
   if (value === "home") {
     return (
       <Link href={`/`} className={styles.iconButton}>
-        <Image
-          src={`/images/${value}.svg`}
-          alt={`${value} Icon`}
-          width={50}
-          height={50}
-          style={{ fill: "#D2B48C" }}
-        />
+        <span className={styles.iconWrapper}>
+          <Image
+            src={`/images/${value}.svg`}
+            alt={`${value} Icon`}
+            width={50}
+            height={50}
+            style={{ fill: "#D2B48C" }}
+          />
+        </span>
       </Link>
     );
   }
   return (
     <Link href={`/pages/${value}`} className={styles.iconButton}>
-      <Image
-        src={`/images/${value}.svg`}
-        alt={`${value} Icon`}
-        width={50}
-        height={50}
-        style={{ fill: "#D2B48C" }}
-      />
+      <span className={styles.iconWrapper}>
+        <Image
+          src={`/images/${value}.svg`}
+          alt={`${value} Icon`}
+          width={50}
+          height={50}
+        />
+      </span>
     </Link>
   );
 };
@@ -56,12 +59,6 @@ interface MainButtonType {
   textValue: string;
   buttonColor: string;
 }
-// --color-danger → .btn-danger: 「削除」などの危険な操作に。
-// --color-main → .btn-main: 「PDFをダウンロード」など、最も主要なアクションに。
-// --color-warning → .btn-warning: 「編集」など、注意を促すアクションに。
-// --color-success → .btn-success: 「保存」など、成功を表すアクションに。
-// --color-secondary → .btn-secondary: 「リセット」「検索」「並び替え」など、控えめなサブアクションに。
-//  例： <MainButton sizeValue="large" textValue="編集" buttonColor="btn-warning"/>
 export const MainButton: React.FC<MainButtonType> = ({
   sizeValue,
   textValue,
@@ -140,4 +137,30 @@ export const MainLinkButton: React.FC<MainLinkButtonType> = ({
       </Link>
     );
   }
+};
+interface OnClickButtonType {
+  onClick: () => void;
+  textValue: string;
+}
+export const OnClickButton: React.FC<OnClickButtonType> = ({
+  onClick,
+  textValue,
+}) => {
+  return (
+    <button
+      type="button"
+      className={`${styles.iconButton} ${styles.buttonShadow}`}
+      onClick={onClick}
+    >
+      <span className={styles.iconWrapper}>
+        <Image
+          src={`/images/${textValue}.png`}
+          alt={`${textValue} Icon`}
+          width={50}
+          height={50}
+        />
+      </span>
+      <span className={styles.srOnly}>{textValue}ボタン</span>
+    </button>
+  );
 };

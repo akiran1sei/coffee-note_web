@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "@/app/styles/Pages.module.css";
 
-import { TastingEvaluationComponent } from "@/app/components/itemCard/TastingEvaluation/page";
+import { TastingEvaluationComponent } from "@/app/components/selfComponents/TastingEvaluation/page";
 
-import { CoffeeBeansComponent } from "@/app/components/itemCard/CoffeeBean/page";
-import { BrewingRecipeComponent } from "@/app/components/itemCard/BrewingRecipe/page";
-import { MemoAreaComponent } from "@/app/components/itemCard/MemoArea/page";
+import { CoffeeBeansComponent } from "@/app/components/selfComponents/CoffeeBean/page";
+import { BrewingRecipeComponent } from "@/app/components/selfComponents/BrewingRecipe/page";
+import { MemoAreaComponent } from "@/app/components/selfComponents/MemoArea/page";
+import { PageTitle } from "@/app/components/title/page";
 
 const CreatePage = () => {
   const [formValue, setFormValue] = useState({
@@ -35,7 +36,9 @@ const CreatePage = () => {
 
   return (
     <div className={styles.createPageContents}>
-      <h1>Create Page</h1>
+      <h1 className={styles.pageTitle}>
+        <PageTitle value="Create Page" />
+      </h1>
       <CoffeeBeansComponent />
       <BrewingRecipeComponent />
       <TastingEvaluationComponent />

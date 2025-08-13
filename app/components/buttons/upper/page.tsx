@@ -38,7 +38,7 @@ export const UpperButton = () => {
 
   // 4. タッチスタートイベントハンドラを定義
   const handleTouchStart = (e: React.TouchEvent) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     if (wrapperRef.current && !isMouseDragging) {
       setIsTouchDragging(true);

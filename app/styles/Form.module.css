@@ -1,17 +1,3 @@
-.chartContainer {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
-  margin-bottom: 5px;
-  padding-bottom: 5px;
-  border-bottom-width: 1px;
-  border-bottom-color: #e0e0e0;
-}
-
 .sectionTitle {
   color: #5d4037;
   font-size: 18px;
@@ -19,6 +5,7 @@
   margin-bottom: 5px;
   text-align: center;
 }
+
 .inputContainer {
   width: 90%;
   margin: 10px auto;
@@ -41,6 +28,7 @@
   color: #333;
   border: unset;
 }
+
 .inputBox {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -50,50 +38,51 @@
   background-color: #fff;
   box-sizing: border-box;
 }
+
 .input::placeholder {
   color: #aaa;
 }
+
 .inputTimeBox {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
 }
+
 .inputGroup {
   width: 100%;
   margin-top: -1px;
   padding: 10px;
   box-sizing: border-box;
 }
+
 /* 新しいrange inputのスタイルを追加 */
 /* スライダー全体に対して適用 */
-
 .rangeInput[type="range"] {
   accent-color: var(--color-secondary);
   width: 100%;
-  height: 8px; /* トラックの高さ */
-  background: #f0f0f0; /* トラックの背景色 */
+  height: 8px;
+  background: #f0f0f0;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: -1px; /* inputとの重なりを解消 */
+  margin-top: -1px;
   box-sizing: border-box;
-  /* トラックにボーダーを追加 */
   border: 1px solid var(--color-secondary);
 }
 
 /* スライダーのつまみ（thumb）のスタイル */
 .rangeInput::-webkit-slider-thumb {
-  width: 20px; /* つまみの幅 */
-  height: 20px; /* つまみの高さ */
+  width: 20px;
+  height: 20px;
   background: var(--color-secondary);
   border-radius: 50%;
   border: 1px solid var(--color-secondary);
-  margin-top: -6px; /* つまみをトラックの中央に配置 */
+  margin-top: -6px;
 }
 
 .rangeInput::-moz-range-thumb {
   /* Firefox用 */
-
   width: 20px;
   height: 20px;
   background: var(--color-secondary);
@@ -113,6 +102,7 @@
   border-color: var(--color-secondary);
   border-style: solid;
 }
+
 .valueTextContainer {
   width: 100%;
   height: auto;
@@ -121,9 +111,9 @@
   justify-content: center;
   align-items: center;
 }
+
 .valueText {
   color: #333;
-  margin-vertical: 10px; /* CSSにはこのプロパティはないため、margin-topとmargin-bottomに分割 */
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 18px;
@@ -150,7 +140,7 @@
 
 .slider {
   width: 100%;
-  height: var(--icon-width);
+  height: var(--icon-sp-width);
 }
 
 .tickContainer {
@@ -295,8 +285,8 @@
 }
 
 .button {
-  width: var(--icon-width);
-  height: var(--icon-width);
+  width: 100%;
+  height: var(--icon-sp-width);
   border-radius: 15px;
   background-color: #fff;
   display: flex;
@@ -305,7 +295,6 @@
   margin: 0 10px;
   box-shadow: 2px 2px 2px rgba(51, 48, 0, 0.3);
   border: none;
-
   padding: 12px;
   cursor: pointer;
   -webkit-appearance: none;
@@ -360,11 +349,13 @@
   color: #666;
   font-weight: bold;
 }
+
 .textareaContainer {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
 }
+
 .textareaBox {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -374,6 +365,7 @@
   background-color: #fff;
   box-sizing: border-box;
 }
+
 .textarea {
   width: 100%;
   height: auto;
@@ -555,7 +547,7 @@
   position: relative;
   width: 100%;
   max-width: 300px;
-  max-height: 600px; /* 親要素の高さを可変（最大600px） */
+  max-height: 600px;
   margin: 0 auto;
 }
 
@@ -564,17 +556,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-  .modalContent,
-  .messageContent {
-    min-width: unset;
-  }
-}
 .infoContainer {
+  width: 100%;
 }
+
 .infoWrapper {
+  width: 100%;
 }
+
 .infoTitle {
   width: 100%;
   height: auto;
@@ -584,4 +573,16 @@
   letter-spacing: 0.5em;
   line-height: 2em;
   margin-bottom: var(--spacing-md);
+}
+
+/* タブレット用 */
+@media screen and (min-width: 600px) {
+  .button {
+    width: 100%;
+    height: var(--icon-pc-width);
+  }
+}
+
+/* PC用 */
+@media screen and (min-width: 960px) {
 }
