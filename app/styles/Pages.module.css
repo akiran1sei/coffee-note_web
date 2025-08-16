@@ -1,32 +1,21 @@
 /*
 --------------------top page--------------------
 */
-.appContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: var(--color-background);
-}
 
+.pageContents {
+  width: 100%;
+  max-width: 1000px;
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  margin: 0 auto;
+}
 .pageWrapper {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-}
-
-.mainContents {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.homeButtons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .scrollContainer {
@@ -45,6 +34,24 @@
   align-items: center;
 }
 
+/*
+--------------------home page--------------------
+*/
+.homePageContents {
+  top: 0;
+  bottom: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .settingPanel {
   width: auto;
   height: auto;
@@ -73,20 +80,15 @@
   color: var(--color-text-light);
   font-size: var(--font-size-sm);
 }
-
-.absoluteBox {
-  flex-grow: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 /*
 --------------------list page--------------------
 */
 .listPageContents {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
   top: 80px;
 }
 
@@ -99,7 +101,6 @@
   flex-wrap: nowrap;
   justify-content: center;
   align-items: stretch;
-  position: relative;
   top: 80px;
 }
 
@@ -107,7 +108,11 @@
 --------------------item page--------------------
 */
 .itemPageContents {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
   top: 80px;
 }
 
@@ -115,7 +120,11 @@
 --------------------update page--------------------
 */
 .updatePageContents {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
   top: 80px;
 }
 

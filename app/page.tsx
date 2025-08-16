@@ -48,80 +48,76 @@ export default function Index() {
     return <LoadingComponent />;
   } else {
     return (
-      <div className={styles.appContainer}>
-        <div className={styles.pageWrapper}>
-          <div className={styles.mainContents}>
-            <div className={styles.pageTitle}>
-              <AppTitle value="Coffee Note" />
-            </div>
+      <div className={`${styles.homePageContents} ${styles.pageContents}`}>
+        <div className={styles.pageTitle}>
+          <AppTitle value="Coffee Note" />
+        </div>
 
-            <div className={styles.homeButtons}>
-              {/* Create ボタン */}
-              <LinkIconButtonWithShadow value="create" />
-              {/* List ボタン */}
-              <LinkIconButtonWithShadow value="list" />
-            </div>
-            <div className={styles.settingPanel}>
-              {switchState ? (
-                <div className={styles.settingPanelContent}>
-                  <div className={styles.settingPanelItem}>
-                    <Link
-                      href="/settings/PrivacyPolicyJP"
-                      className={styles.settingButton}
-                    >
-                      {/* TouchableOpacityをLinkに変更 */}
-                      <span className={styles.settingButtonText}>
-                        プライバシーポリシー
-                      </span>
-                    </Link>
-                  </div>
-                  <div className={styles.settingPanelItem}>
-                    <Link
-                      href="/settings/TermsAndConditionsJP"
-                      className={styles.settingButton}
-                    >
-                      {/* TouchableOpacityをLinkに変更 */}
-                      <span className={styles.settingButtonText}>利用規約</span>
-                    </Link>
-                  </div>
-                  <div className={styles.settingPanelItem}>
-                    <button /* TouchableOpacityをbuttonタグに変更 */
-                      className={styles.settingButtonClose}
-                      onClick={() => {
-                        // onPressをonClickに変更
-                        handleSwitch();
-                      }}
-                      aria-label="閉じる"
-                    >
-                      <Image
-                        src="./images/close.svg"
-                        alt="Close Icon"
-                        width={30}
-                        height={30}
-                        style={{ fill: "#f5f5f5" }}
-                      />
-                    </button>
-                  </div>
-                </div>
-              ) : (
+        <div className={styles.homeButtons}>
+          {/* Create ボタン */}
+          <LinkIconButtonWithShadow value="create" />
+          {/* List ボタン */}
+          <LinkIconButtonWithShadow value="list" />
+        </div>
+        <div className={styles.settingPanel}>
+          {switchState ? (
+            <div className={styles.settingPanelContent}>
+              <div className={styles.settingPanelItem}>
+                <Link
+                  href="/settings/PrivacyPolicyJP"
+                  className={styles.settingButton}
+                >
+                  {/* TouchableOpacityをLinkに変更 */}
+                  <span className={styles.settingButtonText}>
+                    プライバシーポリシー
+                  </span>
+                </Link>
+              </div>
+              <div className={styles.settingPanelItem}>
+                <Link
+                  href="/settings/TermsAndConditionsJP"
+                  className={styles.settingButton}
+                >
+                  {/* TouchableOpacityをLinkに変更 */}
+                  <span className={styles.settingButtonText}>利用規約</span>
+                </Link>
+              </div>
+              <div className={styles.settingPanelItem}>
                 <button /* TouchableOpacityをbuttonタグに変更 */
+                  className={styles.settingButtonClose}
                   onClick={() => {
                     // onPressをonClickに変更
                     handleSwitch();
                   }}
-                  aria-label="設定アイコン"
+                  aria-label="閉じる"
                 >
                   <Image
-                    src="./images/settings.svg"
-                    alt="Settings Icon"
+                    src="./images/close.svg"
+                    alt="Close Icon"
                     width={30}
                     height={30}
                     style={{ fill: "#f5f5f5" }}
                   />
                 </button>
-              )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <button /* TouchableOpacityをbuttonタグに変更 */
+              onClick={() => {
+                // onPressをonClickに変更
+                handleSwitch();
+              }}
+              aria-label="設定アイコン"
+            >
+              <Image
+                src="./images/settings.svg"
+                alt="Settings Icon"
+                width={30}
+                height={30}
+                style={{ fill: "#f5f5f5" }}
+              />
+            </button>
+          )}
         </div>
       </div>
     );

@@ -16,9 +16,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ja">
       <body className={inter.className}>
         <div className={styles.l_container}>
-          <main className={styles.l_main}>
-            <div className={styles.l_pagesContainer}>{children}</div>
-          </main>
+          <main className={styles.l_main}>{children}</main>
         </div>
       </body>
     </html>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "@/app/styles/Pages.module.css";
 
 import { TastingEvaluationComponent } from "@/app/components/selfComponents/TastingEvaluation/page";
@@ -8,6 +8,7 @@ import { CoffeeBeansComponent } from "@/app/components/selfComponents/CoffeeBean
 import { BrewingRecipeComponent } from "@/app/components/selfComponents/BrewingRecipe/page";
 import { MemoAreaComponent } from "@/app/components/selfComponents/MemoArea/page";
 import { PageTitle } from "@/app/components/title/page";
+import { UpperButton } from "@/app/components/buttons/upper/page";
 
 const CreatePage = () => {
   const [formValue, setFormValue] = useState({
@@ -35,15 +36,20 @@ const CreatePage = () => {
   });
 
   return (
-    <div className={styles.createPageContents}>
-      <h1 className={styles.pageTitle}>
-        <PageTitle value="Create Page" />
-      </h1>
-      <CoffeeBeansComponent />
-      <BrewingRecipeComponent />
-      <TastingEvaluationComponent />
-      <MemoAreaComponent />
-    </div>
+    <>
+      <UpperButton />
+      <div className={`${styles.createPageContents} ${styles.pageContents}`}>
+        <h1 className={styles.pageTitle}>
+          <PageTitle value="Create Page" />
+        </h1>
+        <div className={`${styles.createPageWrapper} ${styles.pageWrapper}`}>
+          <CoffeeBeansComponent />
+          <BrewingRecipeComponent />
+          <TastingEvaluationComponent />
+          <MemoAreaComponent />
+        </div>
+      </div>
+    </>
   );
 };
 export default CreatePage;

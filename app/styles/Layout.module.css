@@ -1,25 +1,18 @@
 .l_pagesContainer {
-  background-color: #f5f5f5;
 }
 .l_container {
   width: 100%;
-  height: auto;
-  max-width: 1000px;
-  margin: 0 auto;
+  height: 100vh;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .l_main {
   width: 100%;
   height: auto;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.absoluteBox {
-  flex: 1;
-  position: absolute;
-  left: 0;
-  right: 0;
-  background-color: #ffffff;
+  background-color: #f5f5f5;
 }
 
 .scrollContainer {
