@@ -10,11 +10,13 @@ export const metadata = {
 };
 
 import { ReactNode } from "react";
+import { UpperButton } from "./components/buttons/upper/page";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
       <body className={inter.className}>
+        <UpperButton />
         <div className={styles.l_container}>
           <main className={styles.l_main}>{children}</main>
         </div>

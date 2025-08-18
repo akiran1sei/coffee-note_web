@@ -8,7 +8,6 @@ import { CoffeeBeansComponent } from "@/app/components/selfComponents/CoffeeBean
 import { BrewingRecipeComponent } from "@/app/components/selfComponents/BrewingRecipe/page";
 import { MemoAreaComponent } from "@/app/components/selfComponents/MemoArea/page";
 import { PageTitle } from "@/app/components/title/page";
-import { UpperButton } from "@/app/components/buttons/upper/page";
 
 const CreatePage = () => {
   const [formValue, setFormValue] = useState({
@@ -37,7 +36,6 @@ const CreatePage = () => {
 
   return (
     <>
-      <UpperButton />
       <div className={`${styles.createPageContents} ${styles.pageContents}`}>
         <h1 className={styles.pageTitle}>
           <PageTitle value="Create Page" />
