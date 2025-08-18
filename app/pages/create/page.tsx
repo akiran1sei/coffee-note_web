@@ -1,21 +1,40 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, use } from "react";
 import styles from "@/app/styles/Pages.module.css";
 
-import { TastingEvaluationComponent } from "@/app/components/selfComponents/TastingEvaluation/page";
-
-import { CoffeeBeansComponent } from "@/app/components/selfComponents/CoffeeBean/page";
-import { BrewingRecipeComponent } from "@/app/components/selfComponents/BrewingRecipe/page";
-import { MemoAreaComponent } from "@/app/components/selfComponents/MemoArea/page";
+import { TastingEvaluationComponent } from "@/app/components/commonForm/TastingEvaluation/page";
+import { ShopCoffeeComponent } from "@/app/components/shopForm/PurchaseInfo/page";
+import { CoffeeBeansComponent } from "@/app/components/selfForm/CoffeeBean/page";
+import { BrewingRecipeComponent } from "@/app/components/selfForm/BrewingRecipe/page";
+import { MemoAreaComponent } from "@/app/components/commonForm/MemoArea/page";
 import { PageTitle } from "@/app/components/title/page";
-
+import { MainButton } from "@/app/components/buttons/page";
+import { useWindowSize } from "@/app/components/useWindowSize/page";
 const CreatePage = () => {
-  const [formValue, setFormValue] = useState({
+  const { width } = useWindowSize();
+  const shopVer = "Shop";
+  const selfVer = "Self";
+
+  // 共通の項目
+  const [coffeeInfo, setCoffeeInfo] = useState({
     imageUrl: "",
     coffeeName: "",
     productionArea: "",
     variety: "選択していません。",
     roastingDegree: "選択していません。",
+  });
+
+  // ショップの情報
+  const [shopInfo, setShopInfo] = useState({
+    shopName: "東京珈琲店",
+    shopPrice: "1000",
+    shopDate: "2025-01-01",
+    shopAddress: "東京都",
+    shopUrl: "https://example.com",
+  });
+
+  // 自宅での抽出情報
+  const [extractionInfo, setExtractionInfo] = useState({
     extractionMethod: "選択していません。",
     extractionMaker: "選択していません。",
     grindSize: "選択していません。",
@@ -23,6 +42,10 @@ const CreatePage = () => {
     temperature: 0,
     coffeeAmount: 0,
     waterAmount: 0,
+  });
+
+  // 自宅で抽出した際の評価チャートとメモ
+  const [reviewInfo, setReviewInfo] = useState({
     chart: {
       acidity: 0,
       bitterness: 0,
@@ -33,7 +56,23 @@ const CreatePage = () => {
     },
     memo: "",
   });
-
+  const [isLoad, setIsLoad] = useState(false);
+  const [isVersion, setIsVersion] = useState(false);
+  const [varText, setVarText] = useState(selfVer);
+  const handleVersion = () => {
+    setIsLoad(true);
+    setIsVersion(!isVersion);
+    if (isVersion) {
+      setVarText(selfVer);
+      return setIsLoad(false);
+    } else {
+      setVarText(shopVer);
+      return setIsLoad(false);
+    }
+  };
+  useEffect(() => {
+    return handleVersion;
+  }, [isVersion]);
   return (
     <>
       <div className={`${styles.createPageContents} ${styles.pageContents}`}>
@@ -41,10 +80,59 @@ const CreatePage = () => {
           <PageTitle value="Create Page" />
         </h1>
         <div className={`${styles.createPageWrapper} ${styles.pageWrapper}`}>
-          <CoffeeBeansComponent />
-          <BrewingRecipeComponent />
-          <TastingEvaluationComponent />
-          <MemoAreaComponent />
+          {/* {width ? `${width}px` : "ロード中..."} */}
+          {width && width < 600 ? (
+            <>
+              <MainButton
+                onClick={handleVersion}
+                sizeValue="large"
+                textValue={`Switch to ${varText} Ver.`}
+                buttonColor="btn-success"
+                widthValue="widthNearlyFull"
+              />
+            </>
+          ) : (
+            <>
+              <MainButton
+                onClick={handleVersion}
+                sizeValue="large"
+                textValue={`Switch to ${varText} Ver.`}
+                buttonColor="btn-success"
+                widthValue="widthAuto"
+              />
+            </>
+          )}
+          <form className={styles.pageForm}>
+            {isVersion ? (
+              <>
+                <CoffeeBeansComponent />
+                <BrewingRecipeComponent extractionInfo={extractionInfo} />
+                <TastingEvaluationComponent reviewInfo={reviewInfo} />
+                <MemoAreaComponent />
+              </>
+            ) : (
+              <>
+                <ShopCoffeeComponent
+                  imageUrl={coffeeInfo.imageUrl}
+                  coffeeName={coffeeInfo.coffeeName}
+                  productionArea={coffeeInfo.productionArea}
+                  shopName={shopInfo.shopName}
+                  shopPrice={shopInfo.shopPrice}
+                  shopDate={shopInfo.shopDate}
+                  shopAddress={shopInfo.shopAddress}
+                  shopUrl={shopInfo.shopUrl}
+                />
+                <TastingEvaluationComponent reviewInfo={reviewInfo} />
+                <MemoAreaComponent />
+              </>
+            )}
+            <MainButton
+              sizeValue="large"
+              textValue="保存"
+              buttonColor="btn-success"
+              widthValue="widthAuto"
+            />
+          </form>
         </div>
       </div>
     </>

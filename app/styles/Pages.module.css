@@ -1,15 +1,15 @@
 /*
---------------------top page--------------------
+-------------------共通スタイル--------------------
 */
-
+.pageForm {
+  display: contents;
+}
 .pageContents {
   width: 100%;
   max-width: 1000px;
   position: absolute;
-
   left: 0;
   right: 0;
-
   margin: 0 auto;
 }
 .pageWrapper {
@@ -17,6 +17,9 @@
   display: flex;
   flex-direction: column;
 }
+/*
+--------------------top page--------------------
+*/
 
 .scrollContainer {
   width: 100%;

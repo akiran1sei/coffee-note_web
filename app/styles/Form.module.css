@@ -56,7 +56,9 @@
   padding: 10px;
   box-sizing: border-box;
 }
-
+.inputDate {
+  text-align: center;
+}
 /* 新しいrange inputのスタイルを追加 */
 /* スライダー全体に対して適用 */
 .rangeInput[type="range"] {
@@ -140,7 +142,7 @@
 
 .slider {
   width: 100%;
-  height: var(--icon-sp-width);
+  height: var(--icon-md-width);
 }
 
 .tickContainer {
@@ -286,7 +288,7 @@
 
 .button {
   width: 100%;
-  height: var(--icon-sp-width);
+  height: var(--icon-md-width);
   border-radius: 15px;
   background-color: #fff;
   display: flex;
@@ -579,7 +581,7 @@
 @media screen and (min-width: 600px) {
   .button {
     width: 100%;
-    height: var(--icon-pc-width);
+    height: var(--icon-md-width);
   }
 }
 

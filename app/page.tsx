@@ -55,9 +55,9 @@ export default function Index() {
 
         <div className={styles.homeButtons}>
           {/* Create ボタン */}
-          <LinkIconButtonWithShadow value="create" />
+          <LinkIconButtonWithShadow value="create" iconWidth="iconMd" />
           {/* List ボタン */}
-          <LinkIconButtonWithShadow value="list" />
+          <LinkIconButtonWithShadow value="list" iconWidth="iconMd" />
         </div>
         <div className={styles.settingPanel}>
           {switchState ? (

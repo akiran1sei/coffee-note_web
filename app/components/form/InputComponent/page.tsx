@@ -77,3 +77,39 @@ export const NumberComponent: React.FC<NumberProps> = ({
     </div>
   );
 };
+
+interface DateProps {
+  dataTitle: string;
+  onChange: (value: string) => void;
+  value: string;
+  labelText: string;
+}
+
+export const DateComponent: React.FC<DateProps> = ({
+  dataTitle,
+  onChange,
+  value,
+  labelText,
+}) => {
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
+
+  return (
+    <div className={styles.inputContainer}>
+      <label className={styles.label} htmlFor={labelText}>
+        {dataTitle}
+      </label>
+      <div className={styles.inputBox}>
+        <input
+          className={`${styles.input} ${styles.inputDate}`}
+          id={labelText}
+          type="date"
+          onChange={handleDateChange}
+          value={value}
+          name={translationMap[dataTitle] || dataTitle}
+        />
+      </div>
+    </div>
+  );
+};

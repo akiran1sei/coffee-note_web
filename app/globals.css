@@ -8,10 +8,10 @@
 
 html {
   box-sizing: border-box;
+  text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
-  text-size-adjust: 100%;
 }
 
 *,
@@ -73,8 +73,13 @@ html {
   --border-radius-sm: 10px;
 
   /* Icon width */
+
   --icon-pc-width: 50px;
-  --icon-sp-width: 25px;
+  --icon-sp-width: 30px;
+
+  --icon-lg-width: 100px;
+  --icon-md-width: 50px;
+  --icon-sm-width: 25px;
 }
 
 /*

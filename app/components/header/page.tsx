@@ -7,17 +7,17 @@ const HeaderComponent = () => {
     <header className={styles.header}>
       <nav className={styles.headerButtons}>
         {/* Home ボタン */}
-        <LinkIconButton value="home" />
+        <LinkIconButton value="home" iconWidth="iconMd" />
 
         <div className={styles.border}></div>
 
         {/* Create ボタン */}
-        <LinkIconButton value="create" />
+        <LinkIconButton value="create" iconWidth="iconMd" />
 
         <div className={styles.border}></div>
 
         {/* List ボタン */}
-        <LinkIconButton value="list" />
+        <LinkIconButton value="list" iconWidth="iconMd" />
       </nav>
     </header>
   );

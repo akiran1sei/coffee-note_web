@@ -9,17 +9,32 @@ import {
   MinuteSecondComponent,
   HourComponent,
 } from "@/app/components/form/SelectComponent/page";
-export const BrewingRecipeComponent = () => {
-  const [extractionMethod, setExtractionMethod] = useState("");
-  const [equipment, setEquipment] = useState("");
-  const [measurement, setMeasurement] = useState("");
+interface BrewingRecipeProps {
+  extractionInfo: {
+    extractionMethod: string;
+    extractionMaker: string;
+    grindSize: string;
+    extractionTime: number;
+    temperature: number;
+    coffeeAmount: number;
+    waterAmount: number;
+  };
+}
+export const BrewingRecipeComponent: React.FC<BrewingRecipeProps> = ({
+  extractionInfo,
+}) => {
+  const [extractionMethod, setExtractionMethod] = useState(
+    extractionInfo.extractionMethod
+  );
+  const [equipment, setEquipment] = useState(extractionInfo.extractionMaker);
+  const [measurement, setMeasurement] = useState(extractionInfo.grindSize);
   const [brewingFormValue, setBrewingFormValue] = useState({
-    extractionMethod: "選択していません。",
-    extractionMaker: "選択していません。",
-    grindSize: "選択していません。",
-    extractionTime: 0,
-    temperature: 0,
-    coffeeAmount: 0,
+    extractionMethod: extractionInfo.extractionMethod,
+    extractionMaker: extractionInfo.extractionMaker,
+    grindSize: extractionInfo.grindSize,
+    extractionTime: extractionInfo.extractionTime,
+    temperature: extractionInfo.temperature,
+    coffeeAmount: extractionInfo.coffeeAmount,
     waterAmount: 0,
   });
 
