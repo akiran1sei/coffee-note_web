@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "@/app/styles/Form.module.css";
-import { InputComponent } from "@/app/components/form/InputComponent/page";
+import { InputComponent } from "@/app/components/form/item/InputComponent/page";
 
 import {
   CoffeeProcessingSelect,
   CoffeeTypesSelect,
-} from "@/app/components/form/SelectComponent/page";
-import ImageUpload from "@/app/components/form/ImageUpload/page";
+} from "@/app/components/form/item/SelectComponent/page";
+import ImageUpload from "@/app/components/form/item/ImageUpload/page";
 
 export const CoffeeBeansComponent = () => {
   const [coffeeBeansFormValue, setCoffeeBeansFormValue] = useState({

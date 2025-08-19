@@ -4,9 +4,9 @@ import styles from "@/app/styles/Form.module.css";
 import {
   InputComponent,
   DateComponent,
-} from "@/app/components/form/InputComponent/page";
+} from "@/app/components/form/item/InputComponent/page";
 
-import ImageUpload from "@/app/components/form/ImageUpload/page";
+import ImageUpload from "@/app/components/form/item/ImageUpload/page";
 interface ShopCoffeeFormValue {
   imageUrl: string;
   coffeeName: string;

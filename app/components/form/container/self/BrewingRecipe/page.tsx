@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "@/app/styles/Form.module.css";
-import { NumberComponent } from "@/app/components/form/InputComponent/page";
+import { NumberComponent } from "@/app/components/form/item/InputComponent/page";
 
 import {
   ConditionalMeasurementSelector,
   HierarchicalCoffeeSelect,
   MinuteSecondComponent,
   HourComponent,
-} from "@/app/components/form/SelectComponent/page";
+} from "@/app/components/form/item/SelectComponent/page";
 interface BrewingRecipeProps {
   extractionInfo: {
     extractionMethod: string;
