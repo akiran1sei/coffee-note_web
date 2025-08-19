@@ -36,9 +36,9 @@ export const RangeComponent: React.FC<rangeProps> = ({
     newValue = Math.max(min, Math.min(max, newValue));
     onChange(parseFloat(newValue.toFixed(1)));
   };
-  console.log("dataTitle", dataTitle);
+
   const className = translationMap[dataTitle] || dataTitle;
-  console.log("className", className);
+
   return (
     <div className={`${styles.inputContainer} ${styles[className]}`}>
       <label className={styles.label} htmlFor={labelText}>

@@ -127,7 +127,10 @@ export const HierarchicalCoffeeSelect: React.FC<HierarchicalSelectProps> = ({
   return (
     <div className={styles.container}>
       <div className={styles.selectContainer}>
-        <label className={styles.label} htmlFor={labelText}>
+        <label
+          className={styles.label}
+          htmlFor={translationMap[primaryTitle] || primaryTitle}
+        >
           {primaryTitle}
         </label>
         <div className={styles.pickerWrapper}>
@@ -135,7 +138,7 @@ export const HierarchicalCoffeeSelect: React.FC<HierarchicalSelectProps> = ({
             value={primaryValue}
             onChange={handlePrimaryChange}
             className={styles.select}
-            id={labelText}
+            id={translationMap[primaryTitle] || primaryTitle}
             name={translationMap[primaryTitle] || primaryTitle}
           >
             <option value="">選択してください</option>
@@ -150,7 +153,10 @@ export const HierarchicalCoffeeSelect: React.FC<HierarchicalSelectProps> = ({
 
       {primaryValue && (
         <div className={styles.selectContainer}>
-          <label className={styles.label} htmlFor={labelText}>
+          <label
+            className={styles.label}
+            htmlFor={translationMap[secondaryTitle] || secondaryTitle}
+          >
             {secondaryTitle}
           </label>
           <div className={styles.pickerWrapper}>
@@ -158,7 +164,7 @@ export const HierarchicalCoffeeSelect: React.FC<HierarchicalSelectProps> = ({
               value={secondaryValue}
               onChange={(e) => onSecondaryChange(e.target.value)}
               className={styles.select}
-              id={labelText}
+              id={translationMap[secondaryTitle] || secondaryTitle}
               name={translationMap[secondaryTitle] || secondaryTitle}
             >
               <option value="">選択してください</option>

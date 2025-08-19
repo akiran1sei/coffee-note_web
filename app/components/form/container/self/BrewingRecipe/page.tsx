@@ -53,7 +53,7 @@ export const BrewingRecipeComponent: React.FC<BrewingRecipeProps> = ({
           labelText="extractionMethod"
         />
         {/* 抽出方法が選択された場合にのみ、量り方のコンポーネントを表示 */}
-        {extractionMethod && (
+        {extractionMethod === "選択していません。" ? null : (
           <ConditionalMeasurementSelector
             dataTitle="量り方"
             value={measurement}

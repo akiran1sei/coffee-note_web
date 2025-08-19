@@ -64,7 +64,7 @@ export const LinkIconButton: React.FC<IconButtonType> = ({
 /*
  MainButtonコンポーネントの作成サンプル
  <MainButton
-   onClick={() => console.log("Button clicked")}
+   onClick={関数名}//起動させるための関数
    sizeValue="large" ボタンのサイズ （large & middle & small）
    textValue="削除" ボタンに表示するテキスト
    buttonColor="btn-warning" ボタンの色（buttonColor: "btn-primary" | "btn-secondary" | "btn-success" | "btn-warning" | "btn-danger";）
