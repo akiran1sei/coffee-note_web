@@ -288,7 +288,8 @@
 
 .button {
   width: 100%;
-  height: var(--icon-md-width);
+  height: auto;
+  /* height: var(--icon-md-width); */
   border-radius: 15px;
   background-color: #fff;
   display: flex;
@@ -581,7 +582,8 @@
 @media screen and (min-width: 600px) {
   .button {
     width: 100%;
-    height: var(--icon-md-width);
+    height: auto;
+    /* height: var(--icon-md-width); */
   }
 }
 

@@ -31,8 +31,8 @@
 
 .iconWrapper {
   display: inline-block;
-  width: var(--icon-sp-width);
-  height: var(--icon-sp-width);
+  width: var(--icon-sm-width);
+  height: var(--icon-sm-width);
   overflow: hidden;
 }
 .iconLg {
@@ -172,8 +172,8 @@
 /* タブレット用 */
 @media screen and (min-width: 600px) {
   .iconWrapper {
-    width: var(--icon-pc-width);
-    height: var(--icon-pc-width);
+    width: var(--icon-md-width);
+    height: var(--icon-md-width);
   }
 }
 

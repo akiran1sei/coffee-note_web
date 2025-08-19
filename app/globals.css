@@ -74,12 +74,9 @@ html {
 
   /* Icon width */
 
-  --icon-pc-width: 50px;
-  --icon-sp-width: 30px;
-
-  --icon-lg-width: 100px;
-  --icon-md-width: 50px;
-  --icon-sm-width: 25px;
+  --icon-lg-width: 50px;
+  --icon-md-width: 40px;
+  --icon-sm-width: 30px;
 }
 
 /*
