@@ -1,4 +1,8 @@
-import { MainButton, MainLinkButton } from "@/app/components/buttons/page";
+import {
+  MainButton,
+  MainLinkButton,
+  IconButton,
+} from "@/app/components/buttons/page";
 import { PageTitle } from "@/app/components/title/page";
 
 import styles from "@/app/styles/Pages.module.css";
@@ -88,6 +92,11 @@ const ButtonView = () => {
         buttonColor="btn-warning"
         urlValue={`/pages/${value}`}
         widthValue="widthNearlyFull"
+      />
+      <IconButton
+        value="search"
+        iconWidth="iconSm"
+        buttonColor="btn-secondary"
       />
     </div>
   );

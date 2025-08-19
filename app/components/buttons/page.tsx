@@ -1,20 +1,55 @@
 import styles from "@/app/styles/Button.module.css";
 import Link from "next/link";
 import Image from "next/image";
-
+// アイコンコンポーネントの記述方法
+/*    <IconButton 
+          value="search" //アイコンの値 →”src={`/images/${value}.svg`}”
+          iconWidth="iconMd" //アイコンのサイズ（iconWidth: "iconLg" | "iconMd" | "iconSm";）
+          buttonColor="btn-warning" //ボタンの色（buttonColor: "btn-primary" | "btn-secondary" | "btn-success" | "btn-warning" | "btn-danger";）
+          /> */
+/*    <LinkIconButton
+          value="create" 
+          iconWidth="iconMd" 
+          buttonColor="btn-warning" 
+        />*/
+/*   <LinkIconButtonWithShadow
+            value="list"
+            iconWidth="iconMd"
+            buttonColor="btn-warning"
+          /> */
 interface IconButtonType {
   value: string;
   iconWidth: "iconLg" | "iconMd" | "iconSm";
+  buttonColor: string;
 }
+export const IconButton: React.FC<IconButtonType> = ({
+  value,
+  iconWidth,
+  buttonColor,
+}) => {
+  return (
+    <span
+      className={`${styles.iconButton} ${styles[iconWidth]} ${styles[buttonColor]}`}
+    >
+      <Image
+        src={`/images/${value}.svg`}
+        alt={`${value} Icon`}
+        width={50}
+        height={50}
+      />
+    </span>
+  );
+};
 
 export const LinkIconButtonWithShadow: React.FC<IconButtonType> = ({
   value,
   iconWidth,
+  buttonColor,
 }) => {
   return (
     <Link
       href={`/pages/${value}`}
-      className={`${styles.iconButton} ${styles.buttonShadow} ${styles[iconWidth]}`}
+      className={`${styles.iconButton} ${styles.buttonShadow} ${styles[iconWidth]} ${styles[buttonColor]}`}
     >
       <Image
         src={`/images/${value}.svg`}
@@ -175,18 +210,22 @@ export const MainLinkButton: React.FC<MainLinkButtonType> = ({
 interface OnClickButtonType {
   onClick: () => void;
   textValue: string;
+  buttonColor: string;
+  iconWidth: string;
 }
 export const OnClickButton: React.FC<OnClickButtonType> = ({
   onClick,
   textValue,
+  buttonColor,
+  iconWidth,
 }) => {
   return (
     <button
       type="button"
-      className={`${styles.iconButton} ${styles.buttonShadow}`}
+      className={`${styles.iconButton} ${styles.buttonShadow} ${styles[buttonColor]}`}
       onClick={onClick}
     >
-      <span className={styles.iconWrapper}>
+      <span className={`${styles.iconWrapper} ${styles[iconWidth]}`}>
         <Image
           src={`/images/${textValue}.png`}
           alt={`${textValue} Icon`}

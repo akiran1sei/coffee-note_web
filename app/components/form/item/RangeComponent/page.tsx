@@ -52,6 +52,8 @@ export const RangeComponent: React.FC<rangeProps> = ({
           <OnClickButton
             textValue="remove"
             onClick={() => handleButtonClick("decrement")}
+            buttonColor="btn-secondary"
+            iconWidth="iconMd"
           />
           <div className={styles.sliderWrapper}>
             <div className={styles.tickContainer}>
@@ -84,6 +86,8 @@ export const RangeComponent: React.FC<rangeProps> = ({
           <OnClickButton
             textValue="add"
             onClick={() => handleButtonClick("increment")}
+            buttonColor="btn-secondary"
+            iconWidth="iconMd"
           />
         </div>
       </div>
