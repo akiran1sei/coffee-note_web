@@ -26,10 +26,10 @@ const CreatePage = () => {
 
   // ショップの情報
   const [shopInfo, setShopInfo] = useState({
-    shopName: "東京珈琲店",
-    shopPrice: "1000",
+    shopName: "",
+    shopPrice: "",
     shopDate: "2025-01-01",
-    shopAddress: "東京都",
+    shopAddress: "",
     shopUrl: "https://example.com",
   });
 

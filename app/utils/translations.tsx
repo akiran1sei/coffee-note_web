@@ -22,7 +22,7 @@ export const translationMap: { [key: string]: string } = {
   メモ: "memo",
   自己評価: "rating",
   店名: "shopName",
-  店の価格: "shopPrice",
+  " 店の価格（円）": "shopPrice",
   飲んだ日付: "shopDate",
   店の住所: "shopAddress",
   店のURL: "shopUrl",

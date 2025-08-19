@@ -63,7 +63,7 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
             labelText="shopName"
           />
           <InputComponent
-            dataTitle="店の価格"
+            dataTitle="店の価格（円）"
             value={shopCoffeeFormValue.shopPrice}
             onChange={(value: string) => {
               setShopCoffeeFormValue({
