@@ -4,12 +4,14 @@ import styles from "@/app/styles/Pages.module.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 interface PageTitleProps {
-  value: string;
+  listItemValue: string;
 }
 
 // タイトルコンポーネントのモック
 // 本来は共通コンポーネントとして定義されていると想定
-const PageTitle: React.FC<PageTitleProps> = ({ value }) => <h1>{value}</h1>;
+const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
+  <h1>{listItemValue}</h1>
+);
 
 // スタイルシートのモック
 // 本来はstyles/Pages.module.cssの内容を記述
@@ -39,57 +41,183 @@ const ListPage = () => {
 
   // PC向けのレイアウト
   const ListPcPage = () => {
-    return (
-      <div className={`${styles.listPageWrapper}`}>
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
-          {/* 左側のテキストリスト */}
-          <div className="md:w-1/2 bg-gray-100 p-4 rounded-lg">
-            <h2 className="text-xl font-bold mb-4">コーヒースタイル一覧</h2>
-            <div className={`${styles.listItem}`}>
-              <h3>{"タイトル 1"}</h3>
-              <p>日付: 2025/08/21</p>
-              {/* 他のテキストデータ */}
-            </div>
-            <div className={`${styles.listItem}`}>
-              <h3>{"タイトル 2"}</h3>
-              <p>日付: 2025/08/20</p>
-              {/* 他のテキストデータ */}
-            </div>
-            <div className={`${styles.listItem}`}>
-              <h3>{"タイトル 3"}</h3>
-              <p>日付: 2025/08/19</p>
-              {/* 他のテキストデータ */}
-            </div>
-          </div>
-          {/* 右側のレーダーチャート図と詳細 */}
-          <div className="md:w-1/2 bg-gray-100 p-4 rounded-lg">
-            <h2 className="text-xl font-bold mb-4">詳細とレーダーチャート</h2>
-            <div className={`${styles.listItem}`}>
-              <h3 className="text-lg font-semibold mb-2">
-                {"選択したコーヒーのタイトル"}
-              </h3>
-              {/* プレースホルダー画像を使用 */}
-              <div className={styles.uploadedImageContainer}>
-                <p>プレビュー:</p>
-                <div className={styles.uploadedImage}>
-                  <img
-                    width={300}
-                    height={300}
-                    src="https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart"
-                    alt="レーダーチャートのプレビュー画像"
-                    className={styles.image}
-                  />
-                </div>
+    const spImg = "https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart";
+    const pcCard = () => {
+      return (
+        <>
+          {/* self */}
+          <div className={`${styles.listItemCoffeeBeans} ${styles.listPcItem}`}>
+            <div className={styles.listItemImageBox}>
+              <div className={styles.listItemImage}>
+                <img
+                  width={200}
+                  height={200}
+                  src={spImg}
+                  alt="レーダーチャートのプレビュー画像"
+                  className={styles.image}
+                />
               </div>
             </div>
-            <div className={`${styles.listItem}`}>
-              <h3 className="text-lg font-semibold mb-2">
-                テイスティングノート
-              </h3>
-              <p>{"酸味: 5, 苦味: 2, コク: 3"}</p>
+            <div className={`${styles.listItemCoffeeName}`}>
+              <div className={styles.listItemLabel}>{"コーヒー名"}:</div>
+              <div className={styles.listItemValue}>
+                パナマ エスメラルダ農園 ゲイシャ
+              </div>
+            </div>
+            <div className={`${styles.listItemVariety}`}>
+              <div className={styles.listItemLabel}>{"品種"}:</div>
+              <div className={styles.listItemValue}>アラビカ</div>
+            </div>
+            <div className={`${styles.listItemProductionArea}`}>
+              <div className={styles.listItemLabel}>{"産地"}:</div>
+              <div className={styles.listItemValue}>
+                コスタリカ・コフィアディベルサ・グアドループティピカ・カーボニックマセレーション
+              </div>
+            </div>
+            <div className={`${styles.listItemRoastingDegree}`}>
+              <div className={styles.listItemLabel}>{"焙煎度"}:</div>
+              <div className={styles.listItemValue}>中煎り</div>
             </div>
           </div>
-        </div>
+          <div
+            className={`${styles.listItemBrewingRecipe} ${styles.listPcItem}`}
+          >
+            <div className={`${styles.listItemExMethod}`}>
+              <div className={styles.listItemLabel}>{"抽出方法"}:</div>
+              <div className={styles.listItemValue}>ドリップ</div>
+            </div>
+            <div className={`${styles.listItemExMaker}`}>
+              <div className={styles.listItemLabel}>{"抽出器具"}:</div>
+              <div className={styles.listItemValue}>V60</div>
+            </div>
+            <div className={`${styles.listItemGrindSize}`}>
+              <div className={styles.listItemLabel}>{"挽き目"}:</div>
+              <div className={styles.listItemValue}>中挽き</div>
+            </div>
+            <div className={`${styles.listItemTemperature}`}>
+              <div className={styles.listItemLabel}>{"温度（℃）"}:</div>
+              <div className={styles.listItemValue}>90</div>
+            </div>
+            <div className={`${styles.listItemCoffeeAmount}`}>
+              <div className={styles.listItemLabel}>{"粉量（ｇ）"}:</div>
+              <div className={styles.listItemValue}>15</div>
+            </div>
+            <div className={`${styles.listItemWaterAmount}`}>
+              <div className={styles.listItemLabel}>{"湯量（ｇ）"}:</div>
+              <div className={styles.listItemValue}>240</div>
+            </div>
+            <div className={`${styles.listItemMeasurementMethod}`}>
+              <div className={styles.listItemLabel}>{"計測方法"}:</div>
+              <div className={styles.listItemValue}>抽出量</div>
+            </div>
+            <div className={`${styles.listItemExTime}`}>
+              <div className={styles.listItemLabel}>{"抽出時間"}:</div>
+              <div className={styles.listItemValue}>3分20秒</div>
+            </div>
+          </div>
+          {/* shop */}
+          {/* <div className={`${styles.listItemShopData} ${styles.listPcItem}`}>
+      <div className={`${styles.listItemShopName}`}>
+        <div className={styles.listItemLabel}>{"店名"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+      <div className={`${styles.listItemShopPrice}`}>
+        <div className={styles.listItemLabel}>{"店の価格（円）"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+      <div className={`${styles.listItemShopDate}`}>
+        <div className={styles.listItemLabel}>{"飲んだ日付"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+      <div className={`${styles.listItemShopAddress}`}>
+        <div className={styles.listItemLabel}>{"店の住所"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+      <div className={`${styles.listItemShopUrl}`}>
+        <div className={styles.listItemLabel}>{"店のURL"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+    </div>
+    <div className={`${styles.listItemShopCoffee} ${styles.listPcItem}`}>
+      <div className={`${styles.listItemCoffeeName}`}>
+        <div className={styles.listItemLabel}>{"コーヒー名"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+      <div className={`${styles.listItemVariety}`}>
+        <div className={styles.listItemLabel}>{"品種"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+      <div className={`${styles.listItemProductionArea}`}>
+        <div className={styles.listItemLabel}>{"産地"}:</div>
+        <div className={styles.listItemValue}></div>
+      </div>
+    </div> */}
+          {/* 共通 */}
+          <div className={`${styles.listItemTasting} ${styles.listPcItem}`}>
+            <div className={`${styles.listItemAcidity}`}>
+              <div className={styles.listItemLabel}>{"酸味"}:</div>
+              <div className={styles.listItemValue}>3</div>
+            </div>
+            <div className={`${styles.listItemBitterness}`}>
+              <div className={styles.listItemLabel}>{"苦味"}:</div>
+              <div className={styles.listItemValue}>2</div>
+            </div>
+            <div className={`${styles.listItemBody}`}>
+              <div className={styles.listItemLabel}>{"コク"}:</div>
+              <div className={styles.listItemValue}>4</div>
+            </div>
+            <div className={`${styles.listItemAroma}`}>
+              <div className={styles.listItemLabel}>{"アロマ"}:</div>
+              <div className={styles.listItemValue}>5</div>
+            </div>
+            <div className={`${styles.listItemAftertaste}`}>
+              <div className={styles.listItemLabel}>{"キレ"}:</div>
+              <div className={styles.listItemValue}>4</div>
+            </div>
+            <div className={`${styles.listItemOverall}`}>
+              <div className={styles.listItemLabel}>{"全体の好み"}:</div>
+              <div className={styles.listItemValue}>4</div>
+            </div>
+            <div className={styles.listItemChartImageBox}>
+              <div className={styles.listItemChartImage}>
+                <img
+                  width={200}
+                  height={200}
+                  src={spImg}
+                  alt="レーダーチャートのプレビュー画像"
+                  className={styles.image}
+                />
+              </div>
+            </div>
+          </div>
+          <div className={`${styles.listItemMemoArea} ${styles.listPcItem}`}>
+            <div className={`${styles.listItemMemo}`}>
+              <div className={styles.listItemLabel}>{"メモ"}:</div>
+              <div className={styles.listItemValue}>
+                全体的に美味しい珈琲で、コクもキレもバランスのとれた珈琲でした。
+              </div>
+            </div>
+            {/* <div className={`${styles.listItemRating}`}>
+              <div className={styles.listItemLabel}>{"自己評価"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div> */}
+          </div>
+        </>
+      );
+    };
+    const cards = Array.from({ length: 5 });
+    return (
+      <div
+        className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listPcPageWrapper}`}
+      >
+        {cards.map((_, index) => (
+          <div
+            className={`${styles.listItemCard} ${styles.listPcCard}`}
+            key={index}
+          >
+            {pcCard()}
+          </div>
+        ))}
       </div>
     );
   };
@@ -113,19 +241,11 @@ const ListPage = () => {
         className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listSpPageWrapper}`}
       >
         <div className={`${styles.listItemCard} ${styles.listSp}`}>
-          <h2>{"タイトル"}</h2>
+          <h2 className={styles.listItemTitle}>{"List Page"}</h2>
           {/* self */}
           <div className={`${styles.listItemCoffeeBeans}`}>
             <div className={styles.listItemImageBox}>
               <div className={styles.listItemImage}>
-                {/* <Image
-                  src={
-                    spImg
-                  }
-                  width={300}
-                  height={300}
-                  alt={"プレビュー画像"}
-                /> */}
                 <img
                   width={300}
                   height={300}
@@ -135,63 +255,136 @@ const ListPage = () => {
                 />
               </div>
             </div>
-            <div className={`${styles.listItemCoffeeName}`}>{"コーヒー名"}</div>
-            <div className={`${styles.listItemVariety}`}>{"品種"}</div>
-            <div className={`${styles.listItemProductionArea}`}>{"産地"}</div>
-            <div className={`${styles.listItemRoastingDegree}`}>{"焙煎度"}</div>
+            <div className={`${styles.listItemCoffeeName}`}>
+              <div className={styles.listItemLabel}>{"コーヒー名"}:</div>
+              <div className={styles.listItemValue}>
+                パナマ エスメラルダ農園 ゲイシャ
+              </div>
+            </div>
+            <div className={`${styles.listItemVariety}`}>
+              <div className={styles.listItemLabel}>{"品種"}:</div>
+              <div className={styles.listItemValue}>アラビカ</div>
+            </div>
+            <div className={`${styles.listItemProductionArea}`}>
+              <div className={styles.listItemLabel}>{"産地"}:</div>
+              <div className={styles.listItemValue}>
+                コスタリカ・コフィアディベルサ・グアドループティピカ・カーボニックマセレーション
+              </div>
+            </div>
+            <div className={`${styles.listItemRoastingDegree}`}>
+              <div className={styles.listItemLabel}>{"焙煎度"}:</div>
+              <div className={styles.listItemValue}>中煎り</div>
+            </div>
           </div>
           <div className={`${styles.listItemBrewingRecipe}`}>
-            <div className={`${styles.listItemExtractionMethod}`}>
-              {"抽出方法"}
+            <div className={`${styles.listItemExMethod}`}>
+              <div className={styles.listItemLabel}>{"抽出方法"}:</div>
+              <div className={styles.listItemValue}>ドリップ</div>
             </div>
-            <div className={`${styles.listItemExtractionMaker}`}>
-              {"抽出器具"}
+            <div className={`${styles.listItemExMaker}`}>
+              <div className={styles.listItemLabel}>{"抽出器具"}:</div>
+              <div className={styles.listItemValue}>V60</div>
             </div>
-            <div className={`${styles.listItemGrindSize}`}>{"挽き目"}</div>
-            <div className={`${styles.listItemTemperature}`}>{"温度（℃）"}</div>
+            <div className={`${styles.listItemGrindSize}`}>
+              <div className={styles.listItemLabel}>{"挽き目"}:</div>
+              <div className={styles.listItemValue}>中挽き</div>
+            </div>
+            <div className={`${styles.listItemTemperature}`}>
+              <div className={styles.listItemLabel}>{"温度（℃）"}:</div>
+              <div className={styles.listItemValue}>90</div>
+            </div>
             <div className={`${styles.listItemCoffeeAmount}`}>
-              {"粉量（ｇ）"}
+              <div className={styles.listItemLabel}>{"粉量（ｇ）"}:</div>
+              <div className={styles.listItemValue}>15</div>
             </div>
             <div className={`${styles.listItemWaterAmount}`}>
-              {"湯量（ｇ）"}
+              <div className={styles.listItemLabel}>{"湯量（ｇ）"}:</div>
+              <div className={styles.listItemValue}>240</div>
             </div>
             <div className={`${styles.listItemMeasurementMethod}`}>
-              {"計測方法"}
+              <div className={styles.listItemLabel}>{"計測方法"}:</div>
+              <div className={styles.listItemValue}>抽出量</div>
             </div>
-            <div className={`${styles.listItemExtractionTime}`}>
-              {"抽出時間"}
+            <div className={`${styles.listItemExTime}`}>
+              <div className={styles.listItemLabel}>{"抽出時間"}:</div>
+              <div className={styles.listItemValue}>3分20秒</div>
             </div>
           </div>
           {/* shop */}
-          <div className={`${styles.listItemShopData}`}>
-            <div className={`${styles.listItemShopName}`}>{"店名"}</div>
-            <div className={`${styles.listItemShopPrice}`}>
-              {"店の価格（円）"}
+          {/* <div className={`${styles.listItemShopData}`}>
+            <div className={`${styles.listItemShopName}`}>
+              <div className={styles.listItemLabel}>{"店名"}:</div>
+              <div className={styles.listItemValue}></div>
             </div>
-            <div className={`${styles.listItemShopDate}`}>{"飲んだ日付"}</div>
-            <div className={`${styles.listItemShopAddress}`}>{"店の住所"}</div>
-            <div className={`${styles.listItemShopUrl}`}>{"店のURL"}</div>
+            <div className={`${styles.listItemShopPrice}`}>
+              <div className={styles.listItemLabel}>{"店の価格（円）"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div>
+            <div className={`${styles.listItemShopDate}`}>
+              <div className={styles.listItemLabel}>{"飲んだ日付"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div>
+            <div className={`${styles.listItemShopAddress}`}>
+              <div className={styles.listItemLabel}>{"店の住所"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div>
+            <div className={`${styles.listItemShopUrl}`}>
+              <div className={styles.listItemLabel}>{"店のURL"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div>
           </div>
           <div className={`${styles.listItemShopCoffee}`}>
-            {" "}
-            <div className={`${styles.listItemCoffeeName}`}>{"コーヒー名"}</div>
-            <div className={`${styles.listItemVariety}`}>{"品種"}</div>
-            <div className={`${styles.listItemProductionArea}`}>{"産地"}</div>
-          </div>
+            <div className={`${styles.listItemCoffeeName}`}>
+              <div className={styles.listItemLabel}>{"コーヒー名"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div>
+            <div className={`${styles.listItemVariety}`}>
+              <div className={styles.listItemLabel}>{"品種"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div>
+            <div className={`${styles.listItemProductionArea}`}>
+              <div className={styles.listItemLabel}>{"産地"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div>
+          </div> */}
           {/* 共通 */}
-          <div className={`${styles.tastingEvaluation}`}>
-            {" "}
-            <div className={`${styles.listItemAcidity}`}>{"酸味"}</div>
-            <div className={`${styles.listItemBitterness}`}>{"苦味"}</div>
-            <div className={`${styles.listItemOverall}`}>{"全体の評価"}</div>
-            <div className={`${styles.listItemBody}`}>{"コク"}</div>
-            <div className={`${styles.listItemAroma}`}>{"アロマ"}</div>
-            <div className={`${styles.listItemAftertaste}`}>{"キレ"}</div>
+          <div className={`${styles.listItemTasting} `}>
+            <div className={`${styles.listItemAcidity}`}>
+              <div className={styles.listItemLabel}>{"酸味"}:</div>
+              <div className={styles.listItemValue}>3</div>
+            </div>
+            <div className={`${styles.listItemBitterness}`}>
+              <div className={styles.listItemLabel}>{"苦味"}:</div>
+              <div className={styles.listItemValue}>2</div>
+            </div>
+            <div className={`${styles.listItemBody}`}>
+              <div className={styles.listItemLabel}>{"コク"}:</div>
+              <div className={styles.listItemValue}>4</div>
+            </div>
+            <div className={`${styles.listItemAroma}`}>
+              <div className={styles.listItemLabel}>{"アロマ"}:</div>
+              <div className={styles.listItemValue}>5</div>
+            </div>
+            <div className={`${styles.listItemAftertaste}`}>
+              <div className={styles.listItemLabel}>{"キレ"}:</div>
+              <div className={styles.listItemValue}>4</div>
+            </div>
+            <div className={`${styles.listItemOverall}`}>
+              <div className={styles.listItemLabel}>{"全体の好み"}:</div>
+              <div className={styles.listItemValue}>4</div>
+            </div>
           </div>
-          <div className={`${styles.memoArea}`}>
-            {" "}
-            <div className={`${styles.listItemMemo}`}>{"メモ"}</div>
-            <div className={`${styles.listItemRating}`}>{"自己評価"}</div>
+          <div className={`${styles.listItemMemoArea}`}>
+            <div className={`${styles.listItemMemo}`}>
+              <div className={styles.listItemLabel}>{"メモ"}:</div>
+              <div className={styles.listItemValue}>
+                全体的に美味しい珈琲で、コクもキレもバランスのとれた珈琲でした。
+              </div>
+            </div>
+            {/* <div className={`${styles.listItemRating}`}>
+              <div className={styles.listItemLabel}>{"自己評価"}:</div>
+              <div className={styles.listItemValue}></div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -212,8 +405,8 @@ const ListPage = () => {
   };
 
   return (
-    <div className={styles.listPageContents}>
-      <PageTitle value="List Page" />
+    <div className={`${styles.listPageContents} ${styles.pageContents}`}>
+      <PageTitle listItemValue="List Page" />
       {windowWidth > 0 && getLayout()}
     </div>
   );

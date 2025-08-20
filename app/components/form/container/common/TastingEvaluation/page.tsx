@@ -159,7 +159,7 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
         />
         {Radar}
         <RangeComponent
-          dataTitle="全体の評価"
+          dataTitle="全体の好み"
           value={chartFormValue.overall}
           onChange={(value: number) => {
             setChartFormValue({
