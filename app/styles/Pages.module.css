@@ -4,6 +4,7 @@
 .pageForm {
   display: contents;
 }
+
 .pageContents {
   width: 100%;
   max-width: 1200px;
@@ -12,15 +13,14 @@
   right: 0;
   margin: 0 auto;
 }
+
 .pageWrapper {
-  flex-grow: 1;
   display: flex;
-  flex-direction: column;
 }
+
 /*
 --------------------top page--------------------
 */
-
 .scrollContainer {
   width: 100%;
   padding: var(--spacing-lg);
@@ -55,6 +55,7 @@
   flex-direction: column;
   align-items: center;
 }
+
 .settingPanel {
   width: auto;
   height: auto;
@@ -83,6 +84,7 @@
   color: var(--color-text-light);
   font-size: var(--font-size-sm);
 }
+
 /*
 --------------------list page--------------------
 */
@@ -90,100 +92,94 @@
   top: 80px;
 }
 
-.listPageWrapper {
-}
-.listPcPageWrapper {
-}
 .listSpPageWrapper {
+  flex-direction: row;
+  /* 親要素の幅をはみ出したらスクロール可能にする */
+  overflow-x: auto;
+  /* 子要素を横に並べる */
+  display: flex;
+  /* 子要素が親の幅に合わせて縮まないようにする */
+  flex-shrink: 0;
+  /* スクロールバーのデザインをカスタマイズ */
+  /* Chrome, Safari, Edge */
+  scrollbar-width: none;
 }
+
 .listItemCard {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: center;
 }
-.listPcCard {
+
+.listItemCard:nth-child(odd) {
+  background-color: var(--color-background-light);
 }
-.listPcCard:last-child {
-}
-.listPcCard:not(:first-child, :last-child) {
-}
+
 .listSpCard {
+  width: fit-content;
+  max-width: 350px;
+  padding: 0 1rem;
+  margin: 0 auto;
+  flex-shrink: 0;
+  margin-right: 15px;
 }
-.listPcItem {
-}
+
 .listItemLabel {
+  color: var(--color-secondary-dark);
 }
-.listItemValue {
+
+.listItemValue:not(.listItemImageBox):not(.listItemChartImageBox) {
+  margin-left: 0.5rem;
 }
-.listItemCoffeeBeans {
-}
-.listItemCoffeeBeans.listPcItem * {
-}
-.listItemCoffeeBeans.listPcItem .listItemProductionArea {
-}
+
 .listItemImageBox {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
 }
-.listItemImage {
-}
-.listItemCoffeeName {
-}
-.listItemVariety {
-}
-.listItemProductionArea {
-}
-.listItemRoastingDegree {
-}
-.listItemBrewingRecipe {
-}
-.listItemBrewingRecipe.listPcItem * {
-}
-.listItemBrewingRecipe.listPcItem .listItemExMethod,
-.listItemBrewingRecipe.listPcItem .listItemExMaker {
-}
-.listItemBrewingRecipe.listPcItem
-   
-  *:not(.listItemExMethod):not(.listItemExMaker) {
-}
-.listItemExMethod {
-}
-.listItemExMaker {
-}
-.listItemGrindSize {
-}
-.listItemTemperature {
-}
-.listItemCoffeeAmount {
-}
-.listItemWaterAmount {
-}
-.listItemMeasurementMethod {
-}
-.listItemExTime {
-}
+
 .listItemTasting {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
-.listItemTasting.listPcItem * {
+
+.listItemTasting .listItemValue {
+  text-align: center;
 }
-.listItemAcidity {
+
+.listItemTasting > *:not(.listItemOverall):not(.listItemChartImageBox) {
+  flex: 1 1;
 }
-.listItemBitterness {
-}
-.listItemBody {
-}
-.listItemAroma {
-}
-.listItemAftertaste {
-}
+
 .listItemOverall {
+  width: 100%;
 }
+
 .listItemChartImageBox {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
 }
-.listItemShopData {
+
+.listItemChartImage {
+  width: inherit;
 }
-.listItemShopCoffee {
-}
-.listItemMemoArea {
-}
+
 /*
 --------------------create page--------------------
 */
+.createPageWrapper {
+  flex-grow: 1;
+  flex-direction: column;
+}
+
 .createPageContents {
   display: flex;
   flex-direction: column;
@@ -224,9 +220,6 @@
 /* PC用 */
 @media screen and (min-width: 960px) {
   /*
---------------------create page--------------------
-*/
-  /*
 --------------------list page--------------------
 */
   .listPageContents {
@@ -237,73 +230,80 @@
     align-items: stretch;
     top: 80px;
   }
-  .listPageWrapper {
-  }
+
   .listPcPageWrapper {
+    flex-direction: column;
   }
-  .listSpPageWrapper {
-  }
+
   .listItemCard {
     width: 100%;
     height: auto;
     display: grid;
-    grid-template:
-      "coffeeBeans brewingRecipe tasting tasting" auto
-      "memoArea memoArea memoArea memoArea" auto /
-      auto auto auto auto;
+    grid-template-areas:
+      "coffeeBeans brewingRecipe tasting tasting"
+      "memoArea memoArea memoArea memoArea";
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto;
   }
+
   .listPcCard {
+    margin: 0 auto;
   }
 
   .listPcCard:last-child {
     border-top: 0.1px solid var(--color-background-dark);
     border-bottom: 0.1px solid var(--color-background-dark);
   }
+
   .listPcCard:not(:first-child, :last-child) {
     border-top: 0.1px solid var(--color-background-dark);
   }
-  .listSpCard {
-  }
-  .listPcItem {
-  }
-  .listItemLabel {
-    color: var(--color-secondary-dark);
-  }
+
   .listItemValue {
+    margin-left: 0;
   }
+
   .listItemCoffeeBeans {
     grid-area: coffeeBeans;
     display: grid;
-    grid-template:
-      "coffeeName coffeeName coffeeName coffeeName" auto
-      "image variety variety variety" auto
-      "image roastingDegree roastingDegree roastingDegree" auto
-      "image productionArea productionArea productionArea " auto/ auto auto auto;
+    grid-template-areas:
+      "coffeeName coffeeName coffeeName coffeeName"
+      "image variety variety variety"
+      "image roastingDegree roastingDegree roastingDegree"
+      "image productionArea productionArea productionArea";
+    grid-template-columns: auto auto auto auto;
     gap: var(--spacing-xs);
   }
-  .listItemCoffeeBeans.listPcItem * {
+
+  .listItemCoffeeBeans > * {
     display: flex;
   }
 
-  .listItemCoffeeBeans.listPcItem .listItemProductionArea {
+  .listItemCoffeeBeans .listItemProductionArea {
     flex-direction: column;
   }
+
   .listItemImageBox {
     grid-area: image;
   }
+
   .listItemImage {
     width: 200px;
     height: auto;
   }
+
   .listItemCoffeeName {
     grid-area: coffeeName;
   }
+
   .listItemVariety {
     grid-area: variety;
   }
+
   .listItemProductionArea {
     grid-area: productionArea;
   }
+
   .listItemRoastingDegree {
     grid-area: roastingDegree;
   }
@@ -311,106 +311,121 @@
   .listItemBrewingRecipe {
     grid-area: brewingRecipe;
     display: grid;
-    grid-template:
-      "exMethod exMethod exMethod exMethod" auto
-      "exMaker exMaker exMaker exMaker" auto
-      "measurementMethod measurementMethod exTime exTime" auto
-      "coffeeAmount waterAmount grindSize temperature" auto / auto auto auto auto;
+    grid-template-areas:
+      "exMethod exMethod exMethod exMethod"
+      "exMaker exMaker exMaker exMaker"
+      "measurementMethod measurementMethod exTime exTime"
+      "coffeeAmount waterAmount grindSize temperature";
+    grid-template-columns: auto auto auto auto;
     gap: var(--spacing-xs);
     align-items: center;
   }
-  .listItemBrewingRecipe.listPcItem * {
+
+  .listItemBrewingRecipe > * {
     display: flex;
     align-items: stretch;
   }
-  .listItemBrewingRecipe.listPcItem .listItemExMethod,
-  .listItemBrewingRecipe.listPcItem .listItemExMaker {
+
+  .listItemBrewingRecipe .listItemExMethod,
+  .listItemBrewingRecipe .listItemExMaker {
     flex-direction: row;
     justify-content: flex-start;
   }
-  .listItemBrewingRecipe.listPcItem
-    *:not(.listItemExMethod):not(.listItemExMaker) {
-    /* ここにスタイルを記述 */
+
+  .listItemBrewingRecipe > *:not(.listItemExMethod):not(.listItemExMaker) {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
   }
+
   .listItemExMethod {
     grid-area: exMethod;
   }
+
   .listItemExMaker {
     grid-area: exMaker;
   }
+
   .listItemGrindSize {
     grid-area: grindSize;
   }
+
   .listItemTemperature {
     grid-area: temperature;
   }
+
   .listItemCoffeeAmount {
     grid-area: coffeeAmount;
   }
+
   .listItemWaterAmount {
     grid-area: waterAmount;
   }
+
   .listItemMeasurementMethod {
     grid-area: measurementMethod;
   }
+
   .listItemExTime {
     grid-area: exTime;
   }
+
   .listItemTasting {
     grid-area: tasting;
     display: grid;
-    /* grid-template:
-    "acidity bitterness body aroma aftertaste" auto
-    "overall overall overall overall overall" auto; */
-    grid-template:
-      "acidity overall" auto
-      "bitterness chartImage" auto
-      "body chartImage" auto
-      "aroma chartImage" auto
-      "aftertaste chartImage" auto;
+    grid-template-areas:
+      "acidity overall"
+      "bitterness chartImage"
+      "body chartImage"
+      "aroma chartImage"
+      "aftertaste chartImage";
     gap: var(--spacing-xs);
     justify-items: center;
     align-items: start;
   }
-  .listItemTasting.listPcItem * {
+
+  .listItemTasting > * {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
+
   .listItemAcidity {
     grid-area: acidity;
   }
+
   .listItemBitterness {
     grid-area: bitterness;
   }
+
   .listItemBody {
     grid-area: body;
   }
+
   .listItemAroma {
     grid-area: aroma;
   }
+
   .listItemAftertaste {
     grid-area: aftertaste;
   }
+
   .listItemOverall {
     grid-area: overall;
   }
+
+  .listItemOverall > .listItemValue {
+    width: 50%;
+  }
+
   .listItemChartImageBox {
     grid-area: chartImage;
     width: 200px;
     height: auto;
   }
-  .listItemShopData {
-    grid-area: shopData;
-  }
-  .listItemShopCoffee {
-    grid-area: shopCoffee;
-  }
+
   .listItemMemoArea {
     grid-area: memoArea;
   }
