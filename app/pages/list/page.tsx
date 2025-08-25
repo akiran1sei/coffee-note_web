@@ -1,8 +1,9 @@
 "use client";
 import styles from "@/app/styles/Pages.module.css";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { MainButton } from "@/app/components/buttons/page";
 
 interface PageTitleProps {
   listItemValue: string;
@@ -207,18 +208,20 @@ const ListPage = () => {
     };
     const cards = Array.from({ length: 5 });
     return (
-      <div
-        className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listPcPageWrapper}`}
-      >
-        {cards.map((_, index) => (
-          <div
-            className={`${styles.listItemCard} ${styles.listPcCard}`}
-            key={index}
-          >
-            {pcCard()}
-          </div>
-        ))}
-      </div>
+      <>
+        <div
+          className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listPcPageWrapper}`}
+        >
+          {cards.map((_, index) => (
+            <div
+              className={`${styles.listItemCard} ${styles.listPcCard}`}
+              key={index}
+            >
+              {pcCard()}
+            </div>
+          ))}
+        </div>
+      </>
     );
   };
 
@@ -236,6 +239,26 @@ const ListPage = () => {
 
   // スマホ向けのレイアウト
   const ListSpPage = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const scrollRight = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollBy({
+          // コンテナの幅分だけ右へスクロール
+          left: containerRef.current.clientWidth,
+          behavior: "smooth",
+        });
+      }
+    };
+
+    const scrollLeft = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollBy({
+          // コンテナの幅分だけ左へスクロール
+          left: -containerRef.current.clientWidth,
+          behavior: "smooth",
+        });
+      }
+    };
     // const spImg = "https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart";
     const spCard = () => {
       return (
@@ -390,28 +413,37 @@ const ListPage = () => {
                 全体的に美味しい珈琲で、コクもキレもバランスのとれた珈琲でした。
               </div>
             </div>
-            {/* <div className={`${styles.listItemRating}`}>
-              <div className={styles.listItemLabel}>{"自己評価"}</div>
-              <div className={styles.listItemValue}></div>
-            </div> */}
           </div>
+          <MainButton
+            sizeValue="large"
+            textValue="削除"
+            buttonColor="btn-danger"
+            widthValue="widthAuto"
+          />
         </>
       );
     };
     const cards = Array.from({ length: 5 });
     return (
-      <div
-        className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listSpPageWrapper}`}
-      >
-        {cards.map((_, index) => (
-          <div
-            className={`${styles.listItemCard} ${styles.listSpCard}`}
-            key={index}
-          >
-            {spCard()}
-          </div>
-        ))}
-      </div>
+      <>
+        <div className={styles.listScrollButtons}>
+          <button onClick={scrollLeft}>左へスクロール</button>
+          <button onClick={scrollRight}>右へスクロール</button>
+        </div>
+        <div
+          className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listSpPageWrapper}`}
+          ref={containerRef}
+        >
+          {cards.map((_, index) => (
+            <div
+              className={`${styles.listItemCard} ${styles.listSpCard}`}
+              key={index}
+            >
+              {spCard()}
+            </div>
+          ))}
+        </div>
+      </>
     );
   };
 
@@ -431,6 +463,23 @@ const ListPage = () => {
   return (
     <div className={`${styles.listPageContents} ${styles.pageContents}`}>
       <PageTitle listItemValue="List Page" />
+      <div className={`${styles.listSearchArea}`}>
+        <label htmlFor="search-input">
+          <input
+            type="text"
+            id="search-input"
+            name="search"
+            placeholder="Search..."
+          />
+          <MainButton
+            sizeValue="small"
+            textValue="検索"
+            buttonColor="btn-secondary"
+            widthValue="widthAuto"
+          />
+        </label>
+      </div>
+
       {windowWidth > 0 && getLayout()}
     </div>
   );
