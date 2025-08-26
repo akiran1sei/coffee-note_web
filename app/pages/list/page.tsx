@@ -46,6 +46,17 @@ const ListPage = () => {
     const pcCard = () => {
       return (
         <>
+          {/* チェックボックス */}
+          <div className={styles.listCheckboxContainer}>
+            <label htmlFor="checkbox" className={styles.listCheckboxLabel}>
+              <input
+                type="checkbox"
+                name="checkbox"
+                title="チェックボックス"
+                className={styles.listCheckboxInput}
+              />
+            </label>
+          </div>
           {/* self */}
           <div
             className={`${styles.listItemCoffeeBeans}  ${styles.listPcItem}`}
@@ -203,6 +214,16 @@ const ListPage = () => {
               <div className={styles.listItemValue}></div>
             </div> */}
           </div>
+          <div
+            className={`${styles.buttonContainer} ${styles.deleteButtonContainer}`}
+          >
+            <MainButton
+              sizeValue="large"
+              textValue="削除"
+              buttonColor="btn-danger"
+              widthValue="widthAuto"
+            />
+          </div>
         </>
       );
     };
@@ -263,6 +284,17 @@ const ListPage = () => {
     const spCard = () => {
       return (
         <>
+          {/* チェックボックス */}
+          <div className={styles.listCheckboxContainer}>
+            <label htmlFor="checkbox" className={styles.listCheckboxLabel}>
+              <input
+                type="checkbox"
+                name="checkbox"
+                title="チェックボックス"
+                className={styles.listCheckboxInput}
+              />
+            </label>
+          </div>
           {/* self */}
           <div className={`${styles.listItemCoffeeBeans} ${styles.listSpItem}`}>
             <div className={`${styles.listItemCoffeeName}`}>
@@ -414,12 +446,16 @@ const ListPage = () => {
               </div>
             </div>
           </div>
-          <MainButton
-            sizeValue="large"
-            textValue="削除"
-            buttonColor="btn-danger"
-            widthValue="widthAuto"
-          />
+          <div
+            className={`${styles.buttonContainer} ${styles.deleteButtonContainer}`}
+          >
+            <MainButton
+              sizeValue="large"
+              textValue="削除"
+              buttonColor="btn-danger"
+              widthValue="widthAuto"
+            />
+          </div>
         </>
       );
     };
@@ -471,13 +507,27 @@ const ListPage = () => {
             name="search"
             placeholder="Search..."
           />
-          <MainButton
-            sizeValue="small"
-            textValue="検索"
-            buttonColor="btn-secondary"
-            widthValue="widthAuto"
-          />
+          <div
+            className={`${styles.buttonContainer} ${styles.searchButtonContainer}`}
+          >
+            <MainButton
+              sizeValue="small"
+              textValue="検索"
+              buttonColor="btn-secondary"
+              widthValue="widthAuto"
+            />
+          </div>
         </label>
+      </div>
+      <div
+        className={`${styles.buttonContainer} ${styles.sortButtonContainer}`}
+      >
+        <MainButton
+          sizeValue="small"
+          textValue="並び替え"
+          buttonColor="btn-secondary"
+          widthValue="widthAuto"
+        />
       </div>
 
       {windowWidth > 0 && getLayout()}

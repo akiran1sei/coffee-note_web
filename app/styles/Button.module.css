@@ -35,18 +35,18 @@
   overflow: hidden;
 }
 .iconLg {
-  width: var(--icon-lg-width);
-  height: var(--icon-lg-width);
+  width: var(--Item-lg-width);
+  height: var(--Item-lg-width);
   vertical-align: bottom;
 }
 .iconMd {
-  width: var(--icon-md-width);
-  height: var(--icon-md-width);
+  width: var(--Item-md-width);
+  height: var(--Item-md-width);
   vertical-align: bottom;
 }
 .iconSm {
-  width: var(--icon-sm-width);
-  height: var(--icon-sm-width);
+  width: var(--Item-sm-width);
+  height: var(--Item-sm-width);
   vertical-align: bottom;
 }
 
@@ -62,7 +62,7 @@
 
 .mainButton {
   border-radius: var(--border-radius-sm);
-  margin: var(--spacing-sm) auto;
+
   text-align: center;
   border: none;
   cursor: pointer;

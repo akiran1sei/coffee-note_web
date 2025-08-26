@@ -82,7 +82,9 @@ const CreatePage = () => {
         <div className={`${styles.createPageWrapper} ${styles.pageWrapper}`}>
           {/* {width ? `${width}px` : "ロード中..."} */}
           {width && width < 600 ? (
-            <>
+            <div
+              className={`${styles.buttonContainer} ${styles.versionButtonContainer}`}
+            >
               <MainButton
                 onClick={handleVersion}
                 sizeValue="large"
@@ -90,9 +92,11 @@ const CreatePage = () => {
                 buttonColor="btn-success"
                 widthValue="widthNearlyFull"
               />
-            </>
+            </div>
           ) : (
-            <>
+            <div
+              className={`${styles.buttonContainer} ${styles.versionButtonContainer}`}
+            >
               <MainButton
                 onClick={handleVersion}
                 sizeValue="large"
@@ -100,7 +104,7 @@ const CreatePage = () => {
                 buttonColor="btn-success"
                 widthValue="widthAuto"
               />
-            </>
+            </div>
           )}
           <form className={styles.pageForm}>
             {isVersion ? (
@@ -126,12 +130,16 @@ const CreatePage = () => {
                 <MemoAreaComponent />
               </>
             )}
-            <MainButton
-              sizeValue="large"
-              textValue="保存"
-              buttonColor="btn-success"
-              widthValue="widthAuto"
-            />
+            <div
+              className={`${styles.buttonContainer} ${styles.saveButtonContainer}`}
+            >
+              <MainButton
+                sizeValue="large"
+                textValue="保存"
+                buttonColor="btn-success"
+                widthValue="widthAuto"
+              />
+            </div>
           </form>
         </div>
       </div>
