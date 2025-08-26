@@ -151,7 +151,7 @@
 }
 
 .listItemValue:not(.listItemImageBox):not(.listItemChartImageBox) {
-  margin-left: 0.5rem;
+  margin-left: var(--spacing-xs);
 }
 
 .listItemImageBox {
