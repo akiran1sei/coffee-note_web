@@ -78,11 +78,11 @@ html {
   --border-radius-lg: 20px;
   --border-radius-xl: 25px;
 
-  /* Icon width */
+  /* Item width */
 
-  --icon-lg-width: 50px;
-  --icon-md-width: 40px;
-  --icon-sm-width: 30px;
+  --item-lg-width: 50px;
+  --item-md-width: 40px;
+  --item-sm-width: 30px;
 }
 
 /*
