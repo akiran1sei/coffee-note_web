@@ -109,7 +109,7 @@
 /* スクロールバーのつまみのスタイル */
 .listSpPageWrapper::-webkit-scrollbar-thumb {
   background-color: var(--color-secondary); /* つまみの色 */
-  border-radius: 5px; /* つまみの角を丸くする */
+  border-radius: var(--border-radius-xs); /* つまみの角を丸くする */
 }
 
 .listSpPageWrapper {
@@ -140,10 +140,10 @@
 .listSpCard {
   width: fit-content;
   max-width: 350px;
-  padding: 0 1rem;
+  padding: 0 var(--spacing-sm);
   margin: 0 auto;
   flex-shrink: 0;
-  margin-right: 15px;
+  margin-right: var(--spacing-sm);
 }
 
 .listItemLabel {
@@ -205,7 +205,7 @@
 
   border: 1px solid var(--color-background-light);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: var(--border-radius-xs);
   color: var(--color-text-light);
   background-color: var(--color-secondary);
   cursor: pointer;
@@ -231,7 +231,7 @@
   max-width: 80%;
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--color-background-dark);
-  border-radius: 8px;
+  border-radius: var(--border-radius-sm);
   outline: none;
   transition: border-color 0.3s ease;
 }

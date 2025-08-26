@@ -38,7 +38,7 @@
 
 .buttonText {
   color: #d2b48c;
-  font-size: 12px; /* px単位を明示 */
+
   margin-top: 2px; /* px単位を明示 */
   text-decoration: underline; /* Webではtext-decorationプロパティを使用 */
 }

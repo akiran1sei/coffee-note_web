@@ -21,9 +21,9 @@
 
 .sectionTitle {
   color: #5d4037;
-  font-size: 18px;
+
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: var(--spacing-xs);
   text-align: center;
 }
 /* タブレット用 */

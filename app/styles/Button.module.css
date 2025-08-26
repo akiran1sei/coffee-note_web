@@ -18,11 +18,11 @@
   display: inline-block;
   width: auto;
   height: auto;
-  padding: 5px;
-  margin: 10px auto;
+  padding: var(--spacing-xs);
+  margin: var(--spacing-sm) auto;
   text-decoration-line: unset;
 
-  border-radius: 10px;
+  border-radius: var(--border-radius-sm);
 }
 
 .iconButton:hover {
@@ -112,7 +112,7 @@
 .scrollButtonWrapper {
   position: absolute;
   z-index: 50;
-  padding: 20px;
+  padding: var(--spacing-md);
   border-radius: 9999px;
   width: 100px;
   height: 100px;
