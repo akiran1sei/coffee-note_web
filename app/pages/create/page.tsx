@@ -83,7 +83,7 @@ const CreatePage = () => {
           {/* {width ? `${width}px` : "ロード中..."} */}
           {width && width < 600 ? (
             <div
-              className={`${styles.buttonContainer} ${styles.versionButtonContainer}`}
+              className={`${styles.buttonContent} ${styles.versionButtonContent}`}
             >
               <MainButton
                 onClick={handleVersion}
@@ -95,7 +95,7 @@ const CreatePage = () => {
             </div>
           ) : (
             <div
-              className={`${styles.buttonContainer} ${styles.versionButtonContainer}`}
+              className={`${styles.buttonContent} ${styles.versionButtonContent}`}
             >
               <MainButton
                 onClick={handleVersion}
@@ -131,7 +131,7 @@ const CreatePage = () => {
               </>
             )}
             <div
-              className={`${styles.buttonContainer} ${styles.saveButtonContainer}`}
+              className={`${styles.buttonContent} ${styles.saveButtonContent}`}
             >
               <MainButton
                 sizeValue="large"

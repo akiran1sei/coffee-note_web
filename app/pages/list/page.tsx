@@ -216,15 +216,17 @@ const ListPage = () => {
               <div className={styles.listItemValue}></div>
             </div> */}
           </div>
-          <div
-            className={`${styles.buttonContainer} ${styles.deleteButtonContainer}`}
-          >
-            <MainButton
-              sizeValue="large"
-              textValue="削除"
-              buttonColor="btn-danger"
-              widthValue="widthAuto"
-            />
+          <div className={styles.buttonContainer}>
+            <div
+              className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+            >
+              <MainButton
+                sizeValue="large"
+                textValue="削除"
+                buttonColor="btn-danger"
+                widthValue="widthAuto"
+              />
+            </div>
           </div>
         </>
       );
@@ -456,7 +458,7 @@ const ListPage = () => {
             </div>
           </div>
           <div
-            className={`${styles.buttonContainer} ${styles.deleteButtonContainer}`}
+            className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
           >
             <MainButton
               sizeValue="large"
@@ -517,7 +519,7 @@ const ListPage = () => {
             placeholder="Search..."
           />
           <div
-            className={`${styles.buttonContainer} ${styles.searchButtonContainer}`}
+            className={`${styles.buttonContent} ${styles.searchButtonContent}`}
           >
             <MainButton
               sizeValue="small"
@@ -528,9 +530,7 @@ const ListPage = () => {
           </div>
         </label>
       </div>
-      <div
-        className={`${styles.buttonContainer} ${styles.sortButtonContainer}`}
-      >
+      <div className={`${styles.buttonContent} ${styles.sortButtonContent}`}>
         <MainButton
           sizeValue="small"
           textValue="並び替え"

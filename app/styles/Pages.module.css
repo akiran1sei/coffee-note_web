@@ -17,30 +17,15 @@
 .pageWrapper {
   display: flex;
 }
+
 .buttonContainer {
   margin: auto;
   grid-area: buttonArea;
 }
+.buttonContent {
+  margin: auto;
+}
 
-.buttonContainer.deleteButtonContainer {
-  margin-top: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-.buttonContainer.searchButtonContainer {
-}
-.buttonContainer.saveButtonContainer {
-  margin-top: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-.buttonContainer.versionButtonContainer {
-}
-.buttonContainer.sortButtonContainer {
-  width: 100%;
-  margin: var(--spacing-sm);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 /*
 --------------------top page--------------------
 */
@@ -114,38 +99,122 @@
 .listPageContents {
   top: 80px;
 }
-/* 縦スクロールバーの幅を大きくする例 */
-.ListMobilePageWrapper::-webkit-scrollbar {
-  width: 12px; /* 通常のスクロールバーより太くする */
-}
 
-/* 横スクロールバーの高さを大きくする例 */
-.ListMobilePageWrapper::-webkit-scrollbar {
-  height: 12px; /* 通常のスクロールバーより高くする */
-}
-/* スクロールバー全体のスタイル */
-.ListMobilePageWrapper::-webkit-scrollbar {
-  width: 10px; /* スクロールバーの幅 */
-  background-color: #f5f5f5; /* トラックの背景色 */
-}
-
-/* スクロールバーのつまみのスタイル */
-.ListMobilePageWrapper::-webkit-scrollbar-thumb {
-  background-color: var(--color-secondary); /* つまみの色 */
-  border-radius: var(--border-radius-xs); /* つまみの角を丸くする */
-}
-
-.ListMobilePageWrapper {
-  flex-direction: row;
-  /* 親要素の幅をはみ出したらスクロール可能にする */
-  overflow-x: auto;
-  /* 子要素を横に並べる */
+.listSearchArea {
   display: flex;
-  /* 子要素が親の幅に合わせて縮まないようにする */
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+  padding: var(--spacing-sm) 0;
+  margin: 0 var(--spacing-xs);
+  border-bottom: 1px solid var(--color-background-dark);
+}
+
+.listSearchArea input[type="text"] {
+  width: 100%;
+  max-width: 80%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-background-dark);
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.listSearchArea input[type="text"]:focus {
+  border-color: var(--color-main);
+}
+
+.listSearchArea label {
+  display: contents;
+}
+
+.listCheckboxContainer {
+  width: 100%;
+  height: var(--item-lg-width);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+}
+
+.listCheckboxLabel {
+  display: contents;
+}
+
+.listCheckboxInput {
+  width: var(--item-sm-width);
+  height: var(--item-sm-width);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.listScrollButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
+  gap: 8px;
+}
+
+.listScrollButtons button {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-background-light);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius-xs);
+  color: var(--color-text-light);
+  background-color: var(--color-secondary);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.listScrollButtons button:hover {
+  background-color: var(--color-secondary-dark);
+}
+.listPageContents .listPcCard .buttonContent.deleteButtonContent {
+  margin: var(--spacing-xs);
+}
+.listPageContents .listMobileCard .buttonContent.deleteButtonContent {
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.listPageContents .buttonContent.searchButtonContent {
+}
+
+.createPageContents .buttonContent.saveButtonContent {
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.listPageContents .buttonContent.versionButtonContent {
+}
+
+.listPageContents .buttonContent.sortButtonContent {
+  width: 100%;
+  margin: var(--spacing-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Mobile */
+.listMobilePageWrapper {
+  flex-direction: row;
+  overflow-x: auto;
+  display: flex;
   flex-shrink: 0;
-  /* スクロールバーのデザインをカスタマイズ */
-  /* Chrome, Safari, Edge */
-  /* scrollbar-width: none; */
+  margin-right: var(--spacing-sm);
+}
+
+.listMobilePageWrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 12px;
+  background-color: #f5f5f5;
+}
+
+.listMobilePageWrapper::-webkit-scrollbar-thumb {
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius-xs);
 }
 
 .listItemCard {
@@ -160,6 +229,7 @@
 .listItemCard:nth-child(odd) {
   background-color: var(--color-background-light);
 }
+
 .listItemCard:nth-child(even) {
   background-color: var(--color-background-dark);
 }
@@ -187,6 +257,7 @@
   max-width: 300px;
   margin: 0 auto;
 }
+
 .listItemTasting {
   display: inline-flex;
   flex-direction: row;
@@ -218,120 +289,8 @@
 .listItemChartImage {
   width: inherit;
 }
-/* -----スクロールボタンのコンテナ------ */
-.listScrollButtons {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--spacing-md);
-  gap: 8px;
-}
 
-/* ボタン自体のスタイル（新しいクラス名を追加） */
-.listScrollButtons button {
-  padding: var(--spacing-xs) var(--spacing-sm);
-
-  border: 1px solid var(--color-background-light);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  border-radius: var(--border-radius-xs);
-  color: var(--color-text-light);
-  background-color: var(--color-secondary);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.listScrollButtons button:hover {
-  background-color: var(--color-secondary-dark);
-}
-/* -----検索----- */
-.listSearchArea {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 1rem;
-  padding: var(--spacing-sm) 0;
-  margin: 0 var(--spacing-xs);
-  border-bottom: 1px solid var(--color-background-dark);
-}
-
-.listSearchArea input[type="text"] {
-  width: 100%;
-  max-width: 80%;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--color-background-dark);
-  border-radius: var(--border-radius-sm);
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.listSearchArea input[type="text"]:focus {
-  border-color: var(--color-main);
-}
-.listSearchArea label {
-  display: contents;
-}
-.listCheckboxContainer {
-  width: 100%;
-  height: var(--item-lg-width);
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateY(-100%);
-
-  /* transform: translate(-110%, -50%); */
-}
-.listCheckboxLabel {
-  display: contents;
-}
-.listCheckboxInput {
-  width: var(--item-sm-width);
-  height: var(--item-sm-width);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-/*
---------------------create page--------------------
-*/
-.createPageWrapper {
-  flex-grow: 1;
-  flex-direction: column;
-}
-
-.createPageContents {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
-  top: 80px;
-}
-
-/*
---------------------item page--------------------
-*/
-.itemPageContents {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
-  top: calc(80px + var(--spacing-md));
-}
-
-/*
---------------------update page--------------------
-*/
-.updatePageContents {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
-  top: 80px;
-}
-
-/* タブレット用 */
+/* Tablet */
 @media screen and (min-width: 600px) {
   .listSearchArea {
     max-width: 50%;
@@ -339,11 +298,8 @@
   }
 }
 
-/* PC用 */
+/* PC */
 @media screen and (min-width: 960px) {
-  /*
---------------------list page--------------------
-*/
   .listPageContents {
     display: flex;
     flex-direction: column;
@@ -360,7 +316,6 @@
   .listItemCard {
     width: 95%;
     height: auto;
-
     display: grid;
     grid-template-areas:
       "coffeeBeans brewingRecipe tasting tasting"
@@ -381,7 +336,8 @@
   .listPcCard:not(:first-child, :last-child) {
     border-top: 0.1px solid var(--color-background-dark);
   }
-  .listPcCard > .buttonContainer.deleteButtonContainer {
+
+  .listPcCard > .buttonContent.deleteButtonContent {
     margin: var(--spacing-xs);
   }
 
@@ -414,7 +370,7 @@
   }
 
   .listItemImage {
-    width: 200px;
+    width: calc(var(--item-image-width) * 2);
     height: auto;
     margin: var(--spacing-xs);
   }
@@ -549,7 +505,7 @@
 
   .listItemChartImageBox {
     grid-area: chartImage;
-    width: 200px;
+    width: calc(var(--item-image-width) * 2);
     height: auto;
     margin: var(--spacing-xs);
   }
@@ -562,6 +518,7 @@
     max-width: 80%;
     margin: 0 auto;
   }
+
   .listCheckboxContainer {
     width: auto;
     height: auto;
@@ -570,6 +527,7 @@
     left: 0;
     transform: translate(-110%, -50%);
   }
+
   .listCheckboxInput {
     width: var(--item-sm-width);
     height: var(--item-sm-width);
@@ -577,4 +535,290 @@
     top: unset;
     transform: unset;
   }
+}
+/*
+--------------------create page--------------------
+*/
+.createPageWrapper {
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.createPageContents {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  top: 80px;
+}
+
+/*
+--------------------item page--------------------
+*/
+.itemPageContents {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  top: calc(80px + var(--spacing-md));
+  padding: 0px var(--spacing-sm);
+}
+.itemPageContents .buttonContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xl);
+}
+
+.itemPcItem,
+.mobileItem {
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mobileItem {
+  margin-bottom: var(--spacing-md);
+}
+
+.itemPcPageWrapper {
+  flex-direction: column;
+}
+
+.itemPcCard {
+  display: grid;
+  /* grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto; */
+  gap: var(--spacing-md);
+  grid-template-areas:
+    "coffeeBeans brewingRecipe"
+    "tasting memoArea"
+    "buttonArea buttonArea";
+}
+
+.itemPcCard > .itemTasting {
+  grid-area: tasting;
+}
+.itemPcCard > .itemMemoArea {
+  grid-area: memoArea;
+}
+.itemPcCard > .buttonContent {
+  grid-column: 1 / span 2;
+  margin-top: var(--spacing-md);
+}
+
+.mobilePageWrapper {
+  flex-direction: column;
+}
+
+.mobileCard {
+  width: 100%;
+}
+
+.itemCoffeeBeans {
+  grid-area: coffeeBeans;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.itemBrewingRecipe {
+  grid-area: brewingRecipe;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.itemTasting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.itemMemoArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.itemLabel {
+  font-weight: bold;
+  color: var(--color-secondary-dark);
+  font-size: var(--font-size-sm);
+}
+
+.itemValue {
+  color: var(--color-text-dark);
+  font-size: var(--font-size-md);
+}
+
+.itemImageBox {
+  text-align: center;
+  margin: var(--spacing-sm) 0;
+}
+
+.itemImage {
+  width: calc(var(--item-image-width) * 2);
+  height: auto;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.itemChartImageBox {
+  text-align: center;
+  margin: var(--spacing-sm) 0;
+}
+
+.itemChartImage {
+  width: calc(var(--item-image-width) * 2);
+  height: auto;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+@media screen and (min-width: 600px) {
+  .itemPcPageWrapper {
+    flex-direction: column;
+  }
+  .itemTasting {
+    display: grid;
+    align-content: stretch;
+    align-items: stretch;
+    justify-items: center;
+    justify-content: space-between;
+  }
+  .itemTasting .itemValue {
+    text-align: center;
+  }
+  .itemAcidity {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  .itemBitterness {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+  .itemBody {
+    grid-area: 1 / 3 / 2 / 4;
+  }
+  .itemAroma {
+    grid-area: 1 / 4 / 2 / 5;
+  }
+  .itemAftertaste {
+    grid-area: 1 / 5 / 2 / 6;
+  }
+  .itemOverall {
+    grid-area: 2 / 1 / 3 / 6;
+  }
+  .itemChartImageBox {
+    grid-area: 3 / 1 / 4 / 6;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .itemPcCard {
+    grid-template-areas:
+      "coffeeBeans brewingRecipe"
+      "tasting memoArea"
+      "buttonArea buttonArea";
+  }
+
+  .itemCoffeeBeans {
+    display: grid;
+    grid-template-areas:
+      "image coffeeName"
+      "image variety"
+      "image productionArea"
+      "image roastingDegree";
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .itemImageBox {
+    grid-area: image;
+  }
+  .itemCoffeeName {
+    grid-area: coffeeName;
+  }
+  .itemVariety {
+    grid-area: variety;
+  }
+  .itemProductionArea {
+    grid-area: productionArea;
+  }
+  .itemRoastingDegree {
+    grid-area: roastingDegree;
+  }
+
+  .itemBrewingRecipe {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .itemTasting {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "tastingAcidity chartImage"
+      "tastingBitterness chartImage"
+      "tastingBody chartImage"
+      "tastingAroma chartImage"
+      "tastingAftertaste tastingOverall";
+
+    gap: var(--spacing-sm);
+    justify-content: center;
+    align-items: center;
+  }
+  .itemAcidity {
+    grid-area: tastingAcidity;
+  }
+  .itemBitterness {
+    grid-area: tastingBitterness;
+  }
+  .itemBody {
+    grid-area: tastingBody;
+  }
+  .itemAroma {
+    grid-area: tastingAroma;
+  }
+  .itemAftertaste {
+    grid-area: tastingAftertaste;
+  }
+  .itemOverall {
+    grid-area: tastingOverall;
+  }
+  .itemTasting .itemAcidity,
+  .itemTasting .itemBitterness,
+  .itemTasting .itemBody,
+  .itemTasting .itemAroma,
+  .itemTasting .itemAftertaste,
+  .itemTasting .itemOverall {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .itemChartImageBox {
+    grid-area: chartImage;
+    margin: 0;
+  }
+}
+
+/*
+--------------------update page--------------------
+*/
+.updatePageContents {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  top: 80px;
 }
