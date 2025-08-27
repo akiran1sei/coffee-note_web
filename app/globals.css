@@ -83,6 +83,10 @@ html {
   --item-lg-width: 50px;
   --item-md-width: 40px;
   --item-sm-width: 30px;
+
+  /* image */
+  --item-image-width: 100px;
+  --item-image-height: 100px;
 }
 
 /*
