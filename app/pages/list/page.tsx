@@ -43,13 +43,15 @@ const ListPage = () => {
 
   // PC向けのレイアウト
   const ListPcPage = () => {
-    const pcCard = () => {
+    const pcCard = (id: string) => {
+      const checkboxId = `checkbox_${id}`;
       return (
         <>
           {/* チェックボックス */}
           <div className={styles.listCheckboxContainer}>
-            <label htmlFor="checkbox" className={styles.listCheckboxLabel}>
+            <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
               <input
+                id={checkboxId}
                 type="checkbox"
                 name="checkbox"
                 title="チェックボックス"
@@ -238,7 +240,7 @@ const ListPage = () => {
               className={`${styles.listItemCard} ${styles.listPcCard}`}
               key={index}
             >
-              {pcCard()}
+              {pcCard((index + 1).toString())}
             </div>
           ))}
         </div>
@@ -247,19 +249,19 @@ const ListPage = () => {
   };
 
   // タブレット向けのレイアウト
-  const ListTbPage = () => {
+  const ListTabletPage = () => {
     // 画面の向きによってPC or SPレイアウトを返す
     // 画面幅が600px未満はSP、600px以上はPCとして扱う（Tailwindのmdブレイクポイント）
     // if (windowWidth < 600) {
-    //   return ListSpPage();
+    //   return ListMobilePage();
     // } else {
     //   return ListPcPage();
     // }
-    return ListSpPage();
+    return ListMobilePage();
   };
 
   // スマホ向けのレイアウト
-  const ListSpPage = () => {
+  const ListMobilePage = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const scrollRight = () => {
       if (containerRef.current) {
@@ -280,23 +282,28 @@ const ListPage = () => {
         });
       }
     };
+
     // const spImg = "https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart";
-    const spCard = () => {
+    const MobileCard = (id: string) => {
+      const checkboxId = `checkbox_${id}`;
       return (
         <>
           {/* チェックボックス */}
           <div className={styles.listCheckboxContainer}>
-            <label htmlFor="checkbox" className={styles.listCheckboxLabel}>
+            <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
               <input
                 type="checkbox"
                 name="checkbox"
+                id={checkboxId}
                 title="チェックボックス"
                 className={styles.listCheckboxInput}
               />
             </label>
           </div>
           {/* self */}
-          <div className={`${styles.listItemCoffeeBeans} ${styles.listSpItem}`}>
+          <div
+            className={`${styles.listItemCoffeeBeans} ${styles.listMobileItem}`}
+          >
             <div className={`${styles.listItemCoffeeName}`}>
               <div className={styles.listItemLabel}>{"コーヒー名"}</div>
               <div className={styles.listItemValue}>
@@ -329,7 +336,7 @@ const ListPage = () => {
             </div>
           </div>
           <div
-            className={`${styles.listItemBrewingRecipe} ${styles.listSpItem}`}
+            className={`${styles.listItemBrewingRecipe} ${styles.listMobileItem}`}
           >
             <div className={`${styles.listItemExMethod}`}>
               <div className={styles.listItemLabel}>{"抽出方法"}</div>
@@ -365,7 +372,7 @@ const ListPage = () => {
             </div>
           </div>
           {/* shop */}
-          {/* <div className={`${styles.listItemShopData} ${styles.listSpItem}`}>
+          {/* <div className={`${styles.listItemShopData} ${styles.listMobileItem}`}>
             <div className={`${styles.listItemShopName}`}>
               <div className={styles.listItemLabel}>{"店名"}</div>
               <div className={styles.listItemValue}></div>
@@ -387,7 +394,7 @@ const ListPage = () => {
               <div className={styles.listItemValue}></div>
             </div>
           </div>
-          <div className={`${styles.listItemShopCoffee} ${styles.listSpItem}`}>
+          <div className={`${styles.listItemShopCoffee} ${styles.listMobileItem}`}>
             <div className={`${styles.listItemCoffeeName}`}>
               <div className={styles.listItemLabel}>{"コーヒー名"}</div>
               <div className={styles.listItemValue}></div>
@@ -402,7 +409,7 @@ const ListPage = () => {
             </div>
           </div> */}
           {/* 共通 */}
-          <div className={`${styles.listItemTasting} ${styles.listSpItem}`}>
+          <div className={`${styles.listItemTasting} ${styles.listMobileItem}`}>
             <div className={`${styles.listItemAcidity}`}>
               <div className={styles.listItemLabel}>{"酸味"}</div>
               <div className={styles.listItemValue}>3</div>
@@ -438,7 +445,9 @@ const ListPage = () => {
               </div>
             </div>
           </div>
-          <div className={`${styles.listItemMemoArea} ${styles.listSpItem}`}>
+          <div
+            className={`${styles.listItemMemoArea} ${styles.listMobileItem}`}
+          >
             <div className={`${styles.listItemMemo}`}>
               <div className={styles.listItemLabel}>{"メモ"}</div>
               <div className={styles.listItemValue}>
@@ -467,15 +476,15 @@ const ListPage = () => {
           <button onClick={scrollRight}>右へスクロール</button>
         </div>
         <div
-          className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listSpPageWrapper}`}
+          className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listMobilePageWrapper}`}
           ref={containerRef}
         >
           {cards.map((_, index) => (
             <div
-              className={`${styles.listItemCard} ${styles.listSpCard}`}
+              className={`${styles.listItemCard} ${styles.listMobileCard}`}
               key={index}
             >
-              {spCard()}
+              {MobileCard((index + 1).toString())}
             </div>
           ))}
         </div>
@@ -489,10 +498,10 @@ const ListPage = () => {
       return <ListPcPage />;
     } else if (windowWidth >= 600 && windowWidth < 960) {
       // タブレット向け (mdブレイクポイント)
-      return <ListTbPage />;
+      return <ListTabletPage />;
     } else {
       // スマホ向け (それ以外)
-      return <ListSpPage />;
+      return <ListMobilePage />;
     }
   };
 

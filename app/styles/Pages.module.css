@@ -115,27 +115,27 @@
   top: 80px;
 }
 /* 縦スクロールバーの幅を大きくする例 */
-.listSpPageWrapper::-webkit-scrollbar {
+.ListMobilePageWrapper::-webkit-scrollbar {
   width: 12px; /* 通常のスクロールバーより太くする */
 }
 
 /* 横スクロールバーの高さを大きくする例 */
-.listSpPageWrapper::-webkit-scrollbar {
+.ListMobilePageWrapper::-webkit-scrollbar {
   height: 12px; /* 通常のスクロールバーより高くする */
 }
 /* スクロールバー全体のスタイル */
-.listSpPageWrapper::-webkit-scrollbar {
+.ListMobilePageWrapper::-webkit-scrollbar {
   width: 10px; /* スクロールバーの幅 */
   background-color: #f5f5f5; /* トラックの背景色 */
 }
 
 /* スクロールバーのつまみのスタイル */
-.listSpPageWrapper::-webkit-scrollbar-thumb {
+.ListMobilePageWrapper::-webkit-scrollbar-thumb {
   background-color: var(--color-secondary); /* つまみの色 */
   border-radius: var(--border-radius-xs); /* つまみの角を丸くする */
 }
 
-.listSpPageWrapper {
+.ListMobilePageWrapper {
   flex-direction: row;
   /* 親要素の幅をはみ出したらスクロール可能にする */
   overflow-x: auto;
@@ -164,7 +164,7 @@
   background-color: var(--color-background-dark);
 }
 
-.listSpCard {
+.listMobileCard {
   width: fit-content;
   max-width: 350px;
   padding: 0 var(--spacing-sm);
@@ -316,7 +316,7 @@
   flex-wrap: nowrap;
   justify-content: center;
   align-items: stretch;
-  top: 80px;
+  top: calc(80px + var(--spacing-md));
 }
 
 /*
