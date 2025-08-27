@@ -108,14 +108,14 @@ const CreatePage = () => {
           )}
           <form className={styles.pageForm}>
             {isVersion ? (
-              <>
+              <div className={styles.createSelfVersionContents}>
                 <CoffeeBeansComponent />
                 <BrewingRecipeComponent extractionInfo={extractionInfo} />
                 <TastingEvaluationComponent reviewInfo={reviewInfo} />
                 <MemoAreaComponent />
-              </>
+              </div>
             ) : (
-              <>
+              <div className={styles.createShopVersionContents}>
                 <ShopCoffeeComponent
                   imageUrl={coffeeInfo.imageUrl}
                   coffeeName={coffeeInfo.coffeeName}
@@ -128,7 +128,7 @@ const CreatePage = () => {
                 />
                 <TastingEvaluationComponent reviewInfo={reviewInfo} />
                 <MemoAreaComponent />
-              </>
+              </div>
             )}
             <div
               className={`${styles.buttonContent} ${styles.saveButtonContent}`}
