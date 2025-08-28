@@ -179,14 +179,6 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.listPageContents .buttonContent.searchButtonContent {
-}
-
-.createPageContents .buttonContent.saveButtonContent {
-  margin-top: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
 .listPageContents .buttonContent.versionButtonContent {
 }
 
@@ -551,6 +543,13 @@
   justify-content: center;
   align-items: stretch;
   top: 80px;
+}
+.createPageContents .buttonContainer {
+  display: flex;
+}
+.createPageContents .buttonContent.saveButtonContent,
+.createPageContents .buttonContent.resetButtonContent {
+  margin: var(--spacing-md) var(--spacing-xs) var(--spacing-xl);
 }
 .createSelfVersionContents,
 .createShopVersionContents {
