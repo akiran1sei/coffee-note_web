@@ -109,25 +109,37 @@ const CreatePage = () => {
           <form className={styles.pageForm}>
             {isVersion ? (
               <div className={styles.createSelfVersionContents}>
-                <CoffeeBeansComponent />
-                <BrewingRecipeComponent extractionInfo={extractionInfo} />
-                <TastingEvaluationComponent reviewInfo={reviewInfo} />
-                <MemoAreaComponent />
+                <div className={styles.leftColumn}>
+                  <CoffeeBeansComponent />
+                  <BrewingRecipeComponent extractionInfo={extractionInfo} />
+                </div>
+                <div className={styles.rightColumn}>
+                  <TastingEvaluationComponent reviewInfo={reviewInfo} />
+                </div>
+                <div className={styles.buttonContent}>
+                  <MemoAreaComponent />
+                </div>
               </div>
             ) : (
               <div className={styles.createShopVersionContents}>
-                <ShopCoffeeComponent
-                  imageUrl={coffeeInfo.imageUrl}
-                  coffeeName={coffeeInfo.coffeeName}
-                  productionArea={coffeeInfo.productionArea}
-                  shopName={shopInfo.shopName}
-                  shopPrice={shopInfo.shopPrice}
-                  shopDate={shopInfo.shopDate}
-                  shopAddress={shopInfo.shopAddress}
-                  shopUrl={shopInfo.shopUrl}
-                />
-                <TastingEvaluationComponent reviewInfo={reviewInfo} />
-                <MemoAreaComponent />
+                <div className={styles.leftColumn}>
+                  <ShopCoffeeComponent
+                    imageUrl={coffeeInfo.imageUrl}
+                    coffeeName={coffeeInfo.coffeeName}
+                    productionArea={coffeeInfo.productionArea}
+                    shopName={shopInfo.shopName}
+                    shopPrice={shopInfo.shopPrice}
+                    shopDate={shopInfo.shopDate}
+                    shopAddress={shopInfo.shopAddress}
+                    shopUrl={shopInfo.shopUrl}
+                  />
+                </div>
+                <div className={styles.rightColumn}>
+                  <TastingEvaluationComponent reviewInfo={reviewInfo} />
+                </div>
+                <div className={styles.buttonContent}>
+                  <MemoAreaComponent />
+                </div>
               </div>
             )}
             <div
