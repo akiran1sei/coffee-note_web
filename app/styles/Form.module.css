@@ -374,6 +374,7 @@
   height: auto;
   color: #333;
   border: unset;
+  resize: vertical;
 }
 
 /* モーダル共通スタイル */

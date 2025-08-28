@@ -35,7 +35,7 @@ export const TextAreaComponent: React.FC<TextAreaProps> = ({
           value={value}
           placeholder="入力してください"
           rows={4}
-          cols={50}
+          cols={60}
         />
       </div>
     </div>
