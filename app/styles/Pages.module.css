@@ -185,49 +185,27 @@
     }
   }
 }
-
 .listItemTasting {
-  &.listMobileItem {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .listItemOverall {
+    .listItemLabel {
+    }
+    .listItemValue {
+    }
+    width: 100%;
   }
-  &.listPcItem {
+
+  .listItemValue {
+    text-align: center;
   }
-  &.listShop {
-    .listItemAcidity {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemBitterness {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemBody {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemAroma {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemAftertaste {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemOverall {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
+  & > *:not(.listItemOverall):not(.listItemImageBox.beansImg) {
+    flex: 1 1;
   }
 }
 
@@ -315,173 +293,6 @@
   }
 }
 
-.listSelf {
-  &.listItemCoffeeBeans {
-    &.listMobileItem {
-    }
-    &.listPcItem {
-    }
-    .listItemCoffeeName {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-
-    .listItemVariety {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemProductionArea {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemRoastingDegree {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-  }
-
-  &.listItemBrewingRecipe {
-    &.listMobileItem {
-    }
-    &.listPcItem {
-    }
-    .listItemExMethod {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemExMaker {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemGrindSize {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemTemperature {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemCoffeeAmount {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemWaterAmount {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemMeasurementMethod {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemExTime {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-  }
-
-  &.listItemTasting {
-    &.listMobileItem {
-    }
-    &.listPcItem {
-    }
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
-    .listItemAcidity {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemBitterness {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemBody {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemAroma {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemAftertaste {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-    .listItemOverall {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-      width: 100%;
-    }
-
-    .listItemValue {
-      text-align: center;
-    }
-    & > *:not(.listItemOverall):not(.listItemImageBox.beansImg) {
-      flex: 1 1;
-    }
-  }
-
-  &.listItemMemoArea {
-    &.listMobileItem {
-    }
-    &.listPcItem {
-    }
-    .listItemMemo {
-      .listItemLabel {
-      }
-      .listItemValue {
-      }
-    }
-  }
-
-  .buttonContent {
-    &.deleteButtonContent {
-      &.listSelf {
-      }
-    }
-  }
-}
-
 .listScrollButtons {
   display: flex;
   justify-content: center;
@@ -521,7 +332,7 @@
   }
 }
 
-.listItemCard {
+.listMobileCard {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -562,6 +373,9 @@
 
 /* PC */
 @media screen and (min-width: 960px) {
+  .itemPcCard {
+    position: relative;
+  }
   .listCheckboxContainer {
     width: var(--item-sm-width);
     height: var(--item-sm-width);
@@ -577,7 +391,7 @@
 
   .listItemCoffeeBeans {
     &.listSelf {
-      grid-area: coffeeBeans;
+      grid-area: coffeeData;
       display: grid;
       grid-template-areas:
         "coffeeName coffeeName coffeeName coffeeName"
@@ -610,7 +424,7 @@
 
   .listItemBrewingRecipe {
     &.listSelf {
-      grid-area: brewingRecipe;
+      grid-area: coffeeLog;
       display: grid;
       grid-template-areas:
         "exMethod exMethod exMethod exMethod"
@@ -747,7 +561,24 @@
   }
 
   .listPcCard {
+    width: 95%;
+    height: auto;
+    display: grid;
+    grid-template-areas:
+      "coffeeData coffeeLog tasting tasting"
+      "memoArea memoArea memoArea buttonArea";
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto;
     margin: 0 0 0 auto;
+
+    .listShop {
+      &.listItemShopData {
+        grid-area: shopData;
+      }
+      &.listItemShopCoffee {
+        grid-area: shopCoffee;
+      }
+    }
     &:last-child {
       border-top: 0.1px solid var(--color-background-dark);
       border-bottom: 0.1px solid var(--color-background-dark);
@@ -762,14 +593,6 @@
   }
 
   .listItemCard {
-    width: 95%;
-    height: auto;
-    display: grid;
-    grid-template-areas:
-      "coffeeBeans brewingRecipe tasting tasting"
-      "memoArea memoArea memoArea buttonArea";
-    grid-template-columns: auto auto auto auto;
-    grid-template-rows: auto auto;
   }
 
   .listSearchArea {
@@ -871,7 +694,7 @@
   grid-template-rows: auto auto auto; */
   gap: var(--spacing-md);
   grid-template-areas:
-    "coffeeBeans brewingRecipe"
+    "coffeeData coffeeLog"
     "tasting memoArea"
     "buttonArea buttonArea";
 }
@@ -896,14 +719,14 @@
 }
 
 .itemCoffeeBeans {
-  grid-area: coffeeBeans;
+  grid-area: coffeeData;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
 }
 
 .itemBrewingRecipe {
-  grid-area: brewingRecipe;
+  grid-area: coffeeLog;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
@@ -996,7 +819,7 @@
 @media screen and (min-width: 960px) {
   .itemPcCard {
     grid-template-areas:
-      "coffeeBeans brewingRecipe"
+      "coffeeData coffeeLog"
       "tasting memoArea"
       "buttonArea buttonArea";
   }

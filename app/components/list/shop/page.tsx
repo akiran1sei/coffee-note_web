@@ -12,7 +12,9 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
   return (
     <>
-      <div className={`${styles.listCheckboxContainer} ${styles.listShop}`}>
+      <div
+        className={`${styles.listCheckboxContainer} ${styles.listMobileItem} ${styles.listShop}`}
+      >
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
             type="checkbox"
@@ -144,7 +146,9 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
   return (
     <>
-      <div className={`${styles.listCheckboxContainer} ${styles.listShop}`}>
+      <div
+        className={`${styles.listCheckboxContainer} ${styles.listPcItem} ${styles.listShop}`}
+      >
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
             id={checkboxId}
