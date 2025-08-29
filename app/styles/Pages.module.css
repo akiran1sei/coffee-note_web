@@ -107,11 +107,20 @@
 
 /* SHOP */
 .listCheckboxContainer {
-  &.listShop {
-  }
+  width: 100%;
+  height: var(--item-sm-width);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(calc(-100% - var(--spacing-sm)));
+  display: flex;
+  justify-content: center;
 
   .listCheckboxLabel {
+    display: contents;
     .listCheckboxInput {
+      width: var(--item-sm-width);
+      height: var(--item-sm-width);
     }
   }
 }
@@ -307,21 +316,6 @@
 }
 
 .listSelf {
-  &.listCheckboxContainer {
-    width: 100%;
-    height: var(--item-lg-width);
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateY(-100%);
-
-    .listCheckboxLabel {
-      display: contents;
-      .listCheckboxInput {
-      }
-    }
-  }
-
   &.listItemCoffeeBeans {
     &.listMobileItem {
     }
@@ -552,8 +546,6 @@
 }
 
 .buttonContainer {
-  &.listSelf {
-  }
   .buttonContent {
     &.deleteButtonContent {
       margin: 0 var(--spacing-sm) var(--spacing-sm) 0;
@@ -571,31 +563,19 @@
 /* PC */
 @media screen and (min-width: 960px) {
   .listCheckboxContainer {
-    &.listSelf {
-      width: auto;
-      height: auto;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translate(-110%, -50%);
-    }
-
+    width: var(--item-sm-width);
+    height: var(--item-sm-width);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(calc(-100% - var(--spacing-sm)), -50%);
     .listCheckboxLabel {
       .listCheckboxInput {
-        width: var(--item-sm-width);
-        height: var(--item-sm-width);
-        position: static;
-        top: unset;
-        transform: unset;
       }
     }
   }
 
   .listItemCoffeeBeans {
-    &.listMobileItem {
-    }
-    &.listPcItem {
-    }
     &.listSelf {
       grid-area: coffeeBeans;
       display: grid;
