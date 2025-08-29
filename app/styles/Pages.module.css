@@ -96,134 +96,172 @@
 /*
 --------------------list page--------------------
 */
+
+.listItemImageBox {
+  .listItemImage {
+    width: calc(var(--item-image-width) * 2);
+    height: auto;
+    margin: var(--spacing-xs) auto;
+  }
+}
+
+/* SHOP */
+.listCheckboxContainer {
+  &.listShop {
+  }
+
+  .listCheckboxLabel {
+    .listCheckboxInput {
+    }
+  }
+}
+
+.listItemShopData {
+  &.listMobileItem {
+  }
+  &.listPcItem {
+  }
+  &.listShop {
+    .listItemShopName {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+
+    .listItemShopPrice {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemShopDate {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemShopAddress {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemShopUrl {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+  }
+}
+
+.listItemShopCoffee {
+  &.listMobileItem {
+  }
+  &.listPcItem {
+  }
+  &.listShop {
+    .listItemCoffeeName {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemProductionArea {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+  }
+}
+
+.listItemTasting {
+  &.listMobileItem {
+  }
+  &.listPcItem {
+  }
+  &.listShop {
+    .listItemAcidity {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemBitterness {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemBody {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemAroma {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemAftertaste {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemOverall {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+  }
+}
+
+.listItemMemoArea {
+  &.listMobileItem {
+  }
+  &.listPcItem {
+  }
+  &.listShop {
+    .listItemMemo {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+  }
+}
+
+.buttonContent {
+  &.deleteButtonContent {
+    &.listShop {
+    }
+  }
+}
+
+.buttonContainer {
+  &.listShop {
+  }
+  .buttonContent {
+    &.deleteButtonContent {
+    }
+  }
+}
 .listPageContents {
   top: 80px;
-}
 
-.listSearchArea {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 1rem;
-  padding: var(--spacing-sm) 0;
-  margin: 0 var(--spacing-xs);
-  border-bottom: 1px solid var(--color-background-dark);
-}
-
-.listSearchArea input[type="text"] {
-  width: 100%;
-  max-width: 80%;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--color-background-dark);
-  border-radius: var(--border-radius-sm);
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.listSearchArea input[type="text"]:focus {
-  border-color: var(--color-main);
-}
-
-.listSearchArea label {
-  display: contents;
-}
-
-.listCheckboxContainer {
-  width: 100%;
-  height: var(--item-lg-width);
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateY(-100%);
-}
-
-.listCheckboxLabel {
-  display: contents;
-}
-
-.listCheckboxInput {
-  width: var(--item-sm-width);
-  height: var(--item-sm-width);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.listScrollButtons {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--spacing-md);
-  gap: 8px;
-}
-
-.listScrollButtons button {
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--color-background-light);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  border-radius: var(--border-radius-xs);
-  color: var(--color-text-light);
-  background-color: var(--color-secondary);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.listScrollButtons button:hover {
-  background-color: var(--color-secondary-dark);
-}
-.listPageContents .listPcCard .buttonContent.deleteButtonContent {
-  margin: var(--spacing-xs);
-}
-.listPageContents .listMobileCard .buttonContent.deleteButtonContent {
-  margin-top: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.listPageContents .buttonContent.versionButtonContent {
-}
-
-.listPageContents .buttonContent.sortButtonContent {
-  width: 100%;
-  margin: var(--spacing-sm);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-/* Mobile */
-.listMobilePageWrapper {
-  flex-direction: row;
-  overflow-x: scroll;
-  display: flex;
-  flex-shrink: 0;
-  margin-right: var(--spacing-sm);
-}
-
-.listMobilePageWrapper::-webkit-scrollbar {
-  width: 10px;
-  height: 12px;
-  background-color: #f5f5f5;
-}
-
-.listMobilePageWrapper::-webkit-scrollbar-thumb {
-  background-color: var(--color-secondary);
-  border-radius: var(--border-radius-xs);
-}
-
-.listItemCard {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  justify-content: center;
-}
-
-.listItemCard:nth-child(odd) {
-  background-color: var(--color-background-light);
-}
-
-.listItemCard:nth-child(even) {
-  background-color: var(--color-background-dark);
+  .buttonContent.sortButtonContent {
+    width: 100%;
+    margin: var(--spacing-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .listMobileCard {
@@ -234,54 +272,293 @@
   flex-shrink: 0;
   margin-right: var(--spacing-sm);
   top: var(--spacing-xl);
+
+  .buttonContent.deleteButtonContent {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+  }
+}
+
+.listSearchArea {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+  padding: var(--spacing-sm) 0;
+  margin: 0 var(--spacing-xs);
+  border-bottom: 1px solid var(--color-background-dark);
+
+  input[type="text"] {
+    width: 100%;
+    max-width: 80%;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-background-dark);
+    border-radius: var(--border-radius-sm);
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus {
+    border-color: var(--color-main);
+  }
+
+  label {
+    display: contents;
+  }
+}
+
+.listSelf {
+  &.listCheckboxContainer {
+    width: 100%;
+    height: var(--item-lg-width);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(-100%);
+
+    .listCheckboxLabel {
+      display: contents;
+      .listCheckboxInput {
+      }
+    }
+  }
+
+  &.listItemCoffeeBeans {
+    &.listMobileItem {
+    }
+    &.listPcItem {
+    }
+    .listItemCoffeeName {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+
+    .listItemVariety {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemProductionArea {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemRoastingDegree {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+  }
+
+  &.listItemBrewingRecipe {
+    &.listMobileItem {
+    }
+    &.listPcItem {
+    }
+    .listItemExMethod {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemExMaker {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemGrindSize {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemTemperature {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemCoffeeAmount {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemWaterAmount {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemMeasurementMethod {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemExTime {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+  }
+
+  &.listItemTasting {
+    &.listMobileItem {
+    }
+    &.listPcItem {
+    }
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    .listItemAcidity {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemBitterness {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemBody {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemAroma {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemAftertaste {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+    .listItemOverall {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+      width: 100%;
+    }
+
+    .listItemValue {
+      text-align: center;
+    }
+    & > *:not(.listItemOverall):not(.listItemImageBox.beansImg) {
+      flex: 1 1;
+    }
+  }
+
+  &.listItemMemoArea {
+    &.listMobileItem {
+    }
+    &.listPcItem {
+    }
+    .listItemMemo {
+      .listItemLabel {
+      }
+      .listItemValue {
+      }
+    }
+  }
+
+  .buttonContent {
+    &.deleteButtonContent {
+      &.listSelf {
+      }
+    }
+  }
+}
+
+.listScrollButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
+  gap: 8px;
+
+  button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-background-light);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius-xs);
+    color: var(--color-text-light);
+    background-color: var(--color-secondary);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: var(--color-secondary-dark);
+    }
+  }
+}
+
+.listMobilePageWrapper {
+  flex-direction: row;
+  overflow-x: scroll;
+  display: flex;
+  flex-shrink: 0;
+  margin-right: var(--spacing-sm);
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 12px;
+    background-color: #f5f5f5;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-secondary);
+    border-radius: var(--border-radius-xs);
+  }
+}
+
+.listItemCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: center;
+
+  &:nth-child(odd) {
+    background-color: var(--color-background-light);
+  }
+  &:nth-child(even) {
+    background-color: var(--color-background-dark);
+  }
 }
 
 .listItemLabel {
   color: var(--color-secondary-dark);
 }
 
-.listItemValue:not(.listItemImageBox):not(.listItemChartImageBox) {
+.listItemValue:not(.listItemImageBox.beansImg):not(.listItemImageBox.beansImg) {
   margin-left: var(--spacing-xs);
 }
 
-.listItemImageBox {
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
+.buttonContainer {
+  &.listSelf {
+  }
+  .buttonContent {
+    &.deleteButtonContent {
+    }
+  }
 }
-
-.listItemTasting {
-  display: inline-flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.listItemTasting .listItemValue {
-  text-align: center;
-}
-
-.listItemTasting > *:not(.listItemOverall):not(.listItemChartImageBox) {
-  flex: 1 1;
-}
-
-.listItemOverall {
-  width: 100%;
-}
-
-.listItemChartImageBox {
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-.listItemChartImage {
-  width: inherit;
-}
-
 /* Tablet */
 @media screen and (min-width: 600px) {
   .listSearchArea {
@@ -292,24 +569,221 @@
 
 /* PC */
 @media screen and (min-width: 960px) {
-  .listPageContents {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: stretch;
-    top: 80px;
+  .listCheckboxContainer {
+    &.listSelf {
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(-110%, -50%);
+    }
+
+    .listCheckboxLabel {
+      .listCheckboxInput {
+        width: var(--item-sm-width);
+        height: var(--item-sm-width);
+        position: static;
+        top: unset;
+        transform: unset;
+      }
+    }
+  }
+
+  .listItemCoffeeBeans {
+    &.listMobileItem {
+    }
+    &.listPcItem {
+    }
+    &.listSelf {
+      grid-area: coffeeBeans;
+      display: grid;
+      grid-template-areas:
+        "coffeeName coffeeName coffeeName coffeeName"
+        "image variety variety variety"
+        "image roastingDegree roastingDegree roastingDegree"
+        "image productionArea productionArea productionArea";
+      grid-template-columns: auto auto auto auto;
+      gap: var(--spacing-xs);
+      & > * {
+        display: flex;
+      }
+      .listItemCoffeeName {
+        grid-area: coffeeName;
+      }
+      .listItemImageBox.beansImg {
+        grid-area: image;
+      }
+      .listItemVariety {
+        grid-area: variety;
+      }
+      .listItemProductionArea {
+        grid-area: productionArea;
+        flex-direction: column;
+      }
+      .listItemRoastingDegree {
+        grid-area: roastingDegree;
+      }
+    }
+  }
+
+  .listItemBrewingRecipe {
+    &.listSelf {
+      grid-area: brewingRecipe;
+      display: grid;
+      grid-template-areas:
+        "exMethod exMethod exMethod exMethod"
+        "exMaker exMaker exMaker exMaker"
+        "measurementMethod measurementMethod exTime exTime"
+        "coffeeAmount waterAmount grindSize temperature";
+      grid-template-columns: auto auto auto auto;
+      gap: var(--spacing-xs);
+      align-items: center;
+
+      & > * {
+        display: flex;
+        align-items: stretch;
+      }
+      & > *:not(.listItemExMethod):not(.listItemExMaker) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .listItemExMethod {
+        grid-area: exMethod;
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      .listItemExMaker {
+        grid-area: exMaker;
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      .listItemGrindSize {
+        grid-area: grindSize;
+      }
+      .listItemTemperature {
+        grid-area: temperature;
+      }
+      .listItemCoffeeAmount {
+        grid-area: coffeeAmount;
+      }
+      .listItemWaterAmount {
+        grid-area: waterAmount;
+      }
+      .listItemMeasurementMethod {
+        grid-area: measurementMethod;
+      }
+      .listItemExTime {
+        grid-area: exTime;
+      }
+    }
+  }
+
+  .listItemTasting {
+    &.listMobileItem {
+    }
+    &.listPcItem {
+    }
+    &.listSelf {
+      grid-area: tasting;
+      display: grid;
+      grid-template-areas:
+        "acidity overall"
+        "bitterness chartImage"
+        "body chartImage"
+        "aroma chartImage"
+        "aftertaste chartImage";
+      gap: var(--spacing-xs);
+      justify-items: center;
+      align-items: start;
+      & > * {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .listItemAcidity {
+        grid-area: acidity;
+      }
+      .listItemBitterness {
+        grid-area: bitterness;
+      }
+      .listItemBody {
+        grid-area: body;
+      }
+      .listItemAroma {
+        grid-area: aroma;
+      }
+      .listItemAftertaste {
+        grid-area: aftertaste;
+      }
+      .listItemOverall {
+        grid-area: overall;
+
+        .listItemValue {
+          width: 50%;
+        }
+      }
+    }
+    .listItemImageBox.chartImg {
+      grid-area: chartImage;
+    }
+  }
+
+  .listItemMemoArea {
+    &.listMobileItem {
+    }
+    &.listPcItem {
+    }
+    &.listSelf {
+      grid-area: memoArea;
+      .listItemMemo {
+      }
+    }
+  }
+
+  .buttonContent {
+    &.deleteButtonContent {
+      &.listSelf {
+      }
+    }
+  }
+
+  .buttonContainer {
+    &.listSelf {
+    }
+    .buttonContent {
+      &.deleteButtonContent {
+      }
+    }
   }
 
   .listPcPageWrapper {
     flex-direction: column;
   }
 
+  .listPcCard {
+    margin: 0 0 0 auto;
+    &:last-child {
+      border-top: 0.1px solid var(--color-background-dark);
+      border-bottom: 0.1px solid var(--color-background-dark);
+    }
+
+    &:not(:first-child, :last-child) {
+      border-top: 0.1px solid var(--color-background-dark);
+    }
+    & > .buttonContent.deleteButtonContent {
+      margin: var(--spacing-xs);
+    }
+  }
+
   .listItemCard {
     width: 95%;
     height: auto;
     display: grid;
-
     grid-template-areas:
       "coffeeBeans brewingRecipe tasting tasting"
       "memoArea memoArea memoArea buttonArea";
@@ -317,242 +791,14 @@
     grid-template-rows: auto auto;
   }
 
-  .listPcCard {
-    margin: 0 0 0 auto;
-  }
-
-  .listPcCard:last-child {
-    border-top: 0.1px solid var(--color-background-dark);
-    border-bottom: 0.1px solid var(--color-background-dark);
-  }
-
-  .listPcCard:not(:first-child, :last-child) {
-    border-top: 0.1px solid var(--color-background-dark);
-  }
-
-  .listPcCard > .buttonContent.deleteButtonContent {
-    margin: var(--spacing-xs);
-  }
-
-  .listItemValue {
-    margin-left: 0;
-  }
-
-  .listItemCoffeeBeans {
-    grid-area: coffeeBeans;
-    display: grid;
-    grid-template-areas:
-      "coffeeName coffeeName coffeeName coffeeName"
-      "image variety variety variety"
-      "image roastingDegree roastingDegree roastingDegree"
-      "image productionArea productionArea productionArea";
-    grid-template-columns: auto auto auto auto;
-    gap: var(--spacing-xs);
-  }
-
-  .listItemCoffeeBeans > * {
-    display: flex;
-  }
-
-  .listItemCoffeeBeans .listItemProductionArea {
-    flex-direction: column;
-  }
-
-  .listItemImageBox {
-    grid-area: image;
-  }
-
-  .listItemImage {
-    width: calc(var(--item-image-width) * 2);
-    height: auto;
-    margin: var(--spacing-xs);
-  }
-
-  .listItemCoffeeName {
-    grid-area: coffeeName;
-  }
-
-  .listItemVariety {
-    grid-area: variety;
-  }
-
-  .listItemProductionArea {
-    grid-area: productionArea;
-  }
-
-  .listItemRoastingDegree {
-    grid-area: roastingDegree;
-  }
-
-  .listItemBrewingRecipe {
-    grid-area: brewingRecipe;
-    display: grid;
-    grid-template-areas:
-      "exMethod exMethod exMethod exMethod"
-      "exMaker exMaker exMaker exMaker"
-      "measurementMethod measurementMethod exTime exTime"
-      "coffeeAmount waterAmount grindSize temperature";
-    grid-template-columns: auto auto auto auto;
-    gap: var(--spacing-xs);
-    align-items: center;
-  }
-
-  .listItemBrewingRecipe > * {
-    display: flex;
-    align-items: stretch;
-  }
-
-  .listItemBrewingRecipe .listItemExMethod,
-  .listItemBrewingRecipe .listItemExMaker {
-    flex-direction: row;
-    justify-content: flex-start;
-  }
-
-  .listItemBrewingRecipe > *:not(.listItemExMethod):not(.listItemExMaker) {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .listItemExMethod {
-    grid-area: exMethod;
-  }
-
-  .listItemExMaker {
-    grid-area: exMaker;
-  }
-
-  .listItemGrindSize {
-    grid-area: grindSize;
-  }
-
-  .listItemTemperature {
-    grid-area: temperature;
-  }
-
-  .listItemCoffeeAmount {
-    grid-area: coffeeAmount;
-  }
-
-  .listItemWaterAmount {
-    grid-area: waterAmount;
-  }
-
-  .listItemMeasurementMethod {
-    grid-area: measurementMethod;
-  }
-
-  .listItemExTime {
-    grid-area: exTime;
-  }
-
-  .listItemTasting {
-    grid-area: tasting;
-    display: grid;
-    grid-template-areas:
-      "acidity overall"
-      "bitterness chartImage"
-      "body chartImage"
-      "aroma chartImage"
-      "aftertaste chartImage";
-    gap: var(--spacing-xs);
-    justify-items: center;
-    align-items: start;
-  }
-
-  .listItemTasting > * {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .listItemAcidity {
-    grid-area: acidity;
-  }
-
-  .listItemBitterness {
-    grid-area: bitterness;
-  }
-
-  .listItemBody {
-    grid-area: body;
-  }
-
-  .listItemAroma {
-    grid-area: aroma;
-  }
-
-  .listItemAftertaste {
-    grid-area: aftertaste;
-  }
-
-  .listItemOverall {
-    grid-area: overall;
-  }
-
-  .listItemOverall > .listItemValue {
-    width: 50%;
-  }
-
-  .listItemChartImageBox {
-    grid-area: chartImage;
-    width: calc(var(--item-image-width) * 2);
-    height: auto;
-    margin: var(--spacing-xs);
-  }
-
-  .listItemMemoArea {
-    grid-area: memoArea;
-  }
-
-  .listSearchArea input[type="text"] {
-    max-width: 80%;
-    margin: 0 auto;
-  }
-
-  .listCheckboxContainer {
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(-110%, -50%);
-  }
-
-  .listCheckboxInput {
-    width: var(--item-sm-width);
-    height: var(--item-sm-width);
-    position: static;
-    top: unset;
-    transform: unset;
-  }
-
-  .listItemShopData {
-    grid-area: shopData;
-  }
-
-  .listItemShopName {
-    grid-area: shopName;
-  }
-  .listItemShopPrice {
-    grid-area: shopPrice;
-  }
-  .listItemShopDate {
-    grid-area: shopDate;
-  }
-  .listItemShopAddress {
-    grid-area: shopAddress;
-  }
-  .listItemShopUrl {
-    grid-area: shopUrl;
-  }
-
-  .listItemShopCoffee {
-    grid-area: shopCoffee;
+  .listSearchArea {
+    input[type="text"] {
+      max-width: 80%;
+      margin: 0 auto;
+    }
   }
 }
+
 /*
 --------------------create page--------------------
 */

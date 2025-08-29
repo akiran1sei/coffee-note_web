@@ -99,8 +99,8 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
           <div className={styles.listItemValue}>4</div>
         </div>
-        <div className={styles.listItemChartImageBox}>
-          <div className={styles.listItemChartImage}>
+        <div className={styles.listItemImageBox}>
+          <div className={styles.listItemImage}>
             <Image
               width={200}
               height={200}
@@ -230,8 +230,8 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
           <div className={styles.listItemValue}>4</div>
         </div>
-        <div className={styles.listItemChartImageBox}>
-          <div className={styles.listItemChartImage}>
+        <div className={styles.listItemImageBox}>
+          <div className={styles.listItemImage}>
             <Image
               width={200}
               height={200}

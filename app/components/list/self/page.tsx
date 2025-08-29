@@ -35,7 +35,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
             パナマ エスメラルダ農園 ゲイシャ
           </div>
         </div>
-        <div className={styles.listItemImageBox}>
+        <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
           <div className={styles.listItemImage}>
             <Image
               width={300}
@@ -123,8 +123,8 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
           <div className={styles.listItemValue}>4</div>
         </div>
-        <div className={styles.listItemChartImageBox}>
-          <div className={styles.listItemChartImage}>
+        <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
+          <div className={styles.listItemImage}>
             <Image
               width={200}
               height={200}
@@ -185,7 +185,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
             パナマ エスメラルダ農園 ゲイシャ
           </div>
         </div>
-        <div className={styles.listItemImageBox}>
+        <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
           <div className={styles.listItemImage}>
             <Image
               width={200}
@@ -273,8 +273,8 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
           <div className={styles.listItemValue}>4</div>
         </div>
-        <div className={styles.listItemChartImageBox}>
-          <div className={styles.listItemChartImage}>
+        <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
+          <div className={styles.listItemImage}>
             <Image
               width={200}
               height={200}
