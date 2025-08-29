@@ -5,10 +5,9 @@ import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { MainButton } from "@/app/components/buttons/page";
-import SelfPcCard from "@/app/components/list/pc/self/page";
-import ShopPcCard from "@/app/components/list/pc/shop/page";
-import ShopMobileCard from "@/app/components/list/mobile/shop/page";
-import SelfMobileCard from "@/app/components/list/mobile/self/page";
+import { SelfPcCard, SelfMobileCard } from "@/app/components/list/self/page";
+import { ShopPcCard, ShopMobileCard } from "@/app/components/list/shop/page";
+
 interface PageTitleProps {
   listItemValue: string;
 }
