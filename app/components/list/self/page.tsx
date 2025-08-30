@@ -13,8 +13,8 @@ interface CardProps {
 export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
   return (
-    <>
-      <div className={`${styles.listCheckboxContainer} ${styles.listSelf}`}>
+    <div className={styles.listSelfMobileCard}>
+      <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
             type="checkbox"
@@ -26,9 +26,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
         </label>
       </div>
 
-      <div
-        className={`${styles.listItemCoffeeBeans} ${styles.listMobileItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemCoffeeBeans}`}>
         <div className={`${styles.listItemCoffeeName}`}>
           <div className={styles.listItemLabel}>{"コーヒー名"}</div>
           <div className={styles.listItemValue}>
@@ -60,9 +58,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>中煎り</div>
         </div>
       </div>
-      <div
-        className={`${styles.listItemBrewingRecipe} ${styles.listMobileItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemBrewingRecipe}`}>
         <div className={`${styles.listItemExMethod}`}>
           <div className={styles.listItemLabel}>{"抽出方法"}</div>
           <div className={styles.listItemValue}>ドリップ</div>
@@ -96,9 +92,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>3分20秒</div>
         </div>
       </div>
-      <div
-        className={`${styles.listItemTasting} ${styles.listMobileItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemTasting}`}>
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
           <div className={styles.listItemValue}>3</div>
@@ -134,9 +128,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div
-        className={`${styles.listItemMemoArea} ${styles.listMobileItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemMemoArea}`}>
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
           <div className={styles.listItemValue}>
@@ -144,9 +136,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div
-        className={`${styles.buttonContent} ${styles.deleteButtonContent} ${styles.listSelf}`}
-      >
+      <div className={`${styles.buttonContent} ${styles.deleteButtonContent}`}>
         <MainButton
           sizeValue="large"
           textValue="削除"
@@ -154,7 +144,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
           widthValue="widthAuto"
         />
       </div>
-    </>
+    </div>
   );
 };
 interface CardProps {
@@ -164,8 +154,8 @@ interface CardProps {
 export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
   return (
-    <>
-      <div className={`${styles.listCheckboxContainer} ${styles.listSelf}`}>
+    <div className={styles.listSelfPcCard}>
+      <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
             id={checkboxId}
@@ -176,9 +166,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           />
         </label>
       </div>
-      <div
-        className={`${styles.listItemCoffeeBeans} ${styles.listPcItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemCoffeeBeans}`}>
         <div className={`${styles.listItemCoffeeName}`}>
           <div className={styles.listItemLabel}>{"コーヒー名"}</div>
           <div className={styles.listItemValue}>
@@ -210,9 +198,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>中煎り</div>
         </div>
       </div>
-      <div
-        className={`${styles.listItemBrewingRecipe} ${styles.listPcItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemBrewingRecipe}`}>
         <div className={`${styles.listItemExMethod}`}>
           <div className={styles.listItemLabel}>{"抽出方法"}</div>
           <div className={styles.listItemValue}>ドリップ</div>
@@ -246,9 +232,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>3分20秒</div>
         </div>
       </div>
-      <div
-        className={`${styles.listItemTasting} ${styles.listPcItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemTasting}`}>
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
           <div className={styles.listItemValue}>3</div>
@@ -284,9 +268,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div
-        className={`${styles.listItemMemoArea} ${styles.listPcItem} ${styles.listSelf}`}
-      >
+      <div className={`${styles.listItemMemoArea}`}>
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
           <div className={styles.listItemValue}>
@@ -294,7 +276,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.buttonContainer} ${styles.listSelf}`}>
+      <div className={`${styles.buttonContainer}`}>
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
         >
@@ -306,6 +288,6 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
