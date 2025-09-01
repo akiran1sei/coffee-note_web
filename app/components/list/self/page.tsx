@@ -1,6 +1,6 @@
 // SelfPcCard.tsx
 import styles from "@/app/styles/Pages.module.css";
-import * as React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { MainButton } from "@/app/components/buttons/page";
 
@@ -153,8 +153,22 @@ interface CardProps {
 
 export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
+  const [isOpen, setIsOpen] = useState(false);
+  const [load, setLoad] = useState(false);
+  const openListClass = isOpen ? styles.listItemOpen : styles.listItemClose;
+  const handleClick = () => {
+    try {
+      setLoad(true);
+      setIsOpen(!isOpen);
+    } catch (error) {
+      console.error("Error toggling list item:", error);
+    } finally {
+      setLoad(false);
+    }
+  };
+
   return (
-    <div className={styles.listSelfPcCard}>
+    <div className={styles.listSelfPcCard} onClick={handleClick}>
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
@@ -166,13 +180,15 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           />
         </label>
       </div>
-      <div className={`${styles.listItemCoffeeBeans}`}>
+      <div className={`${styles.accordionHeader}`}>
         <div className={`${styles.listItemCoffeeName}`}>
           <div className={styles.listItemLabel}>{"コーヒー名"}</div>
           <div className={styles.listItemValue}>
             パナマ エスメラルダ農園 ゲイシャ
           </div>
         </div>
+      </div>
+      <div className={`${styles.listItemCoffeeBeans} ${openListClass}`}>
         <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
           <div className={styles.listItemImage}>
             <Image
@@ -185,7 +201,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
         </div>
         <div className={`${styles.listItemVariety}`}>
           <div className={styles.listItemLabel}>{"品種"}</div>
-          <div className={styles.listItemValue}>アラビカ</div>
+          <div className={styles.listItemValue}>カネフォラ種</div>
         </div>
         <div className={`${styles.listItemProductionArea}`}>
           <div className={styles.listItemLabel}>{"産地"}</div>
@@ -195,17 +211,19 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
         </div>
         <div className={`${styles.listItemRoastingDegree}`}>
           <div className={styles.listItemLabel}>{"焙煎度"}</div>
-          <div className={styles.listItemValue}>中煎り</div>
+          <div className={styles.listItemValue}>ミディアム（中浅）</div>
         </div>
       </div>
-      <div className={`${styles.listItemBrewingRecipe}`}>
+      <div className={`${styles.listItemBrewingRecipe} ${openListClass}`}>
         <div className={`${styles.listItemExMethod}`}>
           <div className={styles.listItemLabel}>{"抽出方法"}</div>
-          <div className={styles.listItemValue}>ドリップ</div>
+          <div className={styles.listItemValue}>
+            コーヒーメーカー（ドリップ式）
+          </div>
         </div>
         <div className={`${styles.listItemExMaker}`}>
           <div className={styles.listItemLabel}>{"抽出器具"}</div>
-          <div className={styles.listItemValue}>V60</div>
+          <div className={styles.listItemValue}>バルミューダ The Pot</div>
         </div>
         <div className={`${styles.listItemGrindSize}`}>
           <div className={styles.listItemLabel}>{"挽き目"}</div>
@@ -225,14 +243,14 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
         </div>
         <div className={`${styles.listItemMeasurementMethod}`}>
           <div className={styles.listItemLabel}>{"計測方法"}</div>
-          <div className={styles.listItemValue}>抽出量</div>
+          <div className={styles.listItemValue}>注湯量</div>
         </div>
         <div className={`${styles.listItemExTime}`}>
           <div className={styles.listItemLabel}>{"抽出時間"}</div>
           <div className={styles.listItemValue}>3分20秒</div>
         </div>
       </div>
-      <div className={`${styles.listItemTasting}`}>
+      <div className={`${styles.listItemTasting} ${openListClass}`}>
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
           <div className={styles.listItemValue}>3</div>
@@ -268,7 +286,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.listItemMemoArea}`}>
+      <div className={`${styles.listItemMemoArea} ${openListClass}`}>
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
           <div className={styles.listItemValue}>
@@ -276,7 +294,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.buttonContainer}`}>
+      <div className={`${styles.buttonContainer} ${openListClass}`}>
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
         >

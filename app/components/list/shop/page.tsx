@@ -1,6 +1,6 @@
 // ShopMobileCard.tsx
 import styles from "@/app/styles/Pages.module.css";
-import * as React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { MainButton } from "@/app/components/buttons/page";
 
@@ -130,8 +130,21 @@ interface CardProps {
 
 export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
+  const [isOpen, setIsOpen] = useState(false);
+  const [load, setLoad] = useState(false);
+  const openListClass = isOpen ? styles.listItemOpen : styles.listItemClose;
+  const handleClick = () => {
+    try {
+      setLoad(true);
+      setIsOpen(!isOpen);
+    } catch (error) {
+      console.error("Error toggling list item:", error);
+    } finally {
+      setLoad(false);
+    }
+  };
   return (
-    <div className={styles.listShopPcCard}>
+    <div className={styles.listShopPcCard} onClick={handleClick}>
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
@@ -143,11 +156,14 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           />
         </label>
       </div>
-      <div className={`${styles.listItemShopData}`}>
+      <div className={`${styles.accordionHeader}`}>
         <div className={`${styles.listItemShopName}`}>
           <div className={styles.listItemLabel}>{"店名"}</div>
           <div className={styles.listItemValue}>コーヒーショップ</div>
         </div>
+      </div>
+
+      <div className={`${styles.listItemShopData} ${openListClass}`}>
         <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
           <div className={styles.listItemImage}>
             <Image
@@ -177,7 +193,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.listItemShopCoffee}`}>
+      <div className={`${styles.listItemShopCoffee} ${openListClass}`}>
         <div className={`${styles.listItemCoffeeName}`}>
           <div className={styles.listItemLabel}>{"コーヒー名"}</div>
           <div className={styles.listItemValue}>コーヒー名</div>
@@ -187,7 +203,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>産地名</div>
         </div>
       </div>
-      <div className={`${styles.listItemTasting}`}>
+      <div className={`${styles.listItemTasting} ${openListClass}`}>
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
           <div className={styles.listItemValue}>3</div>
@@ -223,7 +239,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.listItemMemoArea}`}>
+      <div className={`${styles.listItemMemoArea} ${openListClass}`}>
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
           <div className={styles.listItemValue}>
@@ -231,7 +247,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.buttonContainer}`}>
+      <div className={`${styles.buttonContainer} ${openListClass}`}>
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
         >
