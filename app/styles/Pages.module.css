@@ -113,6 +113,8 @@
     background-color: var(--color-background);
   }
 }
+.listItemLink {
+}
 
 .listCheckboxContainer {
   width: 100%;
@@ -361,6 +363,9 @@
   .listItemClose {
     display: none;
   }
+  .listItemLink:hover {
+    text-shadow: 1px 1px 1px var(--color-background-dark);
+  }
   .listPcPageWrapper {
     flex-direction: column;
   }
@@ -391,14 +396,39 @@
   .accordionToggle {
     span {
       display: block;
-      transition: transform 0.3s ease;
+      transition: transform 0.5s ease;
     }
     .accordionToggleIcon {
+      border: 1px solid var(--color-background-dark);
+      border-radius: 50%;
+      width: var(--item-md-width);
+      height: var(--item-md-width);
+      margin-right: var(--spacing-xs);
+      position: relative;
+      .arrowImage {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .fade_in {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .fade_out {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+      &:active {
+        transition: all 0.5s ease-in-out;
+      }
       &.listItemOpen {
-        transform: rotate(180deg);
+        box-shadow: inset 3px 3px 0px var(--color-primary-light);
       }
       &.listItemClose {
-        transform: rotate(0deg);
+        box-shadow: 3px 3px 0px var(--color-primary-light);
       }
     }
   }
@@ -410,6 +440,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
     .accordionValueBox {
       &.listItemOpen {
         display: none;
