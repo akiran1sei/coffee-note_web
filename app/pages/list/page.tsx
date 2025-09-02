@@ -43,8 +43,8 @@ const ListPage = () => {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
-  // const [version, setVersion] = useState(true);
-  const [version, setVersion] = useState(false);
+  const [version, setVersion] = useState(true);
+  // const [version, setVersion] = useState(false);
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (id: string) => {

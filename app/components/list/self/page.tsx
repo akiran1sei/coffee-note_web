@@ -168,7 +168,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
   };
 
   return (
-    <div className={styles.listSelfPcCard} onClick={handleClick}>
+    <div className={styles.listSelfPcCard}>
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
@@ -180,12 +180,26 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           />
         </label>
       </div>
-      <div className={`${styles.accordionHeader}`}>
+      <div className={`${styles.accordionHeader}`} onClick={handleClick}>
         <div className={`${styles.listItemCoffeeName}`}>
           <div className={styles.listItemLabel}>{"コーヒー名"}</div>
           <div className={styles.listItemValue}>
             パナマ エスメラルダ農園 ゲイシャ
           </div>
+        </div>
+        <div className={`${styles.accordionToggle} `}>
+          <span className={`${styles.accordionValueBox} ${openListClass}`}>
+            <span className={styles.accordionLabel}>{"全体の好み:"}</span>
+            <span className={styles.accordionValue}>{"4"}</span>
+          </span>
+          <span className={`${styles.accordionToggleIcon} ${openListClass}`}>
+            <Image
+              src="/images/arrow_drop_down.svg"
+              alt="Toggle"
+              width={48}
+              height={48}
+            />
+          </span>
         </div>
       </div>
       <div className={`${styles.listItemCoffeeBeans} ${openListClass}`}>
