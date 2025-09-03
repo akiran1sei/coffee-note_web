@@ -207,7 +207,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
         </div>
       </div>
 
-      <div className={`${styles.listItemShopData} ${openListClass}`}>
+      <div
+        className={`${styles.listItemShopData} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
           <div className={styles.listItemImage}>
             <Image
@@ -237,7 +241,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.listItemShopCoffee} ${openListClass}`}>
+      <div
+        className={`${styles.listItemShopCoffee} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemCoffeeName}`}>
           <div className={styles.listItemLabel}>{"コーヒー名"}</div>
           <div className={styles.listItemValue}>コーヒー名</div>
@@ -247,7 +255,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>産地名</div>
         </div>
       </div>
-      <div className={`${styles.listItemTasting} ${openListClass}`}>
+      <div
+        className={`${styles.listItemTasting} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
           <div className={styles.listItemValue}>3</div>
@@ -283,7 +295,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.listItemMemoArea} ${openListClass}`}>
+      <div
+        className={`${styles.listItemMemoArea} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
           <div className={styles.listItemValue}>
@@ -291,7 +307,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.buttonContainer} ${openListClass}`}>
+      <div
+        className={`${styles.listButtonContainer} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
         >

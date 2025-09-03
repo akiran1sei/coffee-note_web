@@ -168,7 +168,7 @@ const ItemPage: React.FC<ItemPageProps> = () =>
                   </div>
                 </div>
               )}
-              <div className={styles.buttonContainer}>
+              <div className={styles.itemButtonContainer}>
                 <div
                   className={`${styles.buttonContent} ${styles.saveButtonContent}`}
                 >

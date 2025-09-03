@@ -1,6 +1,7 @@
-/*
--------------------共通スタイル--------------------
-*/
+/* ====================================
+   共通スタイル（Common Styles）
+   ==================================== */
+
 .pageForm {
   display: contents;
 }
@@ -18,17 +19,15 @@
   display: flex;
 }
 
-.buttonContainer {
+.listButtonContainer {
   margin: auto;
   grid-area: buttonArea;
 }
+
 .buttonContent {
   margin: auto;
 }
 
-/*
---------------------top page--------------------
-*/
 .scrollContainer {
   width: 100%;
   padding: var(--spacing-lg);
@@ -45,9 +44,10 @@
   align-items: center;
 }
 
-/*
---------------------home page--------------------
-*/
+/* ====================================
+   ホームページ（Home Page）
+   ==================================== */
+
 .homePageContents {
   top: 0;
   bottom: 0;
@@ -93,18 +93,11 @@
   font-size: var(--font-size-sm);
 }
 
-/*
---------------------list page--------------------
-*/
-/* 共通スタイル */
+/* ====================================
+   リストページ（List Page）
+   ==================================== */
 
-.listItemImageBox {
-  .listItemImage {
-    width: calc(var(--item-image-width) * 2);
-    height: auto;
-    margin: var(--spacing-xs) auto;
-  }
-}
+/* リストアイテム共通スタイル */
 .listItemCard {
   &:nth-child(odd) {
     background-color: var(--color-background-light);
@@ -113,9 +106,27 @@
     background-color: var(--color-background);
   }
 }
-.listItemLink {
+
+.listItemLink:hover {
+  text-shadow: 1px 1px 1px var(--color-background-dark);
 }
 
+.listItemLabel {
+  color: var(--color-secondary-dark);
+}
+
+.listItemValue:not(.listItemImageBox.beansImg) {
+  margin-left: var(--spacing-xs);
+}
+
+/* リストアイテム画像 */
+.listItemImageBox .listItemImage {
+  width: calc(var(--item-image-width) * 2);
+  height: auto;
+  margin: var(--spacing-xs) auto;
+}
+
+/* チェックボックス */
 .listCheckboxContainer {
   width: 100%;
   height: var(--item-sm-width);
@@ -125,64 +136,28 @@
   transform: translateY(calc(-100% - var(--spacing-sm)));
   display: flex;
   justify-content: center;
-
-  .listCheckboxLabel {
-    display: contents;
-    .listCheckboxInput {
-      width: var(--item-sm-width);
-      height: var(--item-sm-width);
-    }
-  }
 }
 
+.listCheckboxLabel {
+  display: contents;
+}
+
+.listCheckboxInput {
+  width: var(--item-sm-width);
+  height: var(--item-sm-width);
+}
+
+/* ショップデータ */
 .listItemShopData {
-  .listItemShopName {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
-
-  .listItemShopPrice {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
-  .listItemShopDate {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
-  .listItemShopAddress {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
-  .listItemShopUrl {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
+  /* 子要素のスタイルは必要に応じて追加 */
 }
 
+/* コーヒー情報 */
 .listItemShopCoffee {
-  .listItemCoffeeName {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
-  .listItemProductionArea {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
+  /* 子要素のスタイルは必要に応じて追加 */
 }
+
+/* テイスティング */
 .listItemTasting {
   display: inline-flex;
   flex-direction: row;
@@ -190,55 +165,39 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-
-  .listItemOverall {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-    width: 100%;
-  }
-
-  .listItemValue {
-    text-align: center;
-  }
-  & > *:not(.listItemOverall):not(.listItemImageBox.beansImg) {
-    flex: 1 1;
-  }
 }
 
+.listItemTasting .listItemOverall {
+  width: 100%;
+}
+
+.listItemTasting .listItemValue {
+  text-align: center;
+}
+
+.listItemTasting > *:not(.listItemOverall):not(.listItemImageBox.beansImg) {
+  flex: 1 1;
+}
+
+/* メモエリア */
 .listItemMemoArea {
-  .listItemMemo {
-    .listItemLabel {
-    }
-    .listItemValue {
-    }
-  }
+  /* 子要素のスタイルは必要に応じて追加 */
 }
 
-.buttonContent {
-  &.deleteButtonContent {
-  }
-}
-
-.buttonContainer {
-  .buttonContent {
-    &.deleteButtonContent {
-    }
-  }
-}
+/* ページレイアウト */
 .listPageContents {
   top: 80px;
-
-  .buttonContent.sortButtonContent {
-    width: 100%;
-    margin: var(--spacing-sm);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
+.listPageContents .buttonContent.sortButtonContent {
+  width: 100%;
+  margin: var(--spacing-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* モバイル用カード */
 .listMobileCard {
   width: fit-content;
   max-width: 350px;
@@ -247,80 +206,6 @@
   flex-shrink: 0;
   margin-right: var(--spacing-sm);
   top: var(--spacing-xl);
-
-  .buttonContent.deleteButtonContent {
-    margin: var(--spacing-md) auto var(--spacing-xl);
-    text-align: center;
-  }
-}
-
-.listSearchArea {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 1rem;
-  padding: var(--spacing-sm) 0;
-  margin: 0 var(--spacing-xs);
-  border-bottom: 1px solid var(--color-background-dark);
-
-  input[type="text"] {
-    width: 100%;
-    max-width: 80%;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border: 1px solid var(--color-background-dark);
-    border-radius: var(--border-radius-sm);
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  input[type="text"]:focus {
-    border-color: var(--color-main);
-  }
-
-  label {
-    display: contents;
-  }
-}
-
-.listScrollButtons {
-  display: flex;
-  justify-content: center;
-  margin-top: var(--spacing-md);
-  gap: 8px;
-
-  button {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border: 1px solid var(--color-background-light);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    border-radius: var(--border-radius-xs);
-    color: var(--color-text-light);
-    background-color: var(--color-secondary);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    &:hover {
-      background-color: var(--color-secondary-dark);
-    }
-  }
-}
-
-.listMobilePageWrapper {
-  flex-direction: row;
-  overflow-x: scroll;
-  display: flex;
-  flex-shrink: 0;
-  margin-right: var(--spacing-sm);
-
-  &::-webkit-scrollbar {
-    width: 10px;
-    height: 12px;
-    background-color: #f5f5f5;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--color-secondary);
-    border-radius: var(--border-radius-xs);
-  }
-}
-
-.listMobileCard {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -329,22 +214,91 @@
   justify-content: center;
 }
 
-.listItemLabel {
-  color: var(--color-secondary-dark);
+.listMobileCard .buttonContent.deleteButtonContent {
+  margin: var(--spacing-md) auto var(--spacing-xl);
+  text-align: center;
 }
 
-.listItemValue:not(.listItemImageBox.beansImg):not(.listItemImageBox.beansImg) {
-  margin-left: var(--spacing-xs);
+.listMobilePageWrapper {
+  flex-direction: row;
+  overflow-x: scroll;
+  display: flex;
+  flex-shrink: 0;
+  margin-right: var(--spacing-sm);
 }
 
-.buttonContainer {
-  .buttonContent {
-    &.deleteButtonContent {
-      margin: 0 var(--spacing-sm) var(--spacing-sm) 0;
-    }
-  }
+.listMobilePageWrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 12px;
+  background-color: #f5f5f5;
 }
-/* Tablet */
+
+.listMobilePageWrapper::-webkit-scrollbar-thumb {
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius-xs);
+}
+
+/* 検索エリア */
+.listSearchArea {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+  padding: var(--spacing-sm) 0;
+  margin: 0 var(--spacing-xs);
+  border-bottom: 1px solid var(--color-background-dark);
+}
+
+.listSearchArea input[type="text"] {
+  width: 100%;
+  max-width: 80%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-background-dark);
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  transition: border-color 0.5s ease;
+}
+
+.listSearchArea input[type="text"]:focus {
+  border-color: var(--color-main);
+}
+
+.listSearchArea label {
+  display: contents;
+}
+
+/* スクロールボタン */
+.listScrollButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
+  gap: 8px;
+}
+
+.listScrollButtons button {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-background-light);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius-xs);
+  color: var(--color-text-light);
+  background-color: var(--color-secondary);
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.listScrollButtons button:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+/* 削除ボタン */
+.listButtonContainer .buttonContent.deleteButtonContent {
+  margin: 0 var(--spacing-sm) var(--spacing-sm) 0;
+}
+
+/* ====================================
+   PC用リストスタイル（Media Queries）
+   ==================================== */
+
 @media screen and (min-width: 600px) {
   .listSearchArea {
     max-width: 50%;
@@ -352,35 +306,39 @@
   }
 }
 
-/* PC */
 @media screen and (min-width: 960px) {
+  /* アコーディオンスタイル */
   .listItemOpen {
     display: grid;
-    .listItemValue {
-      font-size: var(--font-size-md);
-    }
   }
+
+  .listItemOpen .listItemValue {
+    font-size: var(--font-size-md);
+  }
+
   .listItemClose {
     display: none;
   }
+
   .listItemLink:hover {
-    text-shadow: 1px 1px 1px var(--color-background-dark);
+    text-shadow: 1px 1px 10px var(--color-secondary-light);
   }
+
   .listPcPageWrapper {
     flex-direction: column;
   }
 
-  .listPcCard {
-    &:last-child {
-      border-top: 0.1px solid var(--color-background-dark);
-      border-bottom: 0.1px solid var(--color-background-dark);
-    }
-
-    &:not(:first-child, :last-child) {
-      border-top: 0.1px solid var(--color-background-dark);
-    }
+  /* PCカードのボーダー */
+  .listPcCard:last-child {
+    border-top: 0.1px solid var(--color-background-dark);
+    border-bottom: 0.1px solid var(--color-background-dark);
   }
 
+  .listPcCard:not(:first-child, :last-child) {
+    border-top: 0.1px solid var(--color-background-dark);
+  }
+
+  /* チェックボックス（PC用） */
   .listCheckboxContainer {
     width: var(--item-sm-width);
     height: var(--item-sm-width);
@@ -388,79 +346,91 @@
     top: 0%;
     left: 0;
     transform: translate(calc(-100% - var(--spacing-sm)), var(--spacing-sm));
-    .listCheckboxLabel {
-      .listCheckboxInput {
-      }
-    }
   }
-  .accordionToggle {
-    span {
-      display: block;
-      transition: transform 0.5s ease;
-    }
-    .accordionToggleIcon {
-      border: 1px solid var(--color-background-dark);
-      border-radius: 50%;
-      width: var(--item-md-width);
-      height: var(--item-md-width);
-      margin-right: var(--spacing-xs);
-      position: relative;
-      .arrowImage {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-      .fade_in {
-        opacity: 1;
-        transition: opacity 0.5s ease-in-out;
-      }
 
-      .fade_out {
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-      }
-      &:active {
-        transition: all 0.5s ease-in-out;
-      }
-      &.listItemOpen {
-        box-shadow: inset 3px 3px 0px var(--color-primary-light);
-      }
-      &.listItemClose {
-        box-shadow: 3px 3px 0px var(--color-primary-light);
-      }
-    }
-  }
-  .accordionToggle.listItemOpen {
-    display: none;
-  }
+  /* アコーディオントグル */
   .accordionToggle {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-
-    .accordionValueBox {
-      &.listItemOpen {
-        display: none;
-      }
-
-      &.listItemClose {
-        display: flex;
-        flex-direction: row;
-      }
-      .accordionLabel {
-        color: var(--color-text-dark);
-        font-size: var(--font-size-sm);
-      }
-      .accordionValue {
-        font-size: var(--font-size-lg);
-        color: var(--color-secondary-dark);
-        font-weight: bold;
-      }
-    }
   }
+
+  .accordionToggle span {
+    display: block;
+  }
+
+  .accordionToggleIcon {
+    border: 1px solid var(--color-background-dark);
+    border-radius: 50%;
+    width: var(--item-md-width);
+    height: var(--item-md-width);
+    margin-right: var(--spacing-xs);
+    position: relative;
+  }
+
+  .accordionToggleIcon .arrowImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  /* アニメーション */
+  .fade_in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .fade_out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .accordionToggleIcon.listItemOpen {
+    box-shadow: unset;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .accordionToggleIcon.listItemClose {
+    box-shadow: 3px 3px 0px var(--color-primary-light);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .accordionValueBox.listItemOpen {
+    display: none;
+  }
+
+  .accordionValueBox.listItemClose {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .accordionLabel {
+    color: var(--color-text-dark);
+    font-size: var(--font-size-sm);
+  }
+
+  .accordionValue {
+    font-size: var(--font-size-lg);
+    color: var(--color-secondary-dark);
+    font-weight: bold;
+  }
+
+  .accordionToggle.listItemOpen {
+    display: none;
+  }
+
+  .accordionHeader .listItemLink {
+    display: flex;
+  }
+
+  .accordionHeader .listItemLink:hover {
+    text-shadow: 1px 1px 10px var(--color-secondary-light);
+  }
+
+  /* セルフPCカード */
   .listSelfPcCard {
     width: 95%;
     height: auto;
@@ -470,111 +440,133 @@
     position: relative;
     margin: 0 0 0 auto;
     gap: var(--spacing-sm);
-    .accordionHeader {
-      width: 100%;
-      grid-area: 1/1/2/3;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: stretch;
-      .listItemCoffeeName {
-        grid-area: coffeeName;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        font-size: var(--font-size-lg);
-      }
-    }
-    .listItemCoffeeBeans {
-      grid-area: 2/1/3/3;
-      grid-template-areas:
-        "image variety variety variety"
-        "image roastingDegree roastingDegree roastingDegree"
-        "image productionArea productionArea productionArea";
-      grid-template-columns: auto auto auto auto;
-      gap: var(--spacing-xs);
-      & > * {
-        display: flex;
-      }
-
-      .listItemImageBox.beansImg {
-        grid-area: image;
-      }
-      .listItemVariety {
-        grid-area: variety;
-      }
-      .listItemProductionArea {
-        grid-area: productionArea;
-        flex-direction: column;
-      }
-      .listItemRoastingDegree {
-        grid-area: roastingDegree;
-      }
-    }
-
-    .listItemBrewingRecipe {
-      grid-area: 3 / 1 / 4 / 2;
-
-      grid-template-areas:
-        "exMethod exMethod"
-        "exMaker exMaker"
-        "measurementMethod measurementMethod"
-        "exTime exTime"
-        "coffeeAmount waterAmount  "
-        "grindSize temperature";
-      grid-template-rows: auto auto auto auto auto auto;
-      grid-template-columns: auto auto;
-      gap: var(--spacing-xs);
-      align-items: center;
-
-      & > * {
-        display: flex;
-        align-items: stretch;
-      }
-      & > *:not(.listItemExMethod):not(.listItemExMaker) {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .listItemExMethod {
-        grid-area: exMethod;
-        flex-direction: row;
-        justify-content: flex-start;
-      }
-      .listItemExMaker {
-        grid-area: exMaker;
-        flex-direction: row;
-        justify-content: flex-start;
-      }
-      .listItemGrindSize {
-        grid-area: grindSize;
-      }
-      .listItemTemperature {
-        grid-area: temperature;
-      }
-      .listItemCoffeeAmount {
-        grid-area: coffeeAmount;
-      }
-      .listItemWaterAmount {
-        grid-area: waterAmount;
-      }
-      .listItemMeasurementMethod {
-        grid-area: measurementMethod;
-      }
-      .listItemExTime {
-        grid-area: exTime;
-      }
-    }
-    .listItemTasting {
-      grid-area: 3 / 2 / 4 / 3;
-    }
-    .buttonContainer {
-      grid-area: 4 / 2 / 5 / 3;
-    }
   }
-  /* SHOP PCカードのグリッドレイアウトを定義 */
+
+  .listSelfPcCard .accordionHeader {
+    width: 100%;
+    grid-area: 1/1/2/3;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  .listSelfPcCard .accordionHeader .listItemCoffeeName {
+    grid-area: coffeeName;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: var(--font-size-lg);
+  }
+
+  .listSelfPcCard .listItemCoffeeBeans {
+    grid-area: 2/1/3/3;
+
+    grid-template-areas:
+      "image variety variety variety"
+      "image roastingDegree roastingDegree roastingDegree"
+      "image productionArea productionArea productionArea";
+    grid-template-columns: auto auto auto auto;
+    gap: var(--spacing-xs);
+  }
+
+  .listSelfPcCard .listItemCoffeeBeans > * {
+    display: flex;
+  }
+
+  .listSelfPcCard .listItemImageBox.beansImg {
+    grid-area: image;
+  }
+
+  .listSelfPcCard .listItemVariety {
+    grid-area: variety;
+  }
+
+  .listSelfPcCard .listItemProductionArea {
+    grid-area: productionArea;
+    flex-direction: column;
+  }
+
+  .listSelfPcCard .listItemRoastingDegree {
+    grid-area: roastingDegree;
+  }
+
+  .listSelfPcCard .listItemBrewingRecipe {
+    grid-area: 3 / 1 / 4 / 2;
+
+    grid-template-areas:
+      "exMethod exMethod"
+      "exMaker exMaker"
+      "measurementMethod measurementMethod"
+      "exTime exTime"
+      "coffeeAmount waterAmount"
+      "grindSize temperature";
+    grid-template-rows: auto auto auto auto auto auto;
+    grid-template-columns: auto auto;
+    gap: var(--spacing-xs);
+    align-items: center;
+  }
+
+  .listSelfPcCard .listItemBrewingRecipe > * {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .listSelfPcCard
+    .listItemBrewingRecipe
+    > *:not(.listItemExMethod):not(.listItemExMaker) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .listSelfPcCard .listItemExMethod {
+    grid-area: exMethod;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .listSelfPcCard .listItemExMaker {
+    grid-area: exMaker;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .listSelfPcCard .listItemGrindSize {
+    grid-area: grindSize;
+  }
+
+  .listSelfPcCard .listItemTemperature {
+    grid-area: temperature;
+  }
+
+  .listSelfPcCard .listItemCoffeeAmount {
+    grid-area: coffeeAmount;
+  }
+
+  .listSelfPcCard .listItemWaterAmount {
+    grid-area: waterAmount;
+  }
+
+  .listSelfPcCard .listItemMeasurementMethod {
+    grid-area: measurementMethod;
+  }
+
+  .listSelfPcCard .listItemExTime {
+    grid-area: exTime;
+  }
+
+  .listSelfPcCard .listItemTasting {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+
+  .listSelfPcCard .listButtonContainer {
+    grid-area: 4 / 2 / 5 / 3;
+  }
+
+  /* ショップPCカード */
   .listShopPcCard {
     width: 95%;
     height: auto;
@@ -586,67 +578,79 @@
     gap: var(--spacing-sm);
     justify-items: start;
     align-items: stretch;
-    .accordionHeader {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: stretch;
-      grid-area: 1/1/2/3;
-      .listItemShopName {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        font-size: var(--font-size-lg);
-      }
-    }
-
-    /* `shop`用のグリッドエリアをアイテムに割り当てる */
-    .listItemShopData {
-      grid-area: 2/1/3/2;
-      grid-template-areas:
-        "image date"
-        "image  price "
-        "image  address "
-        "image  url ";
-
-      .listItemImageBox {
-        grid-area: image;
-        margin-right: var(--spacing-xs);
-      }
-      .listItemShopPrice {
-        grid-area: price;
-      }
-      .listItemShopDate {
-        grid-area: date;
-      }
-      .listItemShopAddress {
-        grid-area: address;
-      }
-      .listItemShopUrl {
-        grid-area: url;
-      }
-    }
-
-    .listItemShopCoffee {
-      grid-area: 2 / 2 / 3 / 3;
-      .listItemCoffeeName,
-      .listItemProductionArea {
-        display: flex;
-        flex-direction: column;
-      }
-    }
-    .listItemTasting {
-      grid-area: 3 / 1 / 4 / 2;
-    }
-    .listItemMemoArea {
-      grid-area: 3 / 2 / 4 / 3;
-    }
-    .buttonContainer {
-      grid-area: 4 / 1 / 5 / 3;
-    }
   }
+
+  .listShopPcCard .accordionHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    grid-area: 1/1/2/3;
+  }
+
+  .listShopPcCard .accordionHeader .listItemShopName {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: var(--font-size-lg);
+  }
+
+  .listShopPcCard .listItemShopData {
+    grid-area: 2/1/3/2;
+
+    grid-template-areas:
+      "image date"
+      "image price"
+      "image address"
+      "image url";
+  }
+
+  .listShopPcCard .listItemShopData .listItemImageBox {
+    grid-area: image;
+    margin-right: var(--spacing-xs);
+  }
+
+  .listShopPcCard .listItemShopPrice {
+    grid-area: price;
+  }
+
+  .listShopPcCard .listItemShopDate {
+    grid-area: date;
+  }
+
+  .listShopPcCard .listItemShopAddress {
+    grid-area: address;
+  }
+
+  .listShopPcCard .listItemShopUrl {
+    grid-area: url;
+  }
+
+  .listShopPcCard .listItemShopCoffee {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+
+  .listShopPcCard .listItemShopCoffee .listItemCoffeeName,
+  .listShopPcCard .listItemShopCoffee .listItemProductionArea {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .listShopPcCard .listItemTasting {
+    grid-area: 3 / 1 / 4 / 2;
+  }
+
+  .listShopPcCard .listItemMemoArea {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+
+  .listShopPcCard .listButtonContainer {
+    grid-area: 4 / 1 / 5 / 3;
+  }
+
+  /* テイスティンググリッド */
   .listItemTasting {
     width: 100%;
 
@@ -661,56 +665,57 @@
     justify-items: stretch;
     align-items: stretch;
     justify-content: space-around;
-    & > * {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .listItemAcidity {
-      grid-area: acidity;
-    }
-    .listItemBitterness {
-      grid-area: bitterness;
-    }
-    .listItemBody {
-      grid-area: body;
-    }
-    .listItemAroma {
-      grid-area: aroma;
-    }
-    .listItemAftertaste {
-      grid-area: aftertaste;
-    }
-    .listItemOverall {
-      grid-area: overall;
-
-      .listItemValue {
-        width: 50%;
-      }
-    }
-
-    .listItemImageBox.chartImg {
-      grid-area: chartImage;
-    }
   }
 
-  .listItemMemoArea {
-    grid-area: 4 / 1 / 5 / 2;
+  .listItemTasting > * {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .listSearchArea {
-    input[type="text"] {
-      margin: 0 auto;
-    }
+  .listItemAcidity {
+    grid-area: acidity;
+  }
+
+  .listItemBitterness {
+    grid-area: bitterness;
+  }
+
+  .listItemBody {
+    grid-area: body;
+  }
+
+  .listItemAroma {
+    grid-area: aroma;
+  }
+
+  .listItemAftertaste {
+    grid-area: aftertaste;
+  }
+
+  .listItemOverall {
+    grid-area: overall;
+  }
+
+  .listItemOverall .listItemValue {
+    width: 50%;
+  }
+
+  .listItemImageBox.chartImg {
+    grid-area: chartImage;
+  }
+
+  .listSearchArea input[type="text"] {
+    margin: 0 auto;
   }
 }
 
-/*
---------------------create page--------------------
-*/
+/* ====================================
+   作成ページ（Create Page）
+   ==================================== */
+
 .createPageWrapper {
   flex-grow: 1;
   flex-direction: column;
@@ -724,40 +729,47 @@
   align-items: stretch;
   top: 80px;
 }
-.createPageContents .buttonContainer {
-  display: flex;
-}
+
 .createPageContents .buttonContent.saveButtonContent,
 .createPageContents .buttonContent.resetButtonContent {
   margin: var(--spacing-md) var(--spacing-xs) var(--spacing-xl);
   text-align: center;
 }
+
 .createSelfVersionContents,
 .createShopVersionContents {
   display: contents;
 }
+
 @media screen and (min-width: 600px) {
   .createSelfVersionContents,
   .createShopVersionContents {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: var(--spacing-md);
   }
 
-  .createShopVersionContents > .leftColumn,
-  .createSelfVersionContents > .leftColumn {
+  .createSelfVersionContents > .leftColumn,
+  .createShopVersionContents > .leftColumn {
     grid-area: 1 / 1 / 2 / 2;
   }
-  .createShopVersionContents > .rightColumn,
-  .createSelfVersionContents > .rightColumn {
+
+  .createSelfVersionContents > .rightColumn,
+  .createShopVersionContents > .rightColumn {
     grid-area: 1 / 2 / 2 / 3;
   }
-  .createShopVersionContents > .buttonContent,
-  .createSelfVersionContents > .buttonContent {
+
+  .createSelfVersionContents > .buttonContent,
+  .createShopVersionContents > .buttonContent {
     grid-area: 2 / 1 / 3 / 3;
   }
 }
-/*
---------------------item page--------------------
-*/
+
+/* ====================================
+   アイテムページ（Item Page）
+   ==================================== */
+
 .itemPageContents {
   display: flex;
   flex-direction: column;
@@ -767,7 +779,8 @@
   top: calc(80px + var(--spacing-md));
   padding: 0px var(--spacing-sm);
 }
-.itemPageContents .buttonContainer {
+
+.itemPageContents .itemButtonContainer {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -778,6 +791,7 @@
   margin-bottom: var(--spacing-xl);
 }
 
+/* 共通アイテムスタイル */
 .itemPcItem,
 .mobileItem {
   background-color: var(--color-background-light);
@@ -790,30 +804,9 @@
   margin-bottom: var(--spacing-md);
 }
 
+/* ページラッパー */
 .itemPcPageWrapper {
   flex-direction: column;
-}
-
-.itemPcCard {
-  display: grid;
-  /* grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto; */
-  gap: var(--spacing-md);
-  grid-template-areas:
-    "coffeeBeans brewingRecipe"
-    "tasting memoArea"
-    "buttonArea buttonArea";
-}
-
-.itemPcCard > .itemTasting {
-  grid-area: tasting;
-}
-.itemPcCard > .itemMemoArea {
-  grid-area: memoArea;
-}
-.itemPcCard > .buttonContent {
-  grid-column: 1 / span 2;
-  margin-top: var(--spacing-md);
 }
 
 .mobilePageWrapper {
@@ -824,15 +817,14 @@
   width: 100%;
 }
 
+/* アイテムセクション */
 .itemCoffeeBeans {
-  grid-area: coffeeBeans;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
 }
 
 .itemBrewingRecipe {
-  grid-area: brewingRecipe;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
@@ -850,6 +842,7 @@
   gap: var(--spacing-sm);
 }
 
+/* アイテムテキスト */
 .itemLabel {
   font-weight: bold;
   color: var(--color-secondary-dark);
@@ -861,6 +854,7 @@
   font-size: var(--font-size-md);
 }
 
+/* 画像 */
 .itemImageBox {
   text-align: center;
   margin: var(--spacing-sm) 0;
@@ -885,38 +879,54 @@
   overflow: hidden;
 }
 
+/* ====================================
+   アイテムページ メディアクエリ
+   ==================================== */
+
 @media screen and (min-width: 600px) {
   .itemPcPageWrapper {
     flex-direction: column;
   }
+
   .itemTasting {
     display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto auto auto;
     align-content: stretch;
     align-items: stretch;
     justify-items: center;
     justify-content: space-between;
+    gap: var(--spacing-sm);
   }
+
   .itemTasting .itemValue {
     text-align: center;
   }
+
   .itemAcidity {
     grid-area: 1 / 1 / 2 / 2;
   }
+
   .itemBitterness {
     grid-area: 1 / 2 / 2 / 3;
   }
+
   .itemBody {
     grid-area: 1 / 3 / 2 / 4;
   }
+
   .itemAroma {
     grid-area: 1 / 4 / 2 / 5;
   }
+
   .itemAftertaste {
     grid-area: 1 / 5 / 2 / 6;
   }
+
   .itemOverall {
     grid-area: 2 / 1 / 3 / 6;
   }
+
   .itemChartImageBox {
     grid-area: 3 / 1 / 4 / 6;
   }
@@ -924,13 +934,31 @@
 
 @media screen and (min-width: 960px) {
   .itemPcCard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: var(--spacing-md);
     grid-template-areas:
       "coffeeBeans brewingRecipe"
       "tasting memoArea"
       "buttonArea buttonArea";
   }
 
+  .itemPcCard > .itemTasting {
+    grid-area: tasting;
+  }
+
+  .itemPcCard > .itemMemoArea {
+    grid-area: memoArea;
+  }
+
+  .itemPcCard > .buttonContent {
+    grid-column: 1 / span 2;
+    margin-top: var(--spacing-md);
+  }
+
   .itemCoffeeBeans {
+    grid-area: coffeeBeans;
     display: grid;
     grid-template-areas:
       "image coffeeName"
@@ -944,20 +972,25 @@
   .itemImageBox {
     grid-area: image;
   }
+
   .itemCoffeeName {
     grid-area: coffeeName;
   }
+
   .itemVariety {
     grid-area: variety;
   }
+
   .itemProductionArea {
     grid-area: productionArea;
   }
+
   .itemRoastingDegree {
     grid-area: roastingDegree;
   }
 
   .itemBrewingRecipe {
+    grid-area: brewingRecipe;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
@@ -972,29 +1005,35 @@
       "tastingBody chartImage"
       "tastingAroma chartImage"
       "tastingAftertaste tastingOverall";
-
     gap: var(--spacing-sm);
     justify-content: center;
     align-items: center;
   }
+
   .itemAcidity {
     grid-area: tastingAcidity;
   }
+
   .itemBitterness {
     grid-area: tastingBitterness;
   }
+
   .itemBody {
     grid-area: tastingBody;
   }
+
   .itemAroma {
     grid-area: tastingAroma;
   }
+
   .itemAftertaste {
     grid-area: tastingAftertaste;
   }
+
   .itemOverall {
     grid-area: tastingOverall;
   }
+
   .itemTasting .itemAcidity,
   .itemTasting .itemBitterness,
   .itemTasting .itemBody,
@@ -1013,9 +1052,10 @@
   }
 }
 
-/*
---------------------update page--------------------
-*/
+/* ====================================
+   更新ページ（Update Page）
+   ==================================== */
+
 .updatePageContents {
   display: flex;
   flex-direction: column;

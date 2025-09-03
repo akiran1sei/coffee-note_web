@@ -189,7 +189,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           />
         </label>
       </div>
-      <div className={`${styles.accordionHeader}`} onClick={handleClick}>
+      <div className={`${styles.accordionHeader}`}>
         <Link href={`/pages/item/${id}`} className={styles.listItemLink}>
           <div className={`${styles.listItemCoffeeName}`}>
             <div className={styles.listItemLabel}>{"コーヒー名"}</div>
@@ -198,7 +198,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
             </div>
           </div>
         </Link>
-        <div className={`${styles.accordionToggle} `}>
+        <div className={`${styles.accordionToggle}`} onClick={handleClick}>
           <span className={`${styles.accordionValueBox} ${openListClass}`}>
             <span className={styles.accordionLabel}>{"全体の好み:"}</span>
             <span className={styles.accordionValue}>{"4"}</span>
@@ -226,7 +226,11 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           </span>
         </div>
       </div>
-      <div className={`${styles.listItemCoffeeBeans} ${openListClass}`}>
+      <div
+        className={`${styles.listItemCoffeeBeans} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
           <div className={styles.listItemImage}>
             <Image
@@ -252,7 +256,11 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>ミディアム（中浅）</div>
         </div>
       </div>
-      <div className={`${styles.listItemBrewingRecipe} ${openListClass}`}>
+      <div
+        className={`${styles.listItemBrewingRecipe} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemExMethod}`}>
           <div className={styles.listItemLabel}>{"抽出方法"}</div>
           <div className={styles.listItemValue}>
@@ -288,7 +296,11 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           <div className={styles.listItemValue}>3分20秒</div>
         </div>
       </div>
-      <div className={`${styles.listItemTasting} ${openListClass}`}>
+      <div
+        className={`${styles.listItemTasting} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
           <div className={styles.listItemValue}>3</div>
@@ -324,7 +336,11 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.listItemMemoArea} ${openListClass}`}>
+      <div
+        className={`${styles.listItemMemoArea} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
           <div className={styles.listItemValue}>
@@ -332,7 +348,11 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className={`${styles.buttonContainer} ${openListClass}`}>
+      <div
+        className={`${styles.listButtonContainer} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
         >
