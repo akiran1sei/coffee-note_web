@@ -180,6 +180,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
             <span className={styles.accordionLabel}>{"全体の好み:"}</span>
             <span className={styles.accordionValue}>{"4"}</span>
           </span>
+
           <span
             className={`${styles.accordionToggleIcon}  ${openListClass}`}
             onClick={handleClick}

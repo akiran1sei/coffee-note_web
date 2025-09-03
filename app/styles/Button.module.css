@@ -35,18 +35,18 @@
   overflow: hidden;
 }
 .iconLg {
-  width: var(--Item-lg-width);
-  height: var(--Item-lg-width);
+  width: var(--item-lg-width);
+  height: var(--item-lg-width);
   vertical-align: bottom;
 }
 .iconMd {
-  width: var(--Item-md-width);
-  height: var(--Item-md-width);
+  width: var(--item-md-width);
+  height: var(--item-md-width);
   vertical-align: bottom;
 }
 .iconSm {
-  width: var(--Item-sm-width);
-  height: var(--Item-sm-width);
+  width: var(--item-sm-width);
+  height: var(--item-sm-width);
   vertical-align: bottom;
 }
 
