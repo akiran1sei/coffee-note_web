@@ -1,4 +1,22 @@
 /* ====================================
+
+
+1. 共通スタイル（Common Styles）
+2. ホームページ（Home Page）
+3. リストページ（List Page）
+   - 共通スタイル
+   - モバイル用
+   - PC用（メディアクエリ）
+4. 作成ページ（Create Page）
+5. アイテムページ（Item Page）
+   - 基本スタイル
+   - レスポンシブ対応
+6. 更新ページ（Update Page）
+
+
+   ==================================== */
+
+/* ====================================
    共通スタイル（Common Styles）
    ==================================== */
 
@@ -797,7 +815,7 @@
   background-color: var(--color-background-light);
   border-radius: var(--border-radius-sm);
   padding: var(--spacing-md);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .mobileItem {
@@ -1064,6 +1082,89 @@
   align-items: stretch;
   top: 80px;
 }
-/* ====================================
-  ホップアップ画面
-   ==================================== */
+
+/*
+-------------------- ポップアップ（モーダル）スタイル --------------------
+*/
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: var(--spacing-md);
+  &.fade_in {
+    display: flex;
+  }
+  &.fade_out {
+    display: none;
+  }
+}
+
+.modalContent {
+  background: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  min-width: 250px; /* 最小幅を確保 */
+}
+
+.modalHeader {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modalBody {
+  /* リストコンテナ */
+  padding: var(--spacing-sm) 0;
+  overflow: auto;
+}
+
+.modalList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modalListItem {
+  padding: var(--spacing-md);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background-color 0.2s ease;
+  border-radius: var(--border-radius-sm);
+}
+
+.modalListItem:hover {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-primary);
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.modalClose {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: var(--spacing-xs);
+}

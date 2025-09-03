@@ -4,7 +4,7 @@ import styles from "@/app/styles/Pages.module.css";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { MainButton } from "@/app/components/buttons/page";
+import { IconButton, MainButton } from "@/app/components/buttons/page";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/self/page";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/shop/page";
 
@@ -45,6 +45,9 @@ const ListPage = () => {
   }, []);
   // const [version, setVersion] = useState(true);
   const [version, setVersion] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isFadingIn, setIsFadingIn] = useState(false);
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (id: string) => {
@@ -144,7 +147,19 @@ const ListPage = () => {
       return <ListMobilePage />;
     }
   };
-
+  const handlePopup = () => {
+    try {
+      setLoad(true);
+      setIsOpen(!isOpen);
+    } catch (error) {
+      console.error("エラーです。", error);
+    } finally {
+      setLoad(false);
+    }
+  };
+  useEffect(() => {
+    setIsFadingIn(isOpen);
+  }, [isOpen]);
   return (
     <div className={`${styles.listPageContents} ${styles.pageContents}`}>
       <PageTitle listItemValue="List Page" />
@@ -168,7 +183,10 @@ const ListPage = () => {
           </div>
         </label>
       </div>
-      <div className={`${styles.buttonContent} ${styles.sortButtonContent}`}>
+      <div
+        className={`${styles.buttonContent} ${styles.sortButtonContent}`}
+        onClick={handlePopup}
+      >
         <MainButton
           sizeValue="small"
           textValue="並び替え"
@@ -176,7 +194,43 @@ const ListPage = () => {
           widthValue="widthAuto"
         />
       </div>
-
+      <div
+        className={`${styles.modal} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.modalHeader}>並び替え基準を選択</div>
+          <div className={styles.modalBody}>
+            <ul className={styles.modalList}>
+              <li className={styles.modalListItem}>酸味 昇順</li>
+              <li className={styles.modalListItem}>酸味 降順</li>
+              <li className={styles.modalListItem}>苦味 昇順</li>
+              <li className={styles.modalListItem}>苦味 降順</li>
+              <li className={styles.modalListItem}>コク 昇順</li>
+              <li className={styles.modalListItem}>コク 降順</li>
+              <li className={styles.modalListItem}>香り 昇順</li>
+              <li className={styles.modalListItem}>香り 降順</li>
+              <li className={styles.modalListItem}>キレ 昇順</li>
+              <li className={styles.modalListItem}>キレ 降順</li>
+              <li className={styles.modalListItem}>全体 昇順</li>
+              <li className={styles.modalListItem}>全体 降順</li>
+              <li className={styles.modalListItem}>作成日時 昇順</li>
+              <li className={styles.modalListItem}>作成日時 降順</li>
+            </ul>
+          </div>
+          <div
+            className={`${styles.modalFooter} ${styles.modalClose}`}
+            onClick={handlePopup}
+          >
+            <IconButton
+              value="close"
+              iconWidth="iconMd"
+              buttonColor="btn-secondary"
+            />
+          </div>
+        </div>
+      </div>
       {windowWidth > 0 && getLayout()}
     </div>
   );

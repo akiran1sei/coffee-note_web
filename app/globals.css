@@ -36,7 +36,10 @@ html {
 
   --color-text-dark: #333;
   --color-text-light: #f5f5f5;
+  --color-text-secondary: #d2b48c;
+  --color-text-primary: #6f4e37;
 
+  --color-shadow: rgba(0, 0, 0, 0.5);
   /* 削除ボタンなど、注意を促すアクションに */
   --color-danger: #d9534f;
 
