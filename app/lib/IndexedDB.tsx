@@ -1,5 +1,6 @@
 // IndexedDB接続、CRUD操作のロジック
 // app/lib/indexedDB.ts
+"use client";
 import { IDBPDatabase, openDB } from "idb"; // idbライブラリを使用すると、Promiseベースで扱いやすくなります
 import { CoffeeRecord } from "../types/db";
 
