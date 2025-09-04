@@ -40,6 +40,11 @@
 .listButtonContainer {
   margin: auto;
   grid-area: buttonArea;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .buttonContent {
@@ -214,7 +219,13 @@
   justify-content: center;
   align-items: center;
 }
-
+.listPageContents .listMultiButtonArea .listButtonContainer .buttonContent {
+  width: 100%;
+  max-width: calc(var(--item-image-width) * 4);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 /* モバイル用カード */
 .listMobileCard {
   width: fit-content;
@@ -232,7 +243,8 @@
   justify-content: center;
 }
 
-.listMobileCard .buttonContent.deleteButtonContent {
+.listMobileCard .buttonContent.deleteButtonContent,
+.listMobileCard .buttonContent.pdfButtonContent {
   margin: var(--spacing-md) auto var(--spacing-xl);
   text-align: center;
 }
@@ -308,9 +320,11 @@
   background-color: var(--color-secondary-dark);
 }
 
-/* 削除ボタン */
-.listButtonContainer .buttonContent.deleteButtonContent {
-  margin: 0 var(--spacing-sm) var(--spacing-sm) 0;
+/* 削除ボタン/PDFボタン */
+.listButtonContainer .buttonContent.deleteButtonContent,
+.listButtonContainer .buttonContent.pdfButtonContent {
+  width: 100%;
+  margin: var(--spacing-sm);
 }
 
 /* ====================================
@@ -583,6 +597,12 @@
   .listSelfPcCard .listButtonContainer {
     grid-area: 4 / 2 / 5 / 3;
   }
+  .listSelfPcCard .listButtonContainer.listItemOpen {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
 
   /* ショップPCカード */
   .listShopPcCard {
@@ -667,7 +687,12 @@
   .listShopPcCard .listButtonContainer {
     grid-area: 4 / 1 / 5 / 3;
   }
-
+  .listShopPcCard .listButtonContainer.listItemOpen {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
   /* テイスティンググリッド */
   .listItemTasting {
     width: 100%;

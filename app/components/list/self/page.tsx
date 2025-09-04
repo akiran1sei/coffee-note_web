@@ -1,6 +1,6 @@
 // SelfPcCard.tsx
 import styles from "@/app/styles/Pages.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { MainButton } from "@/app/components/buttons/page";
 import Link from "next/link";
@@ -13,21 +13,29 @@ interface CardProps {
 
 export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
+
+  const [isCheck, setIsCheck] = useState(false);
+
+  const handleOnChange = () => {
+    setIsCheck(!isCheck);
+  };
+  console.log("isCheck", isCheck);
   return (
     <div className={styles.listSelfMobileCard}>
+      <div className={`${styles.listCheckboxContainer}`}>
+        <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
+          <input
+            type="checkbox"
+            name="checkbox"
+            id={checkboxId}
+            title="チェックボックス"
+            className={styles.listCheckboxInput}
+            checked={isCheck}
+            onChange={handleOnChange}
+          />
+        </label>
+      </div>
       <Link href={`/pages/item/${id}`} className={styles.listItemLink}>
-        <div className={`${styles.listCheckboxContainer}`}>
-          <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
-            <input
-              type="checkbox"
-              name="checkbox"
-              id={checkboxId}
-              title="チェックボックス"
-              className={styles.listCheckboxInput}
-            />
-          </label>
-        </div>
-
         <div className={`${styles.listItemCoffeeBeans}`}>
           <div className={`${styles.listItemCoffeeName}`}>
             <div className={styles.listItemLabel}>{"コーヒー名"}</div>
@@ -138,23 +146,30 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
             </div>
           </div>
         </div>
-        <div
-          className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
-        >
-          <MainButton
-            sizeValue="large"
-            textValue="削除"
-            buttonColor="btn-danger"
-            widthValue="widthAuto"
-          />
+        <div className={`${styles.listButtonContainer}`}>
+          <div
+            className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+          >
+            <MainButton
+              sizeValue="large"
+              textValue="削除"
+              buttonColor="btn-danger"
+              widthValue="widthNearlyFull"
+            />
+          </div>
+          <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
+            <MainButton
+              sizeValue="large"
+              textValue="PDFへダウンロード"
+              buttonColor="btn-success"
+              widthValue="widthNearlyFull"
+            />
+          </div>
         </div>
       </Link>
     </div>
   );
 };
-interface CardProps {
-  id: string;
-}
 
 export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
@@ -173,6 +188,13 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
       setLoad(false);
     }
   };
+
+  const [isCheck, setIsCheck] = useState(false);
+
+  const handleOnChange = () => {
+    setIsCheck(!isCheck);
+  };
+  console.log("isCheck", isCheck);
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
@@ -186,6 +208,8 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
             name="checkbox"
             title="チェックボックス"
             className={styles.listCheckboxInput}
+            checked={isCheck}
+            onChange={handleOnChange}
           />
         </label>
       </div>
@@ -360,7 +384,15 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
             sizeValue="large"
             textValue="削除"
             buttonColor="btn-danger"
-            widthValue="widthAuto"
+            widthValue="widthNearlyFull"
+          />
+        </div>
+        <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
+          <MainButton
+            sizeValue="large"
+            textValue="PDFへダウンロード"
+            buttonColor="btn-success"
+            widthValue="widthNearlyFull"
           />
         </div>
       </div>

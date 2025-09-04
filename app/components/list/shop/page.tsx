@@ -11,21 +11,29 @@ interface CardProps {
 
 export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
   const checkboxId = `checkbox_${id}`;
+
+  const [isCheck, setIsCheck] = useState(false);
+
+  const handleOnChange = () => {
+    setIsCheck(!isCheck);
+  };
+  console.log("isCheck", isCheck);
   return (
     <div className={styles.listShopMobileCard}>
+      <div className={`${styles.listCheckboxContainer}`}>
+        <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
+          <input
+            type="checkbox"
+            name="checkbox"
+            id={checkboxId}
+            title="チェックボックス"
+            className={styles.listCheckboxInput}
+            checked={isCheck}
+            onChange={handleOnChange}
+          />
+        </label>
+      </div>
       <Link href={`/pages/item/${id}`} className={styles.listItemLink}>
-        <div className={`${styles.listCheckboxContainer}`}>
-          <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
-            <input
-              type="checkbox"
-              name="checkbox"
-              id={checkboxId}
-              title="チェックボックス"
-              className={styles.listCheckboxInput}
-            />
-          </label>
-        </div>
-
         <div className={`${styles.listItemShopData}`}>
           <div className={`${styles.listItemShopName}`}>
             <div className={styles.listItemLabel}>{"店名"}</div>
@@ -114,15 +122,25 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
             </div>
           </div>
         </div>
-        <div
-          className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
-        >
-          <MainButton
-            sizeValue="large"
-            textValue="削除"
-            buttonColor="btn-danger"
-            widthValue="widthAuto"
-          />
+        <div className={`${styles.listButtonContainer}`}>
+          <div
+            className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+          >
+            <MainButton
+              sizeValue="large"
+              textValue="削除"
+              buttonColor="btn-danger"
+              widthValue="widthNearlyFull"
+            />
+          </div>
+          <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
+            <MainButton
+              sizeValue="large"
+              textValue="PDFへダウンロード"
+              buttonColor="btn-success"
+              widthValue="widthNearlyFull"
+            />
+          </div>
         </div>
       </Link>
     </div>
@@ -150,6 +168,13 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
       setLoad(false);
     }
   };
+
+  const [isCheck, setIsCheck] = useState(false);
+
+  const handleOnChange = () => {
+    setIsCheck(!isCheck);
+  };
+  console.log("isCheck", isCheck);
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
@@ -164,6 +189,8 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
             name="checkbox"
             title="チェックボックス"
             className={styles.listCheckboxInput}
+            checked={isCheck}
+            onChange={handleOnChange}
           />
         </label>
       </div>
@@ -320,7 +347,15 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
             sizeValue="large"
             textValue="削除"
             buttonColor="btn-danger"
-            widthValue="widthAuto"
+            widthValue="widthNearlyFull"
+          />
+        </div>
+        <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
+          <MainButton
+            sizeValue="large"
+            textValue="PDFへダウンロード"
+            buttonColor="btn-success"
+            widthValue="widthNearlyFull"
           />
         </div>
       </div>

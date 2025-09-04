@@ -43,8 +43,8 @@ const ListPage = () => {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
-  // const [version, setVersion] = useState(true);
-  const [version, setVersion] = useState(false);
+  const [version, setVersion] = useState(true);
+  // const [version, setVersion] = useState(false);
   const [load, setLoad] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
@@ -108,10 +108,11 @@ const ListPage = () => {
     };
 
     // const spImg = "https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart";
+    const cards = Array.from({ length: 5 });
     const MobileCard = (id: string) => {
       return version ? <SelfMobileCard id={id} /> : <ShopMobileCard id={id} />;
     };
-    const cards = Array.from({ length: 5 });
+    console.log();
     return (
       <>
         <div className={styles.listScrollButtons}>
@@ -182,6 +183,28 @@ const ListPage = () => {
             />
           </div>
         </label>
+      </div>
+      <div className={`${styles.listMultiButtonArea}`}>
+        <div className={`${styles.listButtonContainer} `}>
+          <div
+            className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+          >
+            <MainButton
+              sizeValue="large"
+              textValue="チェック削除"
+              buttonColor="btn-danger"
+              widthValue="widthNearlyFull"
+            />
+          </div>
+          <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
+            <MainButton
+              sizeValue="large"
+              textValue="チェックPDF"
+              buttonColor="btn-success"
+              widthValue="widthNearlyFull"
+            />
+          </div>
+        </div>
       </div>
       <div
         className={`${styles.buttonContent} ${styles.sortButtonContent}`}
