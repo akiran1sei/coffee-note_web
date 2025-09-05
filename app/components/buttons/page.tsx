@@ -100,6 +100,7 @@ export const LinkIconButton: React.FC<IconButtonType> = ({
  MainButtonコンポーネントの作成サンプル
  <MainButton
    onClick={関数名}//起動させるための関数
+   type="submit" // この行を追加
    sizeValue="large" ボタンのサイズ （large & middle & small）
    textValue="削除" ボタンに表示するテキスト
    buttonColor="btn-warning" ボタンの色（buttonColor: "btn-primary" | "btn-secondary" | "btn-success" | "btn-warning" | "btn-danger";）
@@ -109,13 +110,16 @@ export const LinkIconButton: React.FC<IconButtonType> = ({
 
 interface MainButtonType {
   onClick?: () => void; // オプションでクリックイベントを受け取る
+  type?: "button" | "submit" | "reset"; // `type`プロパティをオプションとして追加
   sizeValue: string; //large & middle & small
   textValue: string; // 表示したいテキスト
   buttonColor: string; // buttonColor: "btn-primary" | "btn-secondary" | "btn-success" | "btn-warning" | "btn-danger";
   widthValue: string; // width: "widthAuto" | "widthNearlyFull";
 }
+
 export const MainButton: React.FC<MainButtonType> = ({
   onClick,
+  type = "button", // デフォルト値を `button` に設定
   sizeValue,
   textValue,
   buttonColor,
@@ -124,7 +128,7 @@ export const MainButton: React.FC<MainButtonType> = ({
   if (sizeValue === "large") {
     return (
       <button
-        type="button"
+        type={type} // ここでpropsから受け取った `type` を適用
         className={`${styles.mainButton} ${styles.buttonShadow} ${styles.largeButton} ${styles[buttonColor]} ${styles[widthValue]}`}
         onClick={onClick}
       >
@@ -134,7 +138,7 @@ export const MainButton: React.FC<MainButtonType> = ({
   } else if (sizeValue === "middle") {
     return (
       <button
-        type="button"
+        type={type}
         className={`${styles.mainButton} ${styles.buttonShadow} ${styles.middleButton} ${styles[buttonColor]} ${styles[widthValue]}`}
       >
         <span className={styles.buttonText}>{textValue}</span>
@@ -143,7 +147,7 @@ export const MainButton: React.FC<MainButtonType> = ({
   } else if (sizeValue === "small") {
     return (
       <button
-        type="button"
+        type={type}
         className={`${styles.mainButton} ${styles.buttonShadow} ${styles.smallButton} ${styles[buttonColor]} ${styles[widthValue]}`}
       >
         <span className={styles.buttonText}>{textValue}</span>

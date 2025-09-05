@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "@/app/styles/Form.module.css";
 import { InputComponent } from "@/app/components/form/item/InputComponent/page";
 
@@ -9,14 +9,32 @@ import {
 } from "@/app/components/form/item/SelectComponent/page";
 import ImageUpload from "@/app/components/form/item/ImageUpload/page";
 
-export const CoffeeBeansComponent = () => {
-  const [coffeeBeansFormValue, setCoffeeBeansFormValue] = useState({
-    imageUrl: "",
-    coffeeName: "",
-    productionArea: "",
-    variety: "選択していません。",
-    roastingDegree: "選択していません。",
-  });
+// Propsの型を定義
+interface CoffeeBeansComponentProps {
+  coffeeInfo: {
+    imageUrl: string;
+    coffeeName: string;
+    productionArea: string;
+    variety: string;
+    roastingDegree: string;
+  };
+  setCoffeeInfo: React.Dispatch<
+    React.SetStateAction<{
+      imageUrl: string;
+      coffeeName: string;
+      productionArea: string;
+      variety: string;
+      roastingDegree: string;
+    }>
+  >;
+}
+
+// 親コンポーネントからpropsとして`coffeeInfo`と`setCoffeeInfo`を受け取る
+export const CoffeeBeansComponent = ({
+  coffeeInfo,
+  setCoffeeInfo,
+}: CoffeeBeansComponentProps) => {
+  // ローカルステートは不要になるため削除
 
   return (
     <div className={styles.infoContainer}>
@@ -24,18 +42,18 @@ export const CoffeeBeansComponent = () => {
       <div className={styles.infoWrapper}>
         <ImageUpload
           onChange={(value: string) => {
-            setCoffeeBeansFormValue({
-              ...coffeeBeansFormValue,
+            setCoffeeInfo({
+              ...coffeeInfo,
               imageUrl: value,
             });
           }}
         />
         <InputComponent
           dataTitle="コーヒー名"
-          value={coffeeBeansFormValue.coffeeName}
+          value={coffeeInfo.coffeeName}
           onChange={(value: string) => {
-            setCoffeeBeansFormValue({
-              ...coffeeBeansFormValue,
+            setCoffeeInfo({
+              ...coffeeInfo,
               coffeeName: value,
             });
           }}
@@ -43,10 +61,10 @@ export const CoffeeBeansComponent = () => {
         />
         <InputComponent
           dataTitle="産地"
-          value={coffeeBeansFormValue.productionArea}
+          value={coffeeInfo.productionArea}
           onChange={(value: string) => {
-            setCoffeeBeansFormValue({
-              ...coffeeBeansFormValue,
+            setCoffeeInfo({
+              ...coffeeInfo,
               productionArea: value,
             });
           }}
@@ -55,20 +73,20 @@ export const CoffeeBeansComponent = () => {
         <CoffeeTypesSelect
           dataTitle="品種"
           onChange={(value: string) => {
-            setCoffeeBeansFormValue({
-              ...coffeeBeansFormValue,
+            setCoffeeInfo({
+              ...coffeeInfo,
               variety: value,
             });
           }}
-          value={coffeeBeansFormValue.variety}
+          value={coffeeInfo.variety}
           labelText="variety"
         />
         <CoffeeProcessingSelect
           dataTitle="焙煎度"
-          value={coffeeBeansFormValue.roastingDegree}
+          value={coffeeInfo.roastingDegree}
           onChange={(value: string) => {
-            setCoffeeBeansFormValue({
-              ...coffeeBeansFormValue,
+            setCoffeeInfo({
+              ...coffeeInfo,
               roastingDegree: value,
             });
           }}

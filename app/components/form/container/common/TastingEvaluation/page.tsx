@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { RangeComponent } from "../../../item/RangeComponent/page";
 import styles from "@/app/styles/Form.module.css";
 import { ResponsiveRadar } from "@nivo/radar";
 
-interface chartProps {
+// Propsの型を定義
+interface TastingEvaluationProps {
   reviewInfo: {
     chart: {
       acidity: number;
@@ -14,25 +15,38 @@ interface chartProps {
       aftertaste: number;
       overall: number;
     };
+    memo: string; // `CreatePage.tsx`に合わせる
   };
+  setReviewInfo: React.Dispatch<
+    React.SetStateAction<{
+      chart: {
+        acidity: number;
+        bitterness: number;
+        body: number;
+        aroma: number;
+        aftertaste: number;
+        overall: number;
+      };
+      memo: string; // `CreatePage.tsx`に合わせる
+    }>
+  >;
 }
-export const TastingEvaluationComponent: React.FC<chartProps> = ({
+
+// 親コンポーネントからpropsとして`reviewInfo`と`setReviewInfo`を受け取る
+export const TastingEvaluationComponent: React.FC<TastingEvaluationProps> = ({
   reviewInfo,
+  setReviewInfo,
 }) => {
-  const [chartFormValue, setChartFormValue] = useState({
-    acidity: reviewInfo.chart.acidity,
-    bitterness: reviewInfo.chart.bitterness,
-    body: reviewInfo.chart.body,
-    aroma: reviewInfo.chart.aroma,
-    aftertaste: reviewInfo.chart.aftertaste,
-    overall: reviewInfo.chart.overall,
-  });
+  // ローカルステートは不要になるため削除
+  // const [chartFormValue, setChartFormValue] = useState(...)
+
+  // 親から渡された `reviewInfo.chart` を使用してチャートデータを生成
   const data = [
-    { taste: "酸味", chardonay: chartFormValue.acidity },
-    { taste: "苦味", chardonay: chartFormValue.bitterness },
-    { taste: "コク", chardonay: chartFormValue.body },
-    { taste: "香り", chardonay: chartFormValue.aroma },
-    { taste: "キレ", chardonay: chartFormValue.aftertaste },
+    { taste: "酸味", value: reviewInfo.chart.acidity },
+    { taste: "苦味", value: reviewInfo.chart.bitterness },
+    { taste: "コク", value: reviewInfo.chart.body },
+    { taste: "香り", value: reviewInfo.chart.aroma },
+    { taste: "キレ", value: reviewInfo.chart.aftertaste },
   ];
 
   const MyNivoRadar = () => {
@@ -40,7 +54,7 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
       <div className={styles.chartContainer} style={{ height: 400 }}>
         <ResponsiveRadar
           data={data}
-          keys={["chardonay"]}
+          keys={["value"]}
           indexBy="taste"
           margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
           borderWidth={2}
@@ -52,10 +66,7 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
           dotColor={{ theme: "background" }}
           dotBorderWidth={2}
           dotBorderColor={{ from: "color" }}
-          // 最大値を明示的に設定
           maxValue={5}
-          // 最小値を明示的に設定
-
           motionConfig="molasses"
           legends={[
             {
@@ -81,6 +92,7 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
     );
   };
   const Radar = MyNivoRadar();
+
   return (
     <div className={styles.infoContainer}>
       <h2 className={`${styles.infoTitle} ${styles.tastingTitle}`}>
@@ -89,12 +101,12 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
       <div className={`${styles.infoWrapper} ${styles.tastingWrapper}`}>
         <RangeComponent
           dataTitle="酸味"
-          value={chartFormValue.acidity}
+          value={reviewInfo.chart.acidity}
           onChange={(value: number) => {
-            setChartFormValue({
-              ...chartFormValue,
-              acidity: value,
-            });
+            setReviewInfo((prev) => ({
+              ...prev,
+              chart: { ...prev.chart, acidity: value },
+            }));
           }}
           labelText="acidity"
           min={0}
@@ -103,12 +115,12 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
         />
         <RangeComponent
           dataTitle="苦味"
-          value={chartFormValue.bitterness}
+          value={reviewInfo.chart.bitterness}
           onChange={(value: number) => {
-            setChartFormValue({
-              ...chartFormValue,
-              bitterness: value,
-            });
+            setReviewInfo((prev) => ({
+              ...prev,
+              chart: { ...prev.chart, bitterness: value },
+            }));
           }}
           labelText="bitterness"
           min={0}
@@ -117,12 +129,12 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
         />
         <RangeComponent
           dataTitle="コク"
-          value={chartFormValue.body}
+          value={reviewInfo.chart.body}
           onChange={(value: number) => {
-            setChartFormValue({
-              ...chartFormValue,
-              body: value,
-            });
+            setReviewInfo((prev) => ({
+              ...prev,
+              chart: { ...prev.chart, body: value },
+            }));
           }}
           labelText="body"
           min={0}
@@ -131,12 +143,12 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
         />
         <RangeComponent
           dataTitle="アロマ"
-          value={chartFormValue.aroma}
+          value={reviewInfo.chart.aroma}
           onChange={(value: number) => {
-            setChartFormValue({
-              ...chartFormValue,
-              aroma: value,
-            });
+            setReviewInfo((prev) => ({
+              ...prev,
+              chart: { ...prev.chart, aroma: value },
+            }));
           }}
           labelText="aroma"
           min={0}
@@ -145,12 +157,12 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
         />
         <RangeComponent
           dataTitle="キレ"
-          value={chartFormValue.aftertaste}
+          value={reviewInfo.chart.aftertaste}
           onChange={(value: number) => {
-            setChartFormValue({
-              ...chartFormValue,
-              aftertaste: value,
-            });
+            setReviewInfo((prev) => ({
+              ...prev,
+              chart: { ...prev.chart, aftertaste: value },
+            }));
           }}
           labelText="aftertaste"
           min={0}
@@ -160,12 +172,12 @@ export const TastingEvaluationComponent: React.FC<chartProps> = ({
         {Radar}
         <RangeComponent
           dataTitle="全体の好み"
-          value={chartFormValue.overall}
+          value={reviewInfo.chart.overall}
           onChange={(value: number) => {
-            setChartFormValue({
-              ...chartFormValue,
-              overall: value,
-            });
+            setReviewInfo((prev) => ({
+              ...prev,
+              chart: { ...prev.chart, overall: value },
+            }));
           }}
           labelText="overall"
           min={0}

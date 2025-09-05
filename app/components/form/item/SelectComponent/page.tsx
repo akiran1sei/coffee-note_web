@@ -3,16 +3,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/app/styles/Form.module.css";
 import { translationMap } from "@/app/utils/translations";
-// 階層的選択のためのインターフェース
-interface HierarchicalSelectProps {
-  labelText: string;
-  primaryTitle: string;
-  secondaryTitle: string;
+
+interface ExtractionMethodProps {
   onPrimaryChange: (value: string) => void;
-  onSecondaryChange: (value: string) => void;
   primaryValue: string;
-  secondaryValue: string;
-  primaryOptions?: { label: string; value: string }[];
 }
 
 const extractionMethodsData = [
@@ -31,8 +25,48 @@ const extractionMethodsData = [
   { label: "水出し", value: "水出し" },
 ];
 
+export const ExtractionMethodSelect: React.FC<ExtractionMethodProps> = ({
+  onPrimaryChange,
+  primaryValue,
+}) => {
+  const handlePrimaryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onPrimaryChange(e.target.value);
+  };
+
+  return (
+    <div className={styles.selectContainer}>
+      <label
+        className={styles.label}
+        htmlFor={translationMap["抽出方法"] || "抽出方法"}
+      >
+        抽出方法
+      </label>
+      <div className={styles.pickerWrapper}>
+        <select
+          value={primaryValue}
+          onChange={handlePrimaryChange}
+          className={styles.select}
+          id={translationMap["抽出方法"] || "抽出方法"}
+          name={translationMap["抽出方法"] || "抽出方法"}
+        >
+          <option value="">選択してください</option>
+          {extractionMethodsData.map((method) => (
+            <option key={method.value} value={method.value}>
+              {method.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};
+interface ExtractionMakerProps {
+  onSecondaryChange: (value: string) => void;
+  secondaryValue: string;
+  primaryValue: string;
+}
+
 const equipmentData: { [key: string]: { label: string; value: string }[] } = {
-  // ... (元のコードと同じなので省略)
   ペーパードリップ: [
     { label: "ハリオ V60", value: "ハリオ V60" },
     { label: "ハリオ ペガサス", value: "ハリオ ペガサス" },
@@ -88,99 +122,45 @@ const equipmentData: { [key: string]: { label: string; value: string }[] } = {
   ],
 };
 
-export const HierarchicalCoffeeSelect: React.FC<HierarchicalSelectProps> = ({
-  primaryTitle,
-  secondaryTitle,
-  onPrimaryChange,
+export const ExtractionMakerSelect: React.FC<ExtractionMakerProps> = ({
   onSecondaryChange,
-  primaryValue,
   secondaryValue,
-  primaryOptions = extractionMethodsData,
-  labelText,
+  primaryValue,
 }) => {
   const getSecondaryOptions = (primaryValue: string) => {
     if (!primaryValue) return [];
     return equipmentData[primaryValue] || [];
   };
 
-  const handlePrimaryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    onPrimaryChange(value);
-    onSecondaryChange("");
-  };
-
-  useEffect(() => {
-    const availableEquipment = getSecondaryOptions(primaryValue);
-    const isCurrentEquipmentValid =
-      secondaryValue === "" ||
-      availableEquipment.some(
-        (equipment) => equipment.value === secondaryValue
-      );
-
-    if (secondaryValue && !isCurrentEquipmentValid) {
-      onSecondaryChange("");
-    }
-  }, [primaryValue, secondaryValue, onSecondaryChange]);
-
   const secondaryOptions = getSecondaryOptions(primaryValue);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.selectContainer}>
-        <label
-          className={styles.label}
-          htmlFor={translationMap[primaryTitle] || primaryTitle}
+    <div className={styles.selectContainer}>
+      <label
+        className={styles.label}
+        htmlFor={translationMap["抽出器具"] || "抽出器具"}
+      >
+        抽出器具
+      </label>
+      <div className={styles.pickerWrapper}>
+        <select
+          value={secondaryValue}
+          onChange={(e) => onSecondaryChange(e.target.value)}
+          className={styles.select}
+          id={translationMap["抽出器具"] || "抽出器具"}
+          name={translationMap["抽出器具"] || "抽出器具"}
         >
-          {primaryTitle}
-        </label>
-        <div className={styles.pickerWrapper}>
-          <select
-            value={primaryValue}
-            onChange={handlePrimaryChange}
-            className={styles.select}
-            id={translationMap[primaryTitle] || primaryTitle}
-            name={translationMap[primaryTitle] || primaryTitle}
-          >
-            <option value="">選択してください</option>
-            {primaryOptions.map((method) => (
-              <option key={method.value} value={method.value}>
-                {method.label}
-              </option>
-            ))}
-          </select>
-        </div>
+          <option value="">選択してください</option>
+          {secondaryOptions.map((equipment) => (
+            <option key={equipment.value} value={equipment.value}>
+              {equipment.label}
+            </option>
+          ))}
+        </select>
       </div>
-
-      {primaryValue && (
-        <div className={styles.selectContainer}>
-          <label
-            className={styles.label}
-            htmlFor={translationMap[secondaryTitle] || secondaryTitle}
-          >
-            {secondaryTitle}
-          </label>
-          <div className={styles.pickerWrapper}>
-            <select
-              value={secondaryValue}
-              onChange={(e) => onSecondaryChange(e.target.value)}
-              className={styles.select}
-              id={translationMap[secondaryTitle] || secondaryTitle}
-              name={translationMap[secondaryTitle] || secondaryTitle}
-            >
-              <option value="">選択してください</option>
-              {secondaryOptions.map((equipment) => (
-                <option key={equipment.value} value={equipment.value}>
-                  {equipment.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
-
 type MeasurementType = "注湯量" | "抽出量";
 
 interface ConditionalMeasurementProps {
@@ -203,45 +183,52 @@ export const ConditionalMeasurementSelector: React.FC<
 
   const shouldShowChoice = methodsWithChoice.includes(extractionMethod || "");
 
-  const [selectedMeasurement, setSelectedMeasurement] = useState<
-    MeasurementType | ""
-  >(shouldShowChoice ? (value as MeasurementType) || "" : "注湯量");
+  // 親から渡された `value` を使用し、ローカルステートを削除
+  // const [selectedMeasurement, setSelectedMeasurement] = useState<MeasurementType | "">(...);
 
   useEffect(() => {
-    if (shouldShowChoice) {
-      setSelectedMeasurement((value as MeasurementType) || "");
-    } else if (extractionMethod === "エスプレッソ") {
-      setSelectedMeasurement("抽出量");
-      onChange("抽出量");
-    } else {
-      setSelectedMeasurement("注湯量");
-      onChange("注湯量");
+    let newValue;
+
+    if (!shouldShowChoice && extractionMethod === "エスプレッソ") {
+      newValue = "抽出量";
+    } else if (
+      !shouldShowChoice &&
+      extractionMethod !== "エスプレッソ" &&
+      extractionMethod !== "選択していません。"
+    ) {
+      newValue = "注湯量";
+    } else if (shouldShowChoice) {
+      // shouldShowChoiceがtrueの場合は、valueをそのまま使用
+      return; // この場合はonChangeを呼び出さない
+    }
+
+    // 現在の値(value)と新しい値(newValue)が異なる場合のみonChangeを呼び出す
+    if (value !== newValue && newValue !== undefined) {
+      onChange(newValue);
     }
   }, [extractionMethod, shouldShowChoice, onChange, value]);
-
   const handlePress = (type: MeasurementType) => {
-    setSelectedMeasurement(type);
     onChange(type);
   };
 
   if (!shouldShowChoice && extractionMethod === "エスプレッソ") {
     return (
       <div className={styles.radioContainer}>
-        <label className={styles.label} htmlFor={labelText}>
-          {dataTitle}
-        </label>
+        <p className={styles.label}>{dataTitle}</p>
         <div className={styles.fixedContainer}>
           <p className={styles.fixedText}>抽出量（固定）</p>
         </div>
         <p className={styles.selectedValueText}>選択中のタイプ: 抽出量</p>
       </div>
     );
-  } else if (!shouldShowChoice && extractionMethod !== "エスプレッソ") {
+  } else if (
+    !shouldShowChoice &&
+    extractionMethod !== "エスプレッソ" &&
+    extractionMethod !== "選択していません。"
+  ) {
     return (
       <div className={styles.radioContainer}>
-        <label className={styles.label} htmlFor={labelText}>
-          {dataTitle}
-        </label>
+        <p className={styles.label}>{dataTitle}</p>
         <div className={styles.fixedContainer}>
           <p className={styles.fixedText}>注湯量（固定）</p>
         </div>
@@ -252,20 +239,18 @@ export const ConditionalMeasurementSelector: React.FC<
 
   return (
     <div className={styles.radioContainer}>
-      <label className={styles.label} htmlFor={labelText}>
-        {dataTitle}
-      </label>
+      <p className={styles.label}>{dataTitle}</p>
       <div className={styles.buttonGroup}>
         <button
           type="button"
           className={`${styles.button} ${
-            selectedMeasurement === "注湯量" ? styles.selectedButton : ""
+            value === "注湯量" ? styles.selectedButton : ""
           }`}
           onClick={() => handlePress("注湯量")}
         >
           <span
             className={`${styles.buttonText} ${
-              selectedMeasurement === "注湯量" ? styles.selectedButtonText : ""
+              value === "注湯量" ? styles.selectedButtonText : ""
             }`}
           >
             注湯量
@@ -275,13 +260,13 @@ export const ConditionalMeasurementSelector: React.FC<
         <button
           type="button"
           className={`${styles.button} ${styles.rightButton} ${
-            selectedMeasurement === "抽出量" ? styles.selectedButton : ""
+            value === "抽出量" ? styles.selectedButton : ""
           }`}
           onClick={() => handlePress("抽出量")}
         >
           <span
             className={`${styles.buttonText} ${
-              selectedMeasurement === "抽出量" ? styles.selectedButtonText : ""
+              value === "抽出量" ? styles.selectedButtonText : ""
             }`}
           >
             抽出量
@@ -290,9 +275,7 @@ export const ConditionalMeasurementSelector: React.FC<
       </div>
       <p className={styles.selectedValueText}>
         選択中のタイプ:{" "}
-        {selectedMeasurement === ""
-          ? "選択されていません"
-          : selectedMeasurement}
+        {value === "" || value === undefined ? "選択されていません" : value}
       </p>
     </div>
   );
@@ -364,6 +347,7 @@ export const CoffeeProcessingSelect: React.FC<SelectProps> = ({
     </div>
   );
 };
+
 export const CoffeeTypesSelect: React.FC<SelectProps> = ({
   dataTitle,
   onChange,
@@ -382,7 +366,6 @@ export const CoffeeTypesSelect: React.FC<SelectProps> = ({
   const [otherInputValue, setOtherInputValue] = useState("");
   const [selectedValue, setSelectedValue] = useState(value || "");
 
-  // 親からの value を監視し、内部状態を初期化する
   useEffect(() => {
     const isStandardOption = options.some((option) => option.value === value);
 
@@ -398,29 +381,24 @@ export const CoffeeTypesSelect: React.FC<SelectProps> = ({
     }
   }, [value]);
 
-  // selectedValue の変更を監視し、入力欄の表示を切り替える
   useEffect(() => {
     setShowOtherInput(selectedValue === "その他");
   }, [selectedValue]);
 
-  // ドロップダウンの変更を処理する
   const handlePickerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newValue = e.target.value;
     setSelectedValue(newValue);
-    // 「その他」が選択された場合、入力欄の値は空にしておく
     if (newValue === "その他") {
       setOtherInputValue("");
-      onChange(""); // 親には空を通知
+      onChange("");
     } else {
-      onChange(newValue); // 親に選択された値を通知
+      onChange(newValue);
     }
   };
 
-  // 「その他」の入力欄の変更を処理する
   const handleOtherInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setOtherInputValue(newValue);
-    // 親には入力された値を通知
     onChange(newValue);
   };
 
@@ -462,10 +440,10 @@ export const CoffeeTypesSelect: React.FC<SelectProps> = ({
 interface TimeInputProps {
   dataTitle: string;
   onChange: (value: number) => void;
-  value: number; // 親コンポーネントからの値は合計秒数として扱う
+  value: number;
   labelText: string;
 }
-// 0から59までの配列を生成するヘルパー関数
+
 const generateOptionsHour = (max: number) => {
   const options = [];
   for (let i = 0; i <= max; i++) {
@@ -480,24 +458,20 @@ export const HourComponent: React.FC<TimeInputProps> = ({
   value,
   labelText,
 }) => {
-  // hours の状態のみを管理
   const [hours, setHours] = useState<number>(0);
 
-  // 親コンポーネントからの value（合計秒数）を監視し、hoursのstateを更新する
   useEffect(() => {
     if (typeof value === "number" && !isNaN(value)) {
       setHours(Math.floor(value / 3600));
     }
   }, [value]);
 
-  // 時間の入力が変更されたときのハンドラ
   const handleHoursChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newHours = Number(e.target.value);
     setHours(newHours);
-    onChange(newHours * 3600); // 変更された時間を合計秒数に変換して親に通知
+    onChange(newHours * 3600);
   };
 
-  // 時間のオプションを生成（ここでは0～23時を想定）
   const hourOptions = generateOptionsHour(23);
 
   return (
@@ -506,7 +480,6 @@ export const HourComponent: React.FC<TimeInputProps> = ({
         {dataTitle}
       </label>
       <div className={styles.inputBox}>
-        {/* 時間の選択 */}
         <select
           className={styles.input}
           id={`${labelText}-hours`}
@@ -528,7 +501,6 @@ export const HourComponent: React.FC<TimeInputProps> = ({
   );
 };
 
-// 0から59までの配列を生成するヘルパー関数
 const generateOptionsMinuteSecond = (max: number) => {
   const options = [];
   for (let i = 0; i <= max; i++) {
@@ -546,7 +518,6 @@ export const MinuteSecondComponent: React.FC<TimeInputProps> = ({
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
-  // 親コンポーネントからの value（合計秒数）を監視し、分と秒のstateを更新する
   useEffect(() => {
     if (typeof value === "number" && !isNaN(value)) {
       setMinutes(Math.floor(value / 60));
@@ -554,28 +525,24 @@ export const MinuteSecondComponent: React.FC<TimeInputProps> = ({
     }
   }, [value]);
 
-  // 分の入力が変更されたときのハンドラ
   const handleMinutesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newMinutes = Number(e.target.value);
     setMinutes(newMinutes);
     onChange(newMinutes * 60 + seconds);
   };
 
-  // 秒の入力が変更されたときのハンドラ
   const handleSecondsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSeconds = Number(e.target.value);
     setSeconds(newSeconds);
     onChange(minutes * 60 + newSeconds);
   };
 
-  // 分と秒のオプションを生成
   const minuteOptions = generateOptionsMinuteSecond(10);
   const secondOptions = generateOptionsMinuteSecond(59);
 
   return (
     <div className={styles.inputContainer}>
       <div className={styles.inputTimeBox}>
-        {/* 分の選択 */}
         <div className={styles.inputGroup}>
           <label className={styles.label} htmlFor={`${labelText}-minutes`}>
             {dataTitle}（分）
@@ -598,7 +565,6 @@ export const MinuteSecondComponent: React.FC<TimeInputProps> = ({
             </select>
           </div>
         </div>
-        {/* 秒の選択 */}
         <div className={styles.inputGroup}>
           <label className={styles.label} htmlFor={`${labelText}-minutes`}>
             {dataTitle}（秒）

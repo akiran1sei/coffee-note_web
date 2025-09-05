@@ -5,10 +5,12 @@ import { NumberComponent } from "@/app/components/form/item/InputComponent/page"
 
 import {
   ConditionalMeasurementSelector,
-  HierarchicalCoffeeSelect,
+  ExtractionMakerSelect,
+  ExtractionMethodSelect,
   MinuteSecondComponent,
   HourComponent,
 } from "@/app/components/form/item/SelectComponent/page";
+
 interface BrewingRecipeProps {
   extractionInfo: {
     extractionMethod: string;
@@ -18,56 +20,74 @@ interface BrewingRecipeProps {
     temperature: number;
     coffeeAmount: number;
     waterAmount: number;
+    measurementMethod: string;
   };
+  setExtractionInfo: React.Dispatch<
+    React.SetStateAction<{
+      extractionMethod: string;
+      extractionMaker: string;
+      grindSize: string;
+      extractionTime: number;
+      temperature: number;
+      coffeeAmount: number;
+      waterAmount: number;
+      measurementMethod: string;
+    }>
+  >;
 }
+
 export const BrewingRecipeComponent: React.FC<BrewingRecipeProps> = ({
   extractionInfo,
+  setExtractionInfo,
 }) => {
-  const [extractionMethod, setExtractionMethod] = useState(
-    extractionInfo.extractionMethod
-  );
-  const [equipment, setEquipment] = useState(extractionInfo.extractionMaker);
-  const [measurement, setMeasurement] = useState(extractionInfo.grindSize);
-  const [brewingFormValue, setBrewingFormValue] = useState({
-    extractionMethod: extractionInfo.extractionMethod,
-    extractionMaker: extractionInfo.extractionMaker,
-    grindSize: extractionInfo.grindSize,
-    extractionTime: extractionInfo.extractionTime,
-    temperature: extractionInfo.temperature,
-    coffeeAmount: extractionInfo.coffeeAmount,
-    waterAmount: 0,
-  });
-
   return (
     <div className={styles.infoContainer}>
       <h2 className={styles.infoTitle}>抽出レシピ</h2>
       <div className={styles.infoWrapper}>
-        {/* まず、抽出方法を選択するコンポーネントを配置 */}
-        <HierarchicalCoffeeSelect
-          primaryTitle="抽出方法"
-          secondaryTitle="抽出器具"
-          primaryValue={extractionMethod}
-          secondaryValue={equipment}
-          onPrimaryChange={setExtractionMethod}
-          onSecondaryChange={setEquipment}
-          labelText="extractionMethod"
+        <ExtractionMethodSelect
+          primaryValue={extractionInfo.extractionMethod}
+          onPrimaryChange={(value) => {
+            setExtractionInfo({
+              ...extractionInfo,
+              extractionMethod: value,
+              extractionMaker: "", // 抽出方法が変わったら抽出器具をリセット
+            });
+          }}
         />
-        {/* 抽出方法が選択された場合にのみ、量り方のコンポーネントを表示 */}
-        {extractionMethod === "選択していません。" ? null : (
+        {/* 抽出方法が選択された場合にのみ抽出器具を表示 */}
+        {extractionInfo.extractionMethod && (
+          <ExtractionMakerSelect
+            primaryValue={extractionInfo.extractionMethod}
+            secondaryValue={extractionInfo.extractionMaker}
+            onSecondaryChange={(value) => {
+              setExtractionInfo({
+                ...extractionInfo,
+                extractionMaker: value,
+              });
+            }}
+          />
+        )}
+        {/* 量り方コンポーネントは常に表示、または空文字列の場合に非表示にする */}
+        {extractionInfo.extractionMethod !== "" && (
           <ConditionalMeasurementSelector
             dataTitle="量り方"
-            value={measurement}
-            onChange={setMeasurement}
-            extractionMethod={extractionMethod}
+            value={extractionInfo.measurementMethod}
+            onChange={(value) => {
+              setExtractionInfo({
+                ...extractionInfo,
+                measurementMethod: value,
+              });
+            }}
+            extractionMethod={extractionInfo.extractionMethod}
             labelText="measurement"
           />
         )}
         <NumberComponent
           dataTitle="温度（℃）"
-          value={brewingFormValue.temperature}
+          value={extractionInfo.temperature}
           onChange={(value: number) => {
-            setBrewingFormValue({
-              ...brewingFormValue,
+            setExtractionInfo({
+              ...extractionInfo,
               temperature: value,
             });
           }}
@@ -75,10 +95,10 @@ export const BrewingRecipeComponent: React.FC<BrewingRecipeProps> = ({
         />
         <NumberComponent
           dataTitle="粉量（ｇ）"
-          value={brewingFormValue.coffeeAmount}
+          value={extractionInfo.coffeeAmount}
           onChange={(value: number) => {
-            setBrewingFormValue({
-              ...brewingFormValue,
+            setExtractionInfo({
+              ...extractionInfo,
               coffeeAmount: value,
             });
           }}
@@ -86,37 +106,38 @@ export const BrewingRecipeComponent: React.FC<BrewingRecipeProps> = ({
         />
         <NumberComponent
           dataTitle="湯量（ｇ）"
-          value={brewingFormValue.waterAmount}
+          value={extractionInfo.waterAmount}
           onChange={(value: number) => {
-            setBrewingFormValue({
-              ...brewingFormValue,
+            setExtractionInfo({
+              ...extractionInfo,
               waterAmount: value,
             });
           }}
           labelText="waterAmount"
         />
-        {extractionMethod === "水出し" ? (
+        {/* 抽出方法が「水出し」の場合のみHourComponentを表示 */}
+        {extractionInfo.extractionMethod === "水出し" ? (
           <HourComponent
             dataTitle="水出し抽出時間（時間）"
             onChange={(value: number) =>
-              setBrewingFormValue({
-                ...brewingFormValue,
+              setExtractionInfo({
+                ...extractionInfo,
                 extractionTime: value,
               })
             }
-            value={brewingFormValue.extractionTime}
+            value={extractionInfo.extractionTime}
             labelText="extractionTime"
           />
         ) : (
           <MinuteSecondComponent
             dataTitle="抽出時間"
             onChange={(value: number) =>
-              setBrewingFormValue({
-                ...brewingFormValue,
+              setExtractionInfo({
+                ...extractionInfo,
                 extractionTime: value,
               })
             }
-            value={brewingFormValue.extractionTime}
+            value={extractionInfo.extractionTime}
             labelText="extractionTime"
           />
         )}

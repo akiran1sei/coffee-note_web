@@ -1,7 +1,10 @@
+// RangeComponent.tsx (修正後)
+
 import React from "react";
 import styles from "@/app/styles/Form.module.css";
 import { translationMap } from "@/app/utils/translations";
 import { OnClickButton } from "@/app/components/buttons/page";
+
 interface rangeProps {
   dataTitle: string;
   onChange: (value: number) => void;
@@ -23,7 +26,13 @@ export const RangeComponent: React.FC<rangeProps> = ({
 }) => {
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    onChange(Number(inputValue));
+    const numericValue = Number(inputValue);
+
+    // 値が有効な数値であることを確認
+    // isNaN()はNaNの時にtrueを返します
+    if (!isNaN(numericValue)) {
+      onChange(numericValue);
+    }
   };
 
   const tickValues = [];

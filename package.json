@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@nivo/radar": "^0.99.0",
+    "@types/uuid": "^10.0.0",
     "idb": "^8.0.3",
     "next": "15.4.5",
     "normalize.css": "^8.0.1",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

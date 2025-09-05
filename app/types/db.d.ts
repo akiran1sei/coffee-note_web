@@ -5,7 +5,7 @@ export interface CoffeeRecord {
   name: string; // 名称
   variety: string; // 品種
   productionArea: string; // 産地
-  roastingDegree: string; // 焙煎度
+  roastingDegree: string; // 焙煎:Date
   extractionMethod: string;
   extractionMaker: string;
   grindSize: string; // 挽き目
@@ -13,7 +13,7 @@ export interface CoffeeRecord {
   coffeeAmount: number | string; // 粉量（g）
   waterAmount: number | string; // 湯量（g）
   measurementMethod: string; // 計測方法
-  extractionTime: string; // 抽出時間
+  extractionTime: number; // 抽出時間
   acidity: number; // 酸味（1-10）
   bitterness: number; // 苦味（1-10）
   overall: number; // 全体の好み（1-55）
@@ -23,11 +23,11 @@ export interface CoffeeRecord {
   memo: string; // メモ
   imageUri: string; // 画像のパス
   createdAt: Date; // 追加
-  self: boolean; // 自分で淹れたか、店で飲んだか
+  self: string; // 自分で淹れたか、店で飲んだか
   shopName: string; // 店名（店で飲んだ場合のみ）
   shopPrice: number | string; // 店の価格（円）（店で飲んだ場合のみ）
   shopDate: string; // 店で飲んだ日付（店で飲んだ場合のみ）
   shopAddress: string; // 店の住所（店で飲んだ場合のみ）
   shopUrl: string; // 店のURL（店で飲んだ場合のみ）
-  rating: number;
+  createdAt: date;
 }
