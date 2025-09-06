@@ -24,23 +24,10 @@ interface ItemPageProps {
 const ItemPage: React.FC<ItemPageProps> = () =>
   // { params: { slug } }
   {
-    // useEffect(() => {
-    //   setCoffeeDate({
-    //     coffeeInfo: slug.coffeeInfo,
-    //     shopInfo: slug.shopInfo,
-    //     extractionInfo: slug.extractionInfo,
-    //     reviewInfo: slug.reviewInfo,
-    //   });
-    // }, [slug]);
     const { width } = useWindowSize();
     const shopVer = "Shop";
     const selfVer = "Self";
-    // const [coffeeDate, setCoffeeDate] = useState({
-    //   coffeeInfo: string,
-    //   shopInfo: string,
-    //   extractionInfo: string,
-    //   reviewInfo: string
-    // });
+
     // 共通の項目
     const [coffeeInfo, setCoffeeInfo] = useState({
       imageUrl: "",
@@ -63,6 +50,7 @@ const ItemPage: React.FC<ItemPageProps> = () =>
     const [extractionInfo, setExtractionInfo] = useState({
       extractionMethod: "選択していません。",
       extractionMaker: "選択していません。",
+      measurementMethod: "",
       grindSize: "選択していません。",
       extractionTime: 0,
       temperature: 0,
@@ -136,14 +124,26 @@ const ItemPage: React.FC<ItemPageProps> = () =>
               {isVersion ? (
                 <div className={styles.createSelfVersionContents}>
                   <div className={styles.leftColumn}>
-                    <CoffeeBeansComponent />
-                    <BrewingRecipeComponent extractionInfo={extractionInfo} />
+                    <CoffeeBeansComponent
+                      coffeeInfo={coffeeInfo}
+                      setCoffeeInfo={setCoffeeInfo}
+                    />
+                    <BrewingRecipeComponent
+                      extractionInfo={extractionInfo}
+                      setExtractionInfo={setExtractionInfo}
+                    />
                   </div>
                   <div className={styles.rightColumn}>
-                    <TastingEvaluationComponent reviewInfo={reviewInfo} />
+                    <TastingEvaluationComponent
+                      reviewInfo={reviewInfo}
+                      setReviewInfo={setReviewInfo}
+                    />
                   </div>
                   <div className={styles.buttonContent}>
-                    <MemoAreaComponent />
+                    <MemoAreaComponent
+                      reviewInfo={reviewInfo}
+                      setReviewInfo={setReviewInfo}
+                    />
                   </div>
                 </div>
               ) : (
@@ -161,10 +161,16 @@ const ItemPage: React.FC<ItemPageProps> = () =>
                     />
                   </div>
                   <div className={styles.rightColumn}>
-                    <TastingEvaluationComponent reviewInfo={reviewInfo} />
+                    <TastingEvaluationComponent
+                      reviewInfo={reviewInfo}
+                      setReviewInfo={setReviewInfo}
+                    />
                   </div>
                   <div className={styles.buttonContent}>
-                    <MemoAreaComponent />
+                    <MemoAreaComponent
+                      reviewInfo={reviewInfo}
+                      setReviewInfo={setReviewInfo}
+                    />
                   </div>
                 </div>
               )}

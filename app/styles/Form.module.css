@@ -59,6 +59,10 @@
 .inputDate {
   text-align: center;
 }
+.chartContainer {
+  width: auto;
+  height: 400;
+}
 /* 新しいrange inputのスタイルを追加 */
 /* スライダー全体に対して適用 */
 .rangeInput[type="range"] {
