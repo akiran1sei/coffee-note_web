@@ -56,15 +56,48 @@ export async function openDb(): Promise<IDBPDatabase<CoffeeRecordMap>> {
         coffeeStore.createIndex("createdAt", "createdAt", { unique: false });
         coffeeStore.createIndex("self", "self", { unique: false });
         coffeeStore.createIndex("shopName", "shopName", { unique: false });
+
+        // 追加されたプロパティのインデックス
+        coffeeStore.createIndex("variety", "variety", { unique: false });
+        coffeeStore.createIndex("extractionMaker", "extractionMaker", {
+          unique: false,
+        });
+        coffeeStore.createIndex("grindSize", "grindSize", { unique: false });
+        coffeeStore.createIndex("temperature", "temperature", {
+          unique: false,
+        });
+        coffeeStore.createIndex("coffeeAmount", "coffeeAmount", {
+          unique: false,
+        });
+        coffeeStore.createIndex("waterAmount", "waterAmount", {
+          unique: false,
+        });
+        coffeeStore.createIndex("measurementMethod", "measurementMethod", {
+          unique: false,
+        });
+        coffeeStore.createIndex("extractionTime", "extractionTime", {
+          unique: false,
+        });
+        coffeeStore.createIndex("acidity", "acidity", { unique: false });
+        coffeeStore.createIndex("bitterness", "bitterness", { unique: false });
+        coffeeStore.createIndex("overall", "overall", { unique: false });
+        coffeeStore.createIndex("body", "body", { unique: false });
+        coffeeStore.createIndex("aroma", "aroma", { unique: false });
+        coffeeStore.createIndex("aftertaste", "aftertaste", { unique: false });
+        coffeeStore.createIndex("memo", "memo", { unique: false });
+        coffeeStore.createIndex("imageUri", "imageUri", { unique: false });
+        coffeeStore.createIndex("shopPrice", "shopPrice", { unique: false });
+        coffeeStore.createIndex("shopDate", "shopDate", { unique: false });
+        coffeeStore.createIndex("shopAddress", "shopAddress", {
+          unique: false,
+        });
+        coffeeStore.createIndex("shopUrl", "shopUrl", { unique: false });
       }
       // バージョン1から2へのアップグレード時の処理
       if (oldVersion < 2) {
         console.log(
           "Upgrading DB to version 2: No new object stores or indexes needed for this version."
         );
-        // このケースでは、以前のインデックス定義はoldVersion < 1でカバーされているため、
-        // 特に新しいcreateObjectStoreやcreateIndexの呼び出しは不要です。
-        // もし今後、新しいインデックスやストアを追加する際はここに追加します。
       }
     },
   });
