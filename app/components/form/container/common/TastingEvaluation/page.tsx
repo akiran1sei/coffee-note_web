@@ -15,7 +15,7 @@ interface TastingEvaluationProps {
       aftertaste: number;
       overall: number;
     };
-    memo: string; // `CreatePage.tsx`に合わせる
+    memo: string;
   };
   setReviewInfo: React.Dispatch<
     React.SetStateAction<{
@@ -27,7 +27,7 @@ interface TastingEvaluationProps {
         aftertaste: number;
         overall: number;
       };
-      memo: string; // `CreatePage.tsx`に合わせる
+      memo: string;
     }>
   >;
 }
@@ -37,9 +37,6 @@ export const TastingEvaluationComponent: React.FC<TastingEvaluationProps> = ({
   reviewInfo,
   setReviewInfo,
 }) => {
-  // ローカルステートは不要になるため削除
-  // const [chartFormValue, setChartFormValue] = useState(...)
-
   // 親から渡された `reviewInfo.chart` を使用してチャートデータを生成
   const data = [
     { taste: "酸味", value: reviewInfo.chart.acidity },
@@ -50,6 +47,16 @@ export const TastingEvaluationComponent: React.FC<TastingEvaluationProps> = ({
   ];
 
   const MyNivoRadar = () => {
+    // レンダリング直前でデータの有効性をチェック
+    const isDataValid = data.every(
+      (item) => typeof item.value === "number" && !isNaN(item.value)
+    );
+
+    // データが有効でない場合は、nullを返してレンダリングを停止する
+    if (!isDataValid) {
+      return null;
+    }
+
     return (
       <div className={styles.chartContainer} style={{ height: 400 }}>
         <ResponsiveRadar
@@ -91,7 +98,6 @@ export const TastingEvaluationComponent: React.FC<TastingEvaluationProps> = ({
       </div>
     );
   };
-  const Radar = MyNivoRadar();
 
   return (
     <div className={styles.infoContainer}>
@@ -142,7 +148,7 @@ export const TastingEvaluationComponent: React.FC<TastingEvaluationProps> = ({
           step={0.5}
         />
         <RangeComponent
-          dataTitle="アロマ"
+          dataTitle="香り"
           value={reviewInfo.chart.aroma}
           onChange={(value: number) => {
             setReviewInfo((prev) => ({
@@ -169,7 +175,10 @@ export const TastingEvaluationComponent: React.FC<TastingEvaluationProps> = ({
           max={5}
           step={0.5}
         />
-        {Radar}
+        {/* === ここが修正箇所です === */}
+        {Object.values(reviewInfo.chart).every(
+          (val) => typeof val === "number" && !isNaN(val)
+        ) && <MyNivoRadar />}
         <RangeComponent
           dataTitle="全体の好み"
           value={reviewInfo.chart.overall}
