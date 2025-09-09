@@ -1,6 +1,7 @@
 // SelfPcCard.tsx
 import styles from "@/app/styles/Pages.module.css";
 import React, { useEffect, useRef, useState } from "react";
+import { CoffeeRecord } from "@/app/types/db";
 import Image from "next/image";
 import { MainButton } from "@/app/components/buttons/page";
 import Link from "next/link";
@@ -8,11 +9,11 @@ import Link from "next/link";
 // SelfMobileCard.tsx
 
 interface CardProps {
-  id: string;
+  value: Partial<CoffeeRecord>;
 }
 
-export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
-  const checkboxId = `checkbox_${id}`;
+export const SelfMobileCard: React.FC<CardProps> = ({ value }) => {
+  const checkboxId = `checkbox_${value.id}`;
 
   const [isCheck, setIsCheck] = useState(false);
 
@@ -35,97 +36,97 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
           />
         </label>
       </div>
-      <Link href={`/pages/item/${id}`} className={styles.listItemLink}>
+      <Link href={`/pages/item/${value.id}`} className={styles.listItemLink}>
         <div className={`${styles.listItemCoffeeBeans}`}>
           <div className={`${styles.listItemCoffeeName}`}>
             <div className={styles.listItemLabel}>{"コーヒー名"}</div>
-            <div className={styles.listItemValue}>
-              パナマ エスメラルダ農園 ゲイシャ
-            </div>
+            <div className={styles.listItemValue}>{value.name}</div>
           </div>
           <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
             <div className={styles.listItemImage}>
               <Image
-                width={300}
-                height={300}
+                width={200}
+                height={200}
                 src="/images/no-image.png"
+                // src={value.imageUri}
                 alt="レーダーチャートのプレビュー画像"
+                // alt={value.imgAlt}
               />
             </div>
           </div>
           <div className={`${styles.listItemVariety}`}>
             <div className={styles.listItemLabel}>{"品種"}</div>
-            <div className={styles.listItemValue}>アラビカ</div>
+            <div className={styles.listItemValue}>{value.variety}</div>
           </div>
           <div className={`${styles.listItemProductionArea}`}>
             <div className={styles.listItemLabel}>{"産地"}</div>
-            <div className={styles.listItemValue}>
-              コスタリカ・コフィアディベルサ・グアドループティピカ・カーボニックマセレーション
-            </div>
+            <div className={styles.listItemValue}>{value.productionArea} </div>
           </div>
           <div className={`${styles.listItemRoastingDegree}`}>
             <div className={styles.listItemLabel}>{"焙煎度"}</div>
-            <div className={styles.listItemValue}>中煎り</div>
+            <div className={styles.listItemValue}>{value.roastingDegree}</div>
           </div>
         </div>
         <div className={`${styles.listItemBrewingRecipe}`}>
           <div className={`${styles.listItemExMethod}`}>
             <div className={styles.listItemLabel}>{"抽出方法"}</div>
-            <div className={styles.listItemValue}>ドリップ</div>
+            <div className={styles.listItemValue}>{value.extractionMethod}</div>
           </div>
           <div className={`${styles.listItemExMaker}`}>
             <div className={styles.listItemLabel}>{"抽出器具"}</div>
-            <div className={styles.listItemValue}>V60</div>
+            <div className={styles.listItemValue}>{value.extractionMaker}</div>
           </div>
           <div className={`${styles.listItemGrindSize}`}>
             <div className={styles.listItemLabel}>{"挽き目"}</div>
-            <div className={styles.listItemValue}>中挽き</div>
+            <div className={styles.listItemValue}>{value.grindSize}</div>
           </div>
           <div className={`${styles.listItemTemperature}`}>
             <div className={styles.listItemLabel}>{"温度（℃）"}</div>
-            <div className={styles.listItemValue}>90</div>
+            <div className={styles.listItemValue}>{value.temperature}</div>
           </div>
           <div className={`${styles.listItemCoffeeAmount}`}>
             <div className={styles.listItemLabel}>{"粉量（ｇ）"}</div>
-            <div className={styles.listItemValue}>15</div>
+            <div className={styles.listItemValue}>{value.coffeeAmount}</div>
           </div>
           <div className={`${styles.listItemWaterAmount}`}>
             <div className={styles.listItemLabel}>{"湯量（ｇ）"}</div>
-            <div className={styles.listItemValue}>240</div>
+            <div className={styles.listItemValue}>{value.waterAmount}</div>
           </div>
           <div className={`${styles.listItemMeasurementMethod}`}>
             <div className={styles.listItemLabel}>{"計測方法"}</div>
-            <div className={styles.listItemValue}>抽出量</div>
+            <div className={styles.listItemValue}>
+              {value.measurementMethod}
+            </div>
           </div>
           <div className={`${styles.listItemExTime}`}>
             <div className={styles.listItemLabel}>{"抽出時間"}</div>
-            <div className={styles.listItemValue}>3分20秒</div>
+            <div className={styles.listItemValue}>{value.extractionTime}</div>
           </div>
         </div>
         <div className={`${styles.listItemTasting}`}>
           <div className={`${styles.listItemAcidity}`}>
             <div className={styles.listItemLabel}>{"酸味"}</div>
-            <div className={styles.listItemValue}>3</div>
+            <div className={styles.listItemValue}>{value.acidity}</div>
           </div>
           <div className={`${styles.listItemBitterness}`}>
             <div className={styles.listItemLabel}>{"苦味"}</div>
-            <div className={styles.listItemValue}>2</div>
+            <div className={styles.listItemValue}>{value.bitterness}</div>
           </div>
           <div className={`${styles.listItemBody}`}>
             <div className={styles.listItemLabel}>{"コク"}</div>
-            <div className={styles.listItemValue}>4</div>
+            <div className={styles.listItemValue}>{value.body}</div>
           </div>
           <div className={`${styles.listItemAroma}`}>
             <div className={styles.listItemLabel}>{"アロマ"}</div>
-            <div className={styles.listItemValue}>5</div>
+            <div className={styles.listItemValue}>{value.aroma}</div>
           </div>
           <div className={`${styles.listItemAftertaste}`}>
             <div className={styles.listItemLabel}>{"キレ"}</div>
-            <div className={styles.listItemValue}>4</div>
+            <div className={styles.listItemValue}>{value.aftertaste}</div>
           </div>
           <div className={`${styles.listItemOverall}`}>
             <div className={styles.listItemLabel}>{"全体の好み"}</div>
-            <div className={styles.listItemValue}>4</div>
+            <div className={styles.listItemValue}>{value.overall}</div>
           </div>
           <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
             <div className={styles.listItemImage}>
@@ -141,12 +142,10 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
         <div className={`${styles.listItemMemoArea}`}>
           <div className={`${styles.listItemMemo}`}>
             <div className={styles.listItemLabel}>{"メモ"}</div>
-            <div className={styles.listItemValue}>
-              全体的に美味しい珈琲で、コクもキレもバランスのとれた珈琲でした。
-            </div>
+            <div className={styles.listItemValue}>{value.memo}</div>
           </div>
         </div>
-        <div className={`${styles.listButtonContainer}`}>
+        {/* <div className={`${styles.listButtonContainer}`}>
           <div
             className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
           >
@@ -165,14 +164,14 @@ export const SelfMobileCard: React.FC<CardProps> = ({ id }) => {
               widthValue="widthNearlyFull"
             />
           </div>
-        </div>
+        </div> */}
       </Link>
     </div>
   );
 };
 
-export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
-  const checkboxId = `checkbox_${id}`;
+export const SelfPcCard: React.FC<CardProps> = ({ value }) => {
+  const checkboxId = `checkbox_${value.id}`;
   const [isOpen, setIsOpen] = useState(false);
   const [load, setLoad] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
@@ -214,18 +213,16 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
         </label>
       </div>
       <div className={`${styles.accordionHeader}`}>
-        <Link href={`/pages/item/${id}`} className={styles.listItemLink}>
+        <Link href={`/pages/item/${value.id}`} className={styles.listItemLink}>
           <div className={`${styles.listItemCoffeeName}`}>
             <div className={styles.listItemLabel}>{"コーヒー名"}</div>
-            <div className={styles.listItemValue}>
-              パナマ エスメラルダ農園 ゲイシャ
-            </div>
+            <div className={styles.listItemValue}>{value.name}</div>
           </div>
         </Link>
         <div className={`${styles.accordionToggle}`} onClick={handleClick}>
           <span className={`${styles.accordionValueBox} ${openListClass}`}>
             <span className={styles.accordionLabel}>{"全体の好み:"}</span>
-            <span className={styles.accordionValue}>{"4"}</span>
+            <span className={styles.accordionValue}>{value.overall}</span>
           </span>
           <span className={`${styles.accordionToggleIcon} ${openListClass}`}>
             <Image
@@ -261,23 +258,23 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
               width={200}
               height={200}
               src="/images/no-image.png"
+              // src={value.imageUri}
               alt="レーダーチャートのプレビュー画像"
+              // alt={value.imgAlt}
             />
           </div>
         </div>
         <div className={`${styles.listItemVariety}`}>
           <div className={styles.listItemLabel}>{"品種"}</div>
-          <div className={styles.listItemValue}>カネフォラ種</div>
+          <div className={styles.listItemValue}>{value.variety}</div>
         </div>
         <div className={`${styles.listItemProductionArea}`}>
           <div className={styles.listItemLabel}>{"産地"}</div>
-          <div className={styles.listItemValue}>
-            コスタリカ・コフィアディベルサ・グアドループティピカ・カーボニックマセレーション
-          </div>
+          <div className={styles.listItemValue}>{value.productionArea}</div>
         </div>
         <div className={`${styles.listItemRoastingDegree}`}>
           <div className={styles.listItemLabel}>{"焙煎度"}</div>
-          <div className={styles.listItemValue}>ミディアム（中浅）</div>
+          <div className={styles.listItemValue}>{value.roastingDegree}</div>
         </div>
       </div>
       <div
@@ -287,37 +284,35 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
       >
         <div className={`${styles.listItemExMethod}`}>
           <div className={styles.listItemLabel}>{"抽出方法"}</div>
-          <div className={styles.listItemValue}>
-            コーヒーメーカー（ドリップ式）
-          </div>
+          <div className={styles.listItemValue}>{value.extractionMethod}</div>
         </div>
         <div className={`${styles.listItemExMaker}`}>
           <div className={styles.listItemLabel}>{"抽出器具"}</div>
-          <div className={styles.listItemValue}>バルミューダ The Pot</div>
+          <div className={styles.listItemValue}>{value.extractionMaker}</div>
         </div>
         <div className={`${styles.listItemGrindSize}`}>
           <div className={styles.listItemLabel}>{"挽き目"}</div>
-          <div className={styles.listItemValue}>中挽き</div>
+          <div className={styles.listItemValue}>{value.grindSize}</div>
         </div>
         <div className={`${styles.listItemTemperature}`}>
           <div className={styles.listItemLabel}>{"温度（℃）"}</div>
-          <div className={styles.listItemValue}>90</div>
+          <div className={styles.listItemValue}>{value.temperature}</div>
         </div>
         <div className={`${styles.listItemCoffeeAmount}`}>
           <div className={styles.listItemLabel}>{"粉量（ｇ）"}</div>
-          <div className={styles.listItemValue}>15</div>
+          <div className={styles.listItemValue}>{value.coffeeAmount}</div>
         </div>
         <div className={`${styles.listItemWaterAmount}`}>
           <div className={styles.listItemLabel}>{"湯量（ｇ）"}</div>
-          <div className={styles.listItemValue}>240</div>
+          <div className={styles.listItemValue}>{value.waterAmount}</div>
         </div>
         <div className={`${styles.listItemMeasurementMethod}`}>
           <div className={styles.listItemLabel}>{"計測方法"}</div>
-          <div className={styles.listItemValue}>注湯量</div>
+          <div className={styles.listItemValue}>{value.measurementMethod}</div>
         </div>
         <div className={`${styles.listItemExTime}`}>
           <div className={styles.listItemLabel}>{"抽出時間"}</div>
-          <div className={styles.listItemValue}>3分20秒</div>
+          <div className={styles.listItemValue}>{value.extractionTime}</div>
         </div>
       </div>
       <div
@@ -327,27 +322,27 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
       >
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
-          <div className={styles.listItemValue}>3</div>
+          <div className={styles.listItemValue}>{value.acidity}</div>
         </div>
         <div className={`${styles.listItemBitterness}`}>
           <div className={styles.listItemLabel}>{"苦味"}</div>
-          <div className={styles.listItemValue}>2</div>
+          <div className={styles.listItemValue}>{value.bitterness}</div>
         </div>
         <div className={`${styles.listItemBody}`}>
           <div className={styles.listItemLabel}>{"コク"}</div>
-          <div className={styles.listItemValue}>4</div>
+          <div className={styles.listItemValue}>{value.body}</div>
         </div>
         <div className={`${styles.listItemAroma}`}>
           <div className={styles.listItemLabel}>{"アロマ"}</div>
-          <div className={styles.listItemValue}>5</div>
+          <div className={styles.listItemValue}>{value.aroma}</div>
         </div>
         <div className={`${styles.listItemAftertaste}`}>
           <div className={styles.listItemLabel}>{"キレ"}</div>
-          <div className={styles.listItemValue}>4</div>
+          <div className={styles.listItemValue}>{value.aftertaste}</div>
         </div>
         <div className={`${styles.listItemOverall}`}>
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
-          <div className={styles.listItemValue}>4</div>
+          <div className={styles.listItemValue}>{value.overall}</div>
         </div>
         <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
           <div className={styles.listItemImage}>
@@ -367,12 +362,10 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
       >
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
-          <div className={styles.listItemValue}>
-            全体的に美味しい珈琲で、コクもキレもバランスのとれた珈琲でした。
-          </div>
+          <div className={styles.listItemValue}>{value.memo}</div>
         </div>
       </div>
-      <div
+      {/* <div
         className={`${styles.listButtonContainer} ${openListClass} ${
           !isFadingIn ? styles.fade_out : styles.fade_in
         }`}
@@ -395,7 +388,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ id }) => {
             widthValue="widthNearlyFull"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

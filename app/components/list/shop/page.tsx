@@ -1,16 +1,17 @@
 // ShopMobileCard.tsx
 import styles from "@/app/styles/Pages.module.css";
 import React, { useEffect, useState } from "react";
+import { CoffeeRecord } from "@/app/types/db";
 import Image from "next/image";
 import { MainButton } from "@/app/components/buttons/page";
 import Link from "next/link";
 
 interface CardProps {
-  id: string;
+  value: Partial<CoffeeRecord>;
 }
 
-export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
-  const checkboxId = `checkbox_${id}`;
+export const ShopMobileCard: React.FC<CardProps> = ({ value }) => {
+  const checkboxId = `checkbox_${value.id}`;
 
   const [isCheck, setIsCheck] = useState(false);
 
@@ -33,11 +34,11 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
           />
         </label>
       </div>
-      <Link href={`/pages/item/${id}`} className={styles.listItemLink}>
+      <Link href={`/pages/item/${value.id}`} className={styles.listItemLink}>
         <div className={`${styles.listItemShopData}`}>
           <div className={`${styles.listItemShopName}`}>
             <div className={styles.listItemLabel}>{"店名"}</div>
-            <div className={styles.listItemValue}>コーヒーショップ</div>
+            <div className={styles.listItemValue}>{value.shopName}</div>
           </div>
           <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
             <div className={styles.listItemImage}>
@@ -45,63 +46,63 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
                 width={200}
                 height={200}
                 src="/images/no-image.png"
+                // src={value.imageUri}
                 alt="レーダーチャートのプレビュー画像"
+                // alt={value.imgAlt}
               />
             </div>
           </div>
           <div className={`${styles.listItemShopPrice}`}>
             <div className={styles.listItemLabel}>{"店の価格（円）"}</div>
-            <div className={styles.listItemValue}>500</div>
+            <div className={styles.listItemValue}>{value.shopPrice}</div>
           </div>
           <div className={`${styles.listItemShopDate}`}>
             <div className={styles.listItemLabel}>{"飲んだ日付"}</div>
-            <div className={styles.listItemValue}>2023-03-15</div>
+            <div className={styles.listItemValue}>{value.shopDate}</div>
           </div>
           <div className={`${styles.listItemShopAddress}`}>
             <div className={styles.listItemLabel}>{"店の住所"}</div>
-            <div className={styles.listItemValue}>東京都渋谷区</div>
+            <div className={styles.listItemValue}>{value.shopAddress}</div>
           </div>
           <div className={`${styles.listItemShopUrl}`}>
             <div className={styles.listItemLabel}>{"店のURL"}</div>
-            <div className={styles.listItemValue}>
-              https://coffee-shop.example.com
-            </div>
+            <div className={styles.listItemValue}>{value.shopUrl}</div>
           </div>
         </div>
         <div className={`${styles.listItemShopCoffee}`}>
           <div className={`${styles.listItemCoffeeName}`}>
             <div className={styles.listItemLabel}>{"コーヒー名"}</div>
-            <div className={styles.listItemValue}>コーヒー名</div>
+            <div className={styles.listItemValue}>{value.name}</div>
           </div>
           <div className={`${styles.listItemProductionArea}`}>
             <div className={styles.listItemLabel}>{"産地"}</div>
-            <div className={styles.listItemValue}>産地名</div>
+            <div className={styles.listItemValue}>{value.productionArea}</div>
           </div>
         </div>
         <div className={`${styles.listItemTasting}`}>
           <div className={`${styles.listItemAcidity}`}>
             <div className={styles.listItemLabel}>{"酸味"}</div>
-            <div className={styles.listItemValue}>3</div>
+            <div className={styles.listItemValue}>{value.acidity}</div>
           </div>
           <div className={`${styles.listItemBitterness}`}>
             <div className={styles.listItemLabel}>{"苦味"}</div>
-            <div className={styles.listItemValue}>2</div>
+            <div className={styles.listItemValue}>{value.bitterness}</div>
           </div>
           <div className={`${styles.listItemBody}`}>
             <div className={styles.listItemLabel}>{"コク"}</div>
-            <div className={styles.listItemValue}>4</div>
+            <div className={styles.listItemValue}>{value.body}</div>
           </div>
           <div className={`${styles.listItemAroma}`}>
             <div className={styles.listItemLabel}>{"アロマ"}</div>
-            <div className={styles.listItemValue}>5</div>
+            <div className={styles.listItemValue}>{value.aroma}</div>
           </div>
           <div className={`${styles.listItemAftertaste}`}>
             <div className={styles.listItemLabel}>{"キレ"}</div>
-            <div className={styles.listItemValue}>4</div>
+            <div className={styles.listItemValue}>{value.aftertaste}</div>
           </div>
           <div className={`${styles.listItemOverall}`}>
             <div className={styles.listItemLabel}>{"全体の好み"}</div>
-            <div className={styles.listItemValue}>4</div>
+            <div className={styles.listItemValue}>{value.overall}</div>
           </div>
           <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
             <div className={styles.listItemImage}>
@@ -109,6 +110,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
                 width={200}
                 height={200}
                 src="/images/no-image.png"
+                // src={value.chart}
                 alt="レーダーチャートのプレビュー画像"
               />
             </div>
@@ -117,12 +119,10 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
         <div className={`${styles.listItemMemoArea}`}>
           <div className={`${styles.listItemMemo}`}>
             <div className={styles.listItemLabel}>{"メモ"}</div>
-            <div className={styles.listItemValue}>
-              全体的に美味しい珈琲で、コクもキレもバランスのとれた珈琲でした。
-            </div>
+            <div className={styles.listItemValue}>{value.memo} </div>
           </div>
         </div>
-        <div className={`${styles.listButtonContainer}`}>
+        {/* <div className={`${styles.listButtonContainer}`}>
           <div
             className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
           >
@@ -141,18 +141,14 @@ export const ShopMobileCard: React.FC<CardProps> = ({ id }) => {
               widthValue="widthNearlyFull"
             />
           </div>
-        </div>
+        </div> */}
       </Link>
     </div>
   );
 };
 
-interface CardProps {
-  id: string;
-}
-
-export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
-  const checkboxId = `checkbox_${id}`;
+export const ShopPcCard: React.FC<CardProps> = ({ value }) => {
+  const checkboxId = `checkbox_${value.id}`;
   const [isOpen, setIsOpen] = useState(false);
   const [load, setLoad] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
@@ -196,16 +192,19 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
       </div>
       <div className={`${styles.accordionHeader} `}>
         <div className={`${styles.listItemShopName}`}>
-          <Link href={`/pages/item/${id}`} className={styles.listItemLink}>
+          <Link
+            href={`/pages/item/${value.id}`}
+            className={styles.listItemLink}
+          >
             <div className={styles.listItemLabel}>{"店名"}</div>
-            <div className={styles.listItemValue}>コーヒーショップ</div>
+            <div className={styles.listItemValue}>{value.shopName}</div>
           </Link>
         </div>
 
         <div className={`${styles.accordionToggle}`}>
           <span className={`${styles.accordionValueBox} ${openListClass}`}>
             <span className={styles.accordionLabel}>{"全体の好み:"}</span>
-            <span className={styles.accordionValue}>{"4"}</span>
+            <span className={styles.accordionValue}>{value.overall}</span>
           </span>
 
           <span
@@ -246,27 +245,27 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
               width={200}
               height={200}
               src="/images/no-image.png"
+              // src={value.imageUri}
               alt="レーダーチャートのプレビュー画像"
+              // alt={value.imgAlt}
             />
           </div>
         </div>
         <div className={`${styles.listItemShopPrice}`}>
           <div className={styles.listItemLabel}>{"店の価格（円）"}</div>
-          <div className={styles.listItemValue}>500</div>
+          <div className={styles.listItemValue}>{value.shopPrice}</div>
         </div>
         <div className={`${styles.listItemShopDate}`}>
           <div className={styles.listItemLabel}>{"飲んだ日付"}</div>
-          <div className={styles.listItemValue}>2023-03-15</div>
+          <div className={styles.listItemValue}>{value.shopDate}</div>
         </div>
         <div className={`${styles.listItemShopAddress}`}>
           <div className={styles.listItemLabel}>{"店の住所"}</div>
-          <div className={styles.listItemValue}>東京都渋谷区</div>
+          <div className={styles.listItemValue}>{value.shopAddress}</div>
         </div>
         <div className={`${styles.listItemShopUrl}`}>
           <div className={styles.listItemLabel}>{"店のURL"}</div>
-          <div className={styles.listItemValue}>
-            https://coffee-shop.example.com
-          </div>
+          <div className={styles.listItemValue}>{value.shopUrl}</div>
         </div>
       </div>
       <div
@@ -276,11 +275,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
       >
         <div className={`${styles.listItemCoffeeName}`}>
           <div className={styles.listItemLabel}>{"コーヒー名"}</div>
-          <div className={styles.listItemValue}>コーヒー名</div>
+          <div className={styles.listItemValue}>{value.name}</div>
         </div>
         <div className={`${styles.listItemProductionArea}`}>
           <div className={styles.listItemLabel}>{"産地"}</div>
-          <div className={styles.listItemValue}>産地名</div>
+          <div className={styles.listItemValue}>{value.productionArea}</div>
         </div>
       </div>
       <div
@@ -290,27 +289,27 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
       >
         <div className={`${styles.listItemAcidity}`}>
           <div className={styles.listItemLabel}>{"酸味"}</div>
-          <div className={styles.listItemValue}>3</div>
+          <div className={styles.listItemValue}>{value.acidity}</div>
         </div>
         <div className={`${styles.listItemBitterness}`}>
           <div className={styles.listItemLabel}>{"苦味"}</div>
-          <div className={styles.listItemValue}>2</div>
+          <div className={styles.listItemValue}>{value.bitterness}</div>
         </div>
         <div className={`${styles.listItemBody}`}>
           <div className={styles.listItemLabel}>{"コク"}</div>
-          <div className={styles.listItemValue}>4</div>
+          <div className={styles.listItemValue}>{value.body}</div>
         </div>
         <div className={`${styles.listItemAroma}`}>
           <div className={styles.listItemLabel}>{"アロマ"}</div>
-          <div className={styles.listItemValue}>5</div>
+          <div className={styles.listItemValue}>{value.aroma}</div>
         </div>
         <div className={`${styles.listItemAftertaste}`}>
           <div className={styles.listItemLabel}>{"キレ"}</div>
-          <div className={styles.listItemValue}>4</div>
+          <div className={styles.listItemValue}>{value.aftertaste}</div>
         </div>
         <div className={`${styles.listItemOverall}`}>
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
-          <div className={styles.listItemValue}>4</div>
+          <div className={styles.listItemValue}>{value.overall}</div>
         </div>
         <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
           <div className={styles.listItemImage}>
@@ -330,12 +329,10 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
       >
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
-          <div className={styles.listItemValue}>
-            全体的に美味しい珈琲で、コクもキレもバランスのとれた珈琲でした。
-          </div>
+          <div className={styles.listItemValue}>{value.memo}</div>
         </div>
       </div>
-      <div
+      {/* <div
         className={`${styles.listButtonContainer} ${openListClass} ${
           !isFadingIn ? styles.fade_out : styles.fade_in
         }`}
@@ -358,7 +355,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ id }) => {
             widthValue="widthNearlyFull"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

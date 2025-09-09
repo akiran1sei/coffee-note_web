@@ -96,9 +96,118 @@ const CreatePage = () => {
   // フォーム送信時のハンドラー
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // 未入力チェック（バリデーション）
+    // フォーム全体の必須項目
     if (!coffeeInfo.coffeeName.trim()) {
       alert("コーヒー豆の名前を入力してください。");
       return;
+    }
+    if (!coffeeInfo.imageUrl.trim()) {
+      alert("コーヒー豆の画像パスを入力してください。");
+      return;
+    }
+    if (!coffeeInfo.productionArea.trim()) {
+      alert("生産地を入力してください。");
+      return;
+    }
+    if (coffeeInfo.variety === "選択していません。") {
+      alert("品種を選択してください。");
+      return;
+    }
+    if (coffeeInfo.roastingDegree === "選択していません。") {
+      alert("焙煎度を選択してください。");
+      return;
+    }
+
+    // 抽出情報
+    if (extractionInfo.extractionMethod === "選択していません。") {
+      alert("抽出方法を選択してください。");
+      return;
+    }
+    if (extractionInfo.extractionMaker === "選択していません。") {
+      alert("抽出器具のメーカーを選択してください。");
+      return;
+    }
+    if (extractionInfo.measurementMethod === "") {
+      alert("計測方法を入力してください。");
+      return;
+    }
+    if (extractionInfo.grindSize === "選択していません.") {
+      alert("挽き目を選択してください。");
+      return;
+    }
+    if (
+      extractionInfo.extractionTime <= 0 ||
+      isNaN(extractionInfo.extractionTime)
+    ) {
+      alert("抽出時間（秒）を入力してください。");
+      return;
+    }
+    if (extractionInfo.temperature <= 0 || isNaN(extractionInfo.temperature)) {
+      alert("温度（℃）を入力してください。");
+      return;
+    }
+    if (
+      extractionInfo.coffeeAmount <= 0 ||
+      isNaN(extractionInfo.coffeeAmount)
+    ) {
+      alert("粉量（g）を入力してください。");
+      return;
+    }
+    if (extractionInfo.waterAmount <= 0 || isNaN(extractionInfo.waterAmount)) {
+      alert("湯量（g）を入力してください。");
+      return;
+    }
+
+    // レビュー情報
+    if (reviewInfo.chart.acidity === 0 || isNaN(reviewInfo.chart.acidity)) {
+      alert("酸味の評価を入力してください。");
+      return;
+    }
+    if (
+      reviewInfo.chart.bitterness === 0 ||
+      isNaN(reviewInfo.chart.bitterness)
+    ) {
+      alert("苦味の評価を入力してください。");
+      return;
+    }
+    if (reviewInfo.chart.overall === 0 || isNaN(reviewInfo.chart.overall)) {
+      alert("全体の好みの評価を入力してください。");
+      return;
+    }
+    if (reviewInfo.chart.body === 0 || isNaN(reviewInfo.chart.body)) {
+      alert("コクの評価を入力してください。");
+      return;
+    }
+    if (reviewInfo.chart.aroma === 0 || isNaN(reviewInfo.chart.aroma)) {
+      alert("香りの評価を入力してください。");
+      return;
+    }
+    if (
+      reviewInfo.chart.aftertaste === 0 ||
+      isNaN(reviewInfo.chart.aftertaste)
+    ) {
+      alert("キレの評価を入力してください。");
+      return;
+    }
+    // メモは任意入力のためスキップ
+
+    // 店舗情報（'self'がfalse、つまり店で飲んだ場合のみ必須）
+    // このロジックは'varText'変数の値に依存します
+    if (varText === shopVer) {
+      if (!shopInfo.shopName.trim()) {
+        alert("店名を入力してください。");
+        return;
+      }
+      // if (!shopInfo.shopPrice || isNaN(shopInfo.shopPrice)) {
+      //   alert("お店での価格を入力してください。");
+      //   return;
+      // }
+      if (!shopInfo.shopDate) {
+        alert("お店で飲んだ日付を選択してください。");
+        return;
+      }
+      // 住所、URLは任意入力のためスキップ
     }
 
     // 新しい記録のデータを作成

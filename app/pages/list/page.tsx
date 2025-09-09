@@ -1,12 +1,13 @@
 "use client";
 import styles from "@/app/styles/Pages.module.css";
-
+import { getCoffeeRecords } from "@/app/lib/IndexedDB";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { IconButton, MainButton } from "@/app/components/buttons/page";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/self/page";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/shop/page";
+import { CoffeeRecord } from "@/app/types/db";
 
 interface PageTitleProps {
   listItemValue: string;
@@ -24,7 +25,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
 const ListPage = () => {
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
-
+  const [coffeeRecords, setCoffeeRecords] = useState<CoffeeRecord[]>([]);
   // ウィンドウのリサイズイベントを監視
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -43,6 +44,23 @@ const ListPage = () => {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
+  // コンポーネントがマウントされた時にデータを取得する
+  useEffect(() => {
+    // 非同期関数を定義し、データを取得
+    const fetchRecords = async () => {
+      try {
+        const records = await getCoffeeRecords();
+        setCoffeeRecords(records); // stateにデータをセット
+        console.log("全コーヒー記録:", records); // 取得したデータをログに出力
+      } catch (error) {
+        console.error("記録の取得中にエラーが発生しました:", error);
+      }
+    };
+
+    fetchRecords();
+  }, []); // 依存配列を空にすることで、コンポーネントの初回レンダリング時のみ実行
+  coffeeRecords.map((item) => <span key={item.id}>{item.id}</span>);
+  console.log(coffeeRecords);
   const [version, setVersion] = useState(true);
   // const [version, setVersion] = useState(false);
   const [load, setLoad] = useState(false);
@@ -50,9 +68,13 @@ const ListPage = () => {
   const [isFadingIn, setIsFadingIn] = useState(false);
   // PC向けのレイアウト
   const ListPcPage = () => {
-    const pcCard = (id: string) => {
+    const pcCard = (record: Partial<CoffeeRecord>) => {
       // versionの状態によって、表示するコンポーネントを切り替えます
-      return version ? <SelfPcCard id={id} /> : <ShopPcCard id={id} />;
+      return version ? (
+        <SelfPcCard value={record} />
+      ) : (
+        <ShopPcCard value={record} />
+      );
     };
     const cards = Array.from({ length: 5 });
     return (
@@ -60,12 +82,12 @@ const ListPage = () => {
         <div
           className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listPcPageWrapper}`}
         >
-          {cards.map((_, index) => (
+          {coffeeRecords.map((record, index) => (
             <div
               className={`${styles.listItemCard} ${styles.listPcCard} ${styles.listItemVersion}`}
-              key={index}
+              key={record.id ?? index}
             >
-              {pcCard((index + 1).toString())}
+              {pcCard(record)}
             </div>
           ))}
         </div>
@@ -108,11 +130,15 @@ const ListPage = () => {
     };
 
     // const spImg = "https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart";
-    const cards = Array.from({ length: 5 });
-    const MobileCard = (id: string) => {
-      return version ? <SelfMobileCard id={id} /> : <ShopMobileCard id={id} />;
+    // const cards = Array.from({ length: 5 });
+    const MobileCard = (record: Partial<CoffeeRecord>) => {
+      return version ? (
+        <SelfMobileCard value={record} />
+      ) : (
+        <ShopMobileCard value={record} />
+      );
     };
-    console.log();
+
     return (
       <>
         <div className={styles.listScrollButtons}>
@@ -123,12 +149,12 @@ const ListPage = () => {
           className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listMobilePageWrapper}`}
           ref={containerRef}
         >
-          {cards.map((_, index) => (
+          {coffeeRecords.map((record, index) => (
             <div
               className={`${styles.listItemCard} ${styles.listMobileCard} ${styles.listItemVersion}`}
-              key={index}
+              key={record.id ?? index}
             >
-              {MobileCard((index + 1).toString())}
+              {MobileCard(record)}
             </div>
           ))}
         </div>
