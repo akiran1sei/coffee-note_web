@@ -59,7 +59,7 @@ const ListPage = () => {
 
     fetchRecords();
   }, []); // 依存配列を空にすることで、コンポーネントの初回レンダリング時のみ実行
-  coffeeRecords.map((item) => <span key={item.id}>{item.id}</span>);
+
   console.log(coffeeRecords);
   const [version, setVersion] = useState(true);
   // const [version, setVersion] = useState(false);
