@@ -10,9 +10,10 @@ import Link from "next/link";
 
 interface CardProps {
   value: Partial<CoffeeRecord>;
+  onClick: (id: string) => void;
 }
 
-export const SelfMobileCard: React.FC<CardProps> = ({ value }) => {
+export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   const checkboxId = `checkbox_${value.id}`;
 
   const [isCheck, setIsCheck] = useState(false);
@@ -36,141 +37,157 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value }) => {
           />
         </label>
       </div>
-      <Link href={`/pages/item/${value.id}`} className={styles.listItemLink}>
-        <div className={`${styles.listItemCoffeeBeans}`}>
-          <div className={`${styles.listItemCoffeeName}`}>
-            <div className={styles.listItemLabel}>{"コーヒー名"}</div>
-            <div className={styles.listItemValue}>{value.name}</div>
-          </div>
-          <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
-            <div className={styles.listItemImage}>
-              <Image
-                width={200}
-                height={200}
-                src="/images/no-image.png"
-                // src={value.imageUri}
-                alt="レーダーチャートのプレビュー画像"
-                // alt={value.imgAlt}
-              />
-            </div>
-          </div>
-          <div className={`${styles.listItemVariety}`}>
-            <div className={styles.listItemLabel}>{"品種"}</div>
-            <div className={styles.listItemValue}>{value.variety}</div>
-          </div>
-          <div className={`${styles.listItemProductionArea}`}>
-            <div className={styles.listItemLabel}>{"産地"}</div>
-            <div className={styles.listItemValue}>{value.productionArea} </div>
-          </div>
-          <div className={`${styles.listItemRoastingDegree}`}>
-            <div className={styles.listItemLabel}>{"焙煎度"}</div>
-            <div className={styles.listItemValue}>{value.roastingDegree}</div>
+
+      <div className={`${styles.listItemCoffeeBeans}`}>
+        <div className={`${styles.listItemCoffeeName}`}>
+          <div className={styles.listItemLabel}>{"コーヒー名"}</div>
+          <div className={styles.listItemValue}>{value.name}</div>
+        </div>
+        <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
+          <div className={styles.listItemImage}>
+            <Image
+              width={200}
+              height={200}
+              src="/images/no-image.png"
+              // src={value.imageUri}
+              alt="レーダーチャートのプレビュー画像"
+              // alt={value.imgAlt}
+            />
           </div>
         </div>
-        <div className={`${styles.listItemBrewingRecipe}`}>
-          <div className={`${styles.listItemExMethod}`}>
-            <div className={styles.listItemLabel}>{"抽出方法"}</div>
-            <div className={styles.listItemValue}>{value.extractionMethod}</div>
-          </div>
-          <div className={`${styles.listItemExMaker}`}>
-            <div className={styles.listItemLabel}>{"抽出器具"}</div>
-            <div className={styles.listItemValue}>{value.extractionMaker}</div>
-          </div>
-          <div className={`${styles.listItemGrindSize}`}>
-            <div className={styles.listItemLabel}>{"挽き目"}</div>
-            <div className={styles.listItemValue}>{value.grindSize}</div>
-          </div>
-          <div className={`${styles.listItemTemperature}`}>
-            <div className={styles.listItemLabel}>{"温度（℃）"}</div>
-            <div className={styles.listItemValue}>{value.temperature}</div>
-          </div>
-          <div className={`${styles.listItemCoffeeAmount}`}>
-            <div className={styles.listItemLabel}>{"粉量（ｇ）"}</div>
-            <div className={styles.listItemValue}>{value.coffeeAmount}</div>
-          </div>
-          <div className={`${styles.listItemWaterAmount}`}>
-            <div className={styles.listItemLabel}>{"湯量（ｇ）"}</div>
-            <div className={styles.listItemValue}>{value.waterAmount}</div>
-          </div>
-          <div className={`${styles.listItemMeasurementMethod}`}>
-            <div className={styles.listItemLabel}>{"計測方法"}</div>
-            <div className={styles.listItemValue}>
-              {value.measurementMethod}
-            </div>
-          </div>
-          <div className={`${styles.listItemExTime}`}>
-            <div className={styles.listItemLabel}>{"抽出時間"}</div>
-            <div className={styles.listItemValue}>{value.extractionTime}</div>
+        <div className={`${styles.listItemVariety}`}>
+          <div className={styles.listItemLabel}>{"品種"}</div>
+          <div className={styles.listItemValue}>{value.variety}</div>
+        </div>
+        <div className={`${styles.listItemProductionArea}`}>
+          <div className={styles.listItemLabel}>{"産地"}</div>
+          <div className={styles.listItemValue}>{value.productionArea} </div>
+        </div>
+        <div className={`${styles.listItemRoastingDegree}`}>
+          <div className={styles.listItemLabel}>{"焙煎度"}</div>
+          <div className={styles.listItemValue}>{value.roastingDegree}</div>
+        </div>
+      </div>
+      <div className={`${styles.listItemBrewingRecipe}`}>
+        <div className={`${styles.listItemExMethod}`}>
+          <div className={styles.listItemLabel}>{"抽出方法"}</div>
+          <div className={styles.listItemValue}>{value.extractionMethod}</div>
+        </div>
+        <div className={`${styles.listItemExMaker}`}>
+          <div className={styles.listItemLabel}>{"抽出器具"}</div>
+          <div className={styles.listItemValue}>{value.extractionMaker}</div>
+        </div>
+        <div className={`${styles.listItemGrindSize}`}>
+          <div className={styles.listItemLabel}>{"挽き目"}</div>
+          <div className={styles.listItemValue}>{value.grindSize}</div>
+        </div>
+        <div className={`${styles.listItemTemperature}`}>
+          <div className={styles.listItemLabel}>{"温度（℃）"}</div>
+          <div className={styles.listItemValue}>{value.temperature}</div>
+        </div>
+        <div className={`${styles.listItemCoffeeAmount}`}>
+          <div className={styles.listItemLabel}>{"粉量（ｇ）"}</div>
+          <div className={styles.listItemValue}>{value.coffeeAmount}</div>
+        </div>
+        <div className={`${styles.listItemWaterAmount}`}>
+          <div className={styles.listItemLabel}>{"湯量（ｇ）"}</div>
+          <div className={styles.listItemValue}>{value.waterAmount}</div>
+        </div>
+        <div className={`${styles.listItemMeasurementMethod}`}>
+          <div className={styles.listItemLabel}>{"計測方法"}</div>
+          <div className={styles.listItemValue}>{value.measurementMethod}</div>
+        </div>
+        <div className={`${styles.listItemExTime}`}>
+          <div className={styles.listItemLabel}>{"抽出時間"}</div>
+          <div className={styles.listItemValue}>{value.extractionTime}</div>
+        </div>
+      </div>
+      <div className={`${styles.listItemTasting}`}>
+        <div className={`${styles.listItemAcidity}`}>
+          <div className={styles.listItemLabel}>{"酸味"}</div>
+          <div className={styles.listItemValue}>{value.acidity}</div>
+        </div>
+        <div className={`${styles.listItemBitterness}`}>
+          <div className={styles.listItemLabel}>{"苦味"}</div>
+          <div className={styles.listItemValue}>{value.bitterness}</div>
+        </div>
+        <div className={`${styles.listItemBody}`}>
+          <div className={styles.listItemLabel}>{"コク"}</div>
+          <div className={styles.listItemValue}>{value.body}</div>
+        </div>
+        <div className={`${styles.listItemAroma}`}>
+          <div className={styles.listItemLabel}>{"アロマ"}</div>
+          <div className={styles.listItemValue}>{value.aroma}</div>
+        </div>
+        <div className={`${styles.listItemAftertaste}`}>
+          <div className={styles.listItemLabel}>{"キレ"}</div>
+          <div className={styles.listItemValue}>{value.aftertaste}</div>
+        </div>
+        <div className={`${styles.listItemOverall}`}>
+          <div className={styles.listItemLabel}>{"全体の好み"}</div>
+          <div className={styles.listItemValue}>{value.overall}</div>
+        </div>
+        <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
+          <div className={styles.listItemImage}>
+            <Image
+              width={200}
+              height={200}
+              src="/images/no-image.png"
+              alt="レーダーチャートのプレビュー画像"
+            />
           </div>
         </div>
-        <div className={`${styles.listItemTasting}`}>
-          <div className={`${styles.listItemAcidity}`}>
-            <div className={styles.listItemLabel}>{"酸味"}</div>
-            <div className={styles.listItemValue}>{value.acidity}</div>
-          </div>
-          <div className={`${styles.listItemBitterness}`}>
-            <div className={styles.listItemLabel}>{"苦味"}</div>
-            <div className={styles.listItemValue}>{value.bitterness}</div>
-          </div>
-          <div className={`${styles.listItemBody}`}>
-            <div className={styles.listItemLabel}>{"コク"}</div>
-            <div className={styles.listItemValue}>{value.body}</div>
-          </div>
-          <div className={`${styles.listItemAroma}`}>
-            <div className={styles.listItemLabel}>{"アロマ"}</div>
-            <div className={styles.listItemValue}>{value.aroma}</div>
-          </div>
-          <div className={`${styles.listItemAftertaste}`}>
-            <div className={styles.listItemLabel}>{"キレ"}</div>
-            <div className={styles.listItemValue}>{value.aftertaste}</div>
-          </div>
-          <div className={`${styles.listItemOverall}`}>
-            <div className={styles.listItemLabel}>{"全体の好み"}</div>
-            <div className={styles.listItemValue}>{value.overall}</div>
-          </div>
-          <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
-            <div className={styles.listItemImage}>
-              <Image
-                width={200}
-                height={200}
-                src="/images/no-image.png"
-                alt="レーダーチャートのプレビュー画像"
-              />
-            </div>
-          </div>
+      </div>
+      <div className={`${styles.listItemMemoArea}`}>
+        <div className={`${styles.listItemMemo}`}>
+          <div className={styles.listItemLabel}>{"メモ"}</div>
+          <div className={styles.listItemValue}>{value.memo}</div>
         </div>
-        <div className={`${styles.listItemMemoArea}`}>
-          <div className={`${styles.listItemMemo}`}>
-            <div className={styles.listItemLabel}>{"メモ"}</div>
-            <div className={styles.listItemValue}>{value.memo}</div>
-          </div>
+      </div>
+
+      <div className={`${styles.listButtonContainer}`}>
+        <div
+          className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+          onClick={() => {
+            if (value.id) {
+              onClick(value.id);
+            }
+          }}
+        >
+          <MainButton
+            sizeValue="large"
+            textValue="削除"
+            buttonColor="btn-danger"
+            widthValue="widthNearlyFull"
+          />
         </div>
-        {/* <div className={`${styles.listButtonContainer}`}>
-          <div
-            className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+        <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
+          <Link
+            href={`/pages/item/${value.id}`}
+            className={styles.listItemLink}
           >
             <MainButton
               sizeValue="large"
-              textValue="削除"
-              buttonColor="btn-danger"
+              textValue="編集"
+              buttonColor="btn-main"
               widthValue="widthNearlyFull"
             />
-          </div>
-          <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
-            <MainButton
-              sizeValue="large"
-              textValue="PDFへダウンロード"
-              buttonColor="btn-success"
-              widthValue="widthNearlyFull"
-            />
-          </div>
-        </div> */}
-      </Link>
+          </Link>
+        </div>
+        <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
+          <MainButton
+            sizeValue="large"
+            textValue="PDFへダウンロード"
+            buttonColor="btn-success"
+            widthValue="widthNearlyFull"
+          />
+        </div>
+      </div>
     </div>
   );
 };
 
-export const SelfPcCard: React.FC<CardProps> = ({ value }) => {
+export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   const checkboxId = `checkbox_${value.id}`;
   const [isOpen, setIsOpen] = useState(false);
   const [load, setLoad] = useState(false);
@@ -365,13 +382,18 @@ export const SelfPcCard: React.FC<CardProps> = ({ value }) => {
           <div className={styles.listItemValue}>{value.memo}</div>
         </div>
       </div>
-      {/* <div
+      <div
         className={`${styles.listButtonContainer} ${openListClass} ${
           !isFadingIn ? styles.fade_out : styles.fade_in
         }`}
       >
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+          onClick={() => {
+            if (value.id) {
+              onClick(value.id);
+            }
+          }}
         >
           <MainButton
             sizeValue="large"
@@ -379,6 +401,19 @@ export const SelfPcCard: React.FC<CardProps> = ({ value }) => {
             buttonColor="btn-danger"
             widthValue="widthNearlyFull"
           />
+        </div>
+        <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
+          <Link
+            href={`/pages/item/${value.id}`}
+            className={styles.listItemLink}
+          >
+            <MainButton
+              sizeValue="large"
+              textValue="編集"
+              buttonColor="btn-main"
+              widthValue="widthNearlyFull"
+            />
+          </Link>
         </div>
         <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
           <MainButton
@@ -388,7 +423,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ value }) => {
             widthValue="widthNearlyFull"
           />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

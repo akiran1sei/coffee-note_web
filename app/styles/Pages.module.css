@@ -130,10 +130,14 @@
     background-color: var(--color-background);
   }
 }
-
-.listItemLink:hover {
-  text-shadow: 1px 1px 1px var(--color-background-dark);
+.listItemLink {
 }
+.listItemLink:hover {
+  background: var(--color-background-dark);
+}
+/* .listItemLink:hover {
+  text-shadow: 1px 1px 1px var(--color-background-dark);
+} */
 
 .listItemLabel {
   color: var(--color-secondary-dark);
@@ -244,9 +248,21 @@
   align-items: stretch;
   justify-content: space-between;
 }
-
+.listSelfMobileCard,
+.listShopMobileCard {
+  width: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  .listButtonContainer {
+    margin: 0;
+  }
+}
 .listMobileCard .buttonContent.deleteButtonContent,
-.listMobileCard .buttonContent.pdfButtonContent {
+.listMobileCard .buttonContent.pdfButtonContent,
+.listMobileCard .buttonContent.editButtonContent {
   margin: var(--spacing-md) auto var(--spacing-xl);
   text-align: center;
 }
@@ -324,6 +340,7 @@
 
 /* 削除ボタン/PDFボタン */
 .listButtonContainer .buttonContent.deleteButtonContent,
+.listButtonContainer .buttonContent.editButtonContent,
 .listButtonContainer .buttonContent.pdfButtonContent {
   width: 100%;
   margin: var(--spacing-sm);

@@ -1,6 +1,6 @@
 "use client";
 import styles from "@/app/styles/Pages.module.css";
-import { getCoffeeRecords } from "@/app/lib/IndexedDB";
+import { getCoffeeRecords, deleteCoffeeRecord } from "@/app/lib/IndexedDB";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -10,6 +10,10 @@ import { ShopPcCard, ShopMobileCard } from "@/app/components/list/shop/page";
 import { CoffeeRecord } from "@/app/types/db";
 
 interface PageTitleProps {
+  listItemValue: string;
+}
+interface CoffeePageProps {
+  coffeeDate: CoffeeRecord;
   listItemValue: string;
 }
 
@@ -22,10 +26,11 @@ const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
 // スタイルシートのモック
 // 本来はstyles/Pages.module.cssの内容を記述
 
-const ListPage = () => {
+const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
   const [coffeeRecords, setCoffeeRecords] = useState<CoffeeRecord[]>([]);
+
   // ウィンドウのリサイズイベントを監視
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -51,6 +56,7 @@ const ListPage = () => {
       try {
         const records = await getCoffeeRecords();
         setCoffeeRecords(records); // stateにデータをセット
+
         console.log("全コーヒー記録:", records); // 取得したデータをログに出力
       } catch (error) {
         console.error("記録の取得中にエラーが発生しました:", error);
@@ -66,14 +72,31 @@ const ListPage = () => {
   const [load, setLoad] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
+  const handleDeleteClick = async (coffee: string) => {
+    // ユーザーに削除の確認を求める
+    const isConfirmed = window.confirm(
+      `"${coffee}"を削除してもよろしいですか？`
+    );
+
+    if (isConfirmed) {
+      try {
+        await deleteCoffeeRecord(coffee);
+        return alert("レコードが正常に削除されました。");
+        // 削除が成功したら親コンポーネントに通知し、リストを更新させる
+      } catch (error) {
+        alert("レコードの削除に失敗しました。");
+        console.error("削除エラー:", error);
+      }
+    }
+  };
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (record: Partial<CoffeeRecord>) => {
       // versionの状態によって、表示するコンポーネントを切り替えます
       return version ? (
-        <SelfPcCard value={record} />
+        <SelfPcCard value={record} onClick={handleDeleteClick} />
       ) : (
-        <ShopPcCard value={record} />
+        <ShopPcCard value={record} onClick={handleDeleteClick} />
       );
     };
     const cards = Array.from({ length: 5 });
@@ -133,9 +156,9 @@ const ListPage = () => {
     // const cards = Array.from({ length: 5 });
     const MobileCard = (record: Partial<CoffeeRecord>) => {
       return version ? (
-        <SelfMobileCard value={record} />
+        <SelfMobileCard value={record} onClick={handleDeleteClick} />
       ) : (
-        <ShopMobileCard value={record} />
+        <ShopMobileCard value={record} onClick={handleDeleteClick} />
       );
     };
 
