@@ -13,7 +13,7 @@ interface ShopCoffeeFormValue {
   productionArea: string;
   shopName: string;
   shopPrice: string;
-  shopDate: string;
+  shopDate: Date;
   shopAddress: string;
   shopUrl: string;
 }
@@ -75,11 +75,15 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
           />
           <DateComponent
             dataTitle="飲んだ日付"
-            value={shopCoffeeFormValue.shopDate}
+            value={
+              shopCoffeeFormValue.shopDate
+                ? shopCoffeeFormValue.shopDate.toISOString().slice(0, 10)
+                : ""
+            }
             onChange={(value: string) => {
               setShopCoffeeFormValue({
                 ...shopCoffeeFormValue,
-                shopDate: value,
+                shopDate: value ? new Date(value) : new Date(),
               });
             }}
             labelText="shopDate"

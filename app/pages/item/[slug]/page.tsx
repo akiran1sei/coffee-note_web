@@ -41,7 +41,7 @@ const ItemPage: React.FC<ItemPageProps> = () =>
     const [shopInfo, setShopInfo] = useState({
       shopName: "",
       shopPrice: "",
-      shopDate: "2025-01-01",
+      shopDate: new Date(),
       shopAddress: "",
       shopUrl: "https://example.com",
     });

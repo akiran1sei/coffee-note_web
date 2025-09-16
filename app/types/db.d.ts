@@ -26,7 +26,7 @@ export interface CoffeeRecord {
   self: string; // 自分で淹れたか、店で飲んだか
   shopName: string; // 店名（店で飲んだ場合のみ）
   shopPrice: number | string; // 店の価格（円）（店で飲んだ場合のみ）
-  shopDate: string; // 店で飲んだ日付（店で飲んだ場合のみ）
+  shopDate: Date; // 店で飲んだ日付（店で飲んだ場合のみ）
   shopAddress: string; // 店の住所（店で飲んだ場合のみ）
   shopUrl: string; // 店のURL（店で飲んだ場合のみ）
   createdAt: date;
