@@ -13,16 +13,24 @@ import ImageUpload from "@/app/components/form/item/ImageUpload/page";
 interface CoffeeBeansComponentProps {
   coffeeInfo: {
     imageUrl: string;
+    imageAlt: string;
     coffeeName: string;
     productionArea: string;
+  };
+  selfInfo: {
     variety: string;
     roastingDegree: string;
   };
   setCoffeeInfo: React.Dispatch<
     React.SetStateAction<{
       imageUrl: string;
+      imageAlt: string;
       coffeeName: string;
       productionArea: string;
+    }>
+  >;
+  setSelfInfo: React.Dispatch<
+    React.SetStateAction<{
       variety: string;
       roastingDegree: string;
     }>
@@ -32,7 +40,9 @@ interface CoffeeBeansComponentProps {
 // 親コンポーネントからpropsとして`coffeeInfo`と`setCoffeeInfo`を受け取る
 export const CoffeeBeansComponent = ({
   coffeeInfo,
+  selfInfo,
   setCoffeeInfo,
+  setSelfInfo,
 }: CoffeeBeansComponentProps) => {
   // ローカルステートは不要になるため削除
 
@@ -41,10 +51,14 @@ export const CoffeeBeansComponent = ({
       <h2 className={styles.infoTitle}>珈琲豆の情報</h2>
       <div className={styles.infoWrapper}>
         <ImageUpload
-          onChange={(value: string) => {
+          onChange={(url: string, alt: string) => {
             setCoffeeInfo({
               ...coffeeInfo,
-              imageUrl: value,
+              imageUrl: url,
+            });
+            setCoffeeInfo({
+              ...coffeeInfo,
+              imageAlt: alt,
             });
           }}
         />
@@ -73,20 +87,20 @@ export const CoffeeBeansComponent = ({
         <CoffeeTypesSelect
           dataTitle="品種"
           onChange={(value: string) => {
-            setCoffeeInfo({
-              ...coffeeInfo,
+            setSelfInfo({
+              ...selfInfo,
               variety: value,
             });
           }}
-          value={coffeeInfo.variety}
+          value={selfInfo.variety}
           labelText="variety"
         />
         <CoffeeProcessingSelect
           dataTitle="焙煎度"
-          value={coffeeInfo.roastingDegree}
+          value={selfInfo.roastingDegree}
           onChange={(value: string) => {
-            setCoffeeInfo({
-              ...coffeeInfo,
+            setSelfInfo({
+              ...selfInfo,
               roastingDegree: value,
             });
           }}

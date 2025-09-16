@@ -8,55 +8,78 @@ import {
 
 import ImageUpload from "@/app/components/form/item/ImageUpload/page";
 interface ShopCoffeeFormValue {
-  imageUrl: string;
-  coffeeName: string;
-  productionArea: string;
-  shopName: string;
-  shopPrice: string;
-  shopDate: Date;
-  shopAddress: string;
-  shopUrl: string;
-}
-export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
-  imageUrl,
-  coffeeName,
-  productionArea,
-  shopName,
-  shopPrice,
-  shopDate,
-  shopAddress,
-  shopUrl,
-}) => {
-  const [shopCoffeeFormValue, setShopCoffeeFormValue] = useState({
-    imageUrl: imageUrl,
-    coffeeName: coffeeName,
-    productionArea: productionArea,
-    shopName: shopName,
-    shopPrice: shopPrice,
-    shopDate: shopDate,
-    shopAddress: shopAddress,
-    shopUrl: shopUrl,
-  });
+  coffeeInfo: {
+    imageUrl: string;
+    imageAlt: string;
+    coffeeName: string;
+    productionArea: string;
+  };
 
+  shopInfo: {
+    shopName: string;
+    shopPrice: string;
+    shopDate: Date;
+    shopAddress: string;
+    shopUrl: string;
+  };
+  setCoffeeInfo: React.Dispatch<
+    React.SetStateAction<{
+      imageUrl: string;
+      imageAlt: string;
+      coffeeName: string;
+      productionArea: string;
+    }>
+  >;
+  setShopInfo: React.Dispatch<
+    React.SetStateAction<{
+      shopName: string;
+      shopPrice: string;
+      shopDate: Date;
+      shopAddress: string;
+      shopUrl: string;
+    }>
+  >;
+}
+
+export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
+  coffeeInfo,
+  shopInfo,
+  setCoffeeInfo,
+  setShopInfo,
+}) => {
+  console.log(coffeeInfo, "← coffeeInfo in ShopCoffeeComponent");
   return (
     <>
       <div className={styles.infoContainer}>
         <h2 className={styles.infoTitle}>お店の情報</h2>
         <div className={styles.infoWrapper}>
           <ImageUpload
-            onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
-                imageUrl: value,
+            onChange={(url: string, alt: string) => {
+              // まず、新しい状態を反映させるためのオブジェクトを用意
+              let update = {};
+
+              // urlが存在する場合、imageUrlを更新
+              if (url) {
+                update = { imageUrl: url };
+                // urlがなく、altが存在する場合、imageAltを更新
+              } else if (alt) {
+                update = { imageAlt: alt };
+              }
+
+              // 最後にまとめてstateを更新する
+              setCoffeeInfo({
+                ...coffeeInfo,
+                ...update,
               });
             }}
           />
+
           <InputComponent
             dataTitle="店名"
-            value={shopCoffeeFormValue.shopName}
+            value={shopInfo.shopName}
             onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
+              setShopInfo({
+                ...shopInfo,
                 shopName: value,
               });
             }}
@@ -64,10 +87,10 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
           />
           <InputComponent
             dataTitle="店の価格（円）"
-            value={shopCoffeeFormValue.shopPrice}
+            value={shopInfo.shopPrice}
             onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
+              setShopInfo({
+                ...shopInfo,
                 shopPrice: value,
               });
             }}
@@ -76,13 +99,13 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
           <DateComponent
             dataTitle="飲んだ日付"
             value={
-              shopCoffeeFormValue.shopDate
-                ? shopCoffeeFormValue.shopDate.toISOString().slice(0, 10)
+              shopInfo.shopDate
+                ? shopInfo.shopDate.toISOString().slice(0, 10)
                 : ""
             }
             onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
+              setShopInfo({
+                ...shopInfo,
                 shopDate: value ? new Date(value) : new Date(),
               });
             }}
@@ -90,10 +113,10 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
           />
           <InputComponent
             dataTitle="店の住所"
-            value={shopCoffeeFormValue.shopAddress}
+            value={shopInfo.shopAddress}
             onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
+              setShopInfo({
+                ...shopInfo,
                 shopAddress: value,
               });
             }}
@@ -101,10 +124,10 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
           />
           <InputComponent
             dataTitle="shopUrl"
-            value={shopCoffeeFormValue.shopUrl}
+            value={shopInfo.shopUrl}
             onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
+              setShopInfo({
+                ...shopInfo,
                 shopUrl: value,
               });
             }}
@@ -117,10 +140,10 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
         <div className={styles.infoWrapper}>
           <InputComponent
             dataTitle="コーヒー名"
-            value={shopCoffeeFormValue.coffeeName}
+            value={coffeeInfo.coffeeName}
             onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
+              setCoffeeInfo({
+                ...coffeeInfo,
                 coffeeName: value,
               });
             }}
@@ -128,10 +151,10 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
           />
           <InputComponent
             dataTitle="産地"
-            value={shopCoffeeFormValue.productionArea}
+            value={coffeeInfo.productionArea}
             onChange={(value: string) => {
-              setShopCoffeeFormValue({
-                ...shopCoffeeFormValue,
+              setCoffeeInfo({
+                ...coffeeInfo,
                 productionArea: value,
               });
             }}

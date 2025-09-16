@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "@/app/styles/Pages.module.css";
 import {
   addCoffeeRecord,
-  getCoffeeRecords,
+  // getCoffeeRecords,
   deleteCoffeeRecord,
 } from "@/app/lib/IndexedDB";
 import { v4 as uuidv4 } from "uuid";
@@ -25,12 +25,16 @@ const CreatePage = () => {
   // 共通の項目
   const [coffeeInfo, setCoffeeInfo] = useState({
     imageUrl: "",
+    imageAlt: "",
     coffeeName: "",
     productionArea: "",
+  });
+  console.log(coffeeInfo.imageAlt, "← coffeeRecords in CreatePage");
+  // 自宅の情報
+  const [selfInfo, setSelfInfo] = useState({
     variety: "選択していません。",
     roastingDegree: "選択していません。",
   });
-
   // ショップの情報
   const [shopInfo, setShopInfo] = useState({
     shopName: "",
@@ -87,137 +91,179 @@ const CreatePage = () => {
   // コンポーネントがマウントされたときに、すべての記録を取得して表示
   useEffect(() => {
     const fetchRecords = async () => {
-      const records = await getCoffeeRecords();
-      setCoffeeRecords(records);
+      setCoffeeRecords([
+        {
+          imageUri: coffeeInfo.imageUrl,
+          imageAlt: coffeeInfo.imageAlt,
+          name: coffeeInfo.coffeeName,
+          productionArea: coffeeInfo.productionArea,
+          variety: selfInfo.variety,
+          roastingDegree: selfInfo.roastingDegree,
+          shopName: shopInfo.shopName,
+          shopPrice: shopInfo.shopPrice,
+          shopDate: shopInfo.shopDate,
+          shopAddress: shopInfo.shopAddress,
+          shopUrl: shopInfo.shopUrl,
+          extractionMethod: extractionInfo.extractionMethod,
+          extractionMaker: extractionInfo.extractionMaker,
+          measurementMethod: extractionInfo.measurementMethod,
+          grindSize: extractionInfo.grindSize,
+          extractionTime: extractionInfo.extractionTime,
+          temperature: extractionInfo.temperature,
+          coffeeAmount: extractionInfo.coffeeAmount,
+          waterAmount: extractionInfo.waterAmount,
+          acidity: reviewInfo.chart.acidity,
+          bitterness: reviewInfo.chart.bitterness,
+          overall: reviewInfo.chart.overall,
+          body: reviewInfo.chart.body,
+          aroma: reviewInfo.chart.aroma,
+          aftertaste: reviewInfo.chart.aftertaste,
+          memo: reviewInfo.memo,
+          id: uuidv4(),
+          self: varText,
+          createdAt: new Date(),
+        },
+      ]);
     };
     fetchRecords();
   }, []);
+  // useEffect(() => {
+  //   console.log(
+  //     "Coffee records updated:",
+  //     coffeeInfo,
+  //     selfInfo,
+  //     shopInfo,
+  //     extractionInfo,
+  //     reviewInfo,
+  //     varText
+  //   );
+  // }, [coffeeRecords]);
 
   // フォーム送信時のハンドラー
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // 未入力チェック（バリデーション）
     // フォーム全体の必須項目
-    if (!coffeeInfo.coffeeName.trim()) {
-      alert("コーヒー豆の名前を入力してください。");
-      return;
-    }
-    if (!coffeeInfo.imageUrl.trim()) {
-      alert("コーヒー豆の画像パスを入力してください。");
-      return;
-    }
-    if (!coffeeInfo.productionArea.trim()) {
-      alert("生産地を入力してください。");
-      return;
-    }
-    if (coffeeInfo.variety === "選択していません。") {
-      alert("品種を選択してください。");
-      return;
-    }
-    if (coffeeInfo.roastingDegree === "選択していません。") {
-      alert("焙煎度を選択してください。");
-      return;
-    }
+    // if (!coffeeInfo.coffeeName.trim()) {
+    //   alert("コーヒー豆の名前を入力してください。");
+    //   return;
+    // }
+    // if (!coffeeInfo.imageUrl.trim()) {
+    //   alert("コーヒー豆の画像パスを入力してください。");
+    //   return;
+    // }
+    // if (!coffeeInfo.productionArea.trim()) {
+    //   alert("生産地を入力してください。");
+    //   return;
+    // }
+    // if (coffeeInfo.variety === "選択していません。") {
+    //   alert("品種を選択してください。");
+    //   return;
+    // }
+    // if (coffeeInfo.roastingDegree === "選択していません。") {
+    //   alert("焙煎度を選択してください。");
+    //   return;
+    // }
 
-    // 抽出情報
-    if (extractionInfo.extractionMethod === "選択していません。") {
-      alert("抽出方法を選択してください。");
-      return;
-    }
-    if (extractionInfo.extractionMaker === "選択していません。") {
-      alert("抽出器具のメーカーを選択してください。");
-      return;
-    }
-    if (extractionInfo.measurementMethod === "") {
-      alert("計測方法を入力してください。");
-      return;
-    }
-    if (extractionInfo.grindSize === "選択していません.") {
-      alert("挽き目を選択してください。");
-      return;
-    }
-    if (
-      extractionInfo.extractionTime <= 0 ||
-      isNaN(extractionInfo.extractionTime)
-    ) {
-      alert("抽出時間（秒）を入力してください。");
-      return;
-    }
-    if (extractionInfo.temperature <= 0 || isNaN(extractionInfo.temperature)) {
-      alert("温度（℃）を入力してください。");
-      return;
-    }
-    if (
-      extractionInfo.coffeeAmount <= 0 ||
-      isNaN(extractionInfo.coffeeAmount)
-    ) {
-      alert("粉量（g）を入力してください。");
-      return;
-    }
-    if (extractionInfo.waterAmount <= 0 || isNaN(extractionInfo.waterAmount)) {
-      alert("湯量（g）を入力してください。");
-      return;
-    }
+    // // 抽出情報
+    // if (extractionInfo.extractionMethod === "選択していません。") {
+    //   alert("抽出方法を選択してください。");
+    //   return;
+    // }
+    // if (extractionInfo.extractionMaker === "選択していません。") {
+    //   alert("抽出器具のメーカーを選択してください。");
+    //   return;
+    // }
+    // if (extractionInfo.measurementMethod === "") {
+    //   alert("計測方法を入力してください。");
+    //   return;
+    // }
+    // if (extractionInfo.grindSize === "選択していません.") {
+    //   alert("挽き目を選択してください。");
+    //   return;
+    // }
+    // if (
+    //   extractionInfo.extractionTime <= 0 ||
+    //   isNaN(extractionInfo.extractionTime)
+    // ) {
+    //   alert("抽出時間（秒）を入力してください。");
+    //   return;
+    // }
+    // if (extractionInfo.temperature <= 0 || isNaN(extractionInfo.temperature)) {
+    //   alert("温度（℃）を入力してください。");
+    //   return;
+    // }
+    // if (
+    //   extractionInfo.coffeeAmount <= 0 ||
+    //   isNaN(extractionInfo.coffeeAmount)
+    // ) {
+    //   alert("粉量（g）を入力してください。");
+    //   return;
+    // }
+    // if (extractionInfo.waterAmount <= 0 || isNaN(extractionInfo.waterAmount)) {
+    //   alert("湯量（g）を入力してください。");
+    //   return;
+    // }
 
-    // レビュー情報
-    if (reviewInfo.chart.acidity === 0 || isNaN(reviewInfo.chart.acidity)) {
-      alert("酸味の評価を入力してください。");
-      return;
-    }
-    if (
-      reviewInfo.chart.bitterness === 0 ||
-      isNaN(reviewInfo.chart.bitterness)
-    ) {
-      alert("苦味の評価を入力してください。");
-      return;
-    }
-    if (reviewInfo.chart.overall === 0 || isNaN(reviewInfo.chart.overall)) {
-      alert("全体の好みの評価を入力してください。");
-      return;
-    }
-    if (reviewInfo.chart.body === 0 || isNaN(reviewInfo.chart.body)) {
-      alert("コクの評価を入力してください。");
-      return;
-    }
-    if (reviewInfo.chart.aroma === 0 || isNaN(reviewInfo.chart.aroma)) {
-      alert("香りの評価を入力してください。");
-      return;
-    }
-    if (
-      reviewInfo.chart.aftertaste === 0 ||
-      isNaN(reviewInfo.chart.aftertaste)
-    ) {
-      alert("キレの評価を入力してください。");
-      return;
-    }
-    // メモは任意入力のためスキップ
+    // // レビュー情報
+    // if (reviewInfo.chart.acidity === 0 || isNaN(reviewInfo.chart.acidity)) {
+    //   alert("酸味の評価を入力してください。");
+    //   return;
+    // }
+    // if (
+    //   reviewInfo.chart.bitterness === 0 ||
+    //   isNaN(reviewInfo.chart.bitterness)
+    // ) {
+    //   alert("苦味の評価を入力してください。");
+    //   return;
+    // }
+    // if (reviewInfo.chart.overall === 0 || isNaN(reviewInfo.chart.overall)) {
+    //   alert("全体の好みの評価を入力してください。");
+    //   return;
+    // }
+    // if (reviewInfo.chart.body === 0 || isNaN(reviewInfo.chart.body)) {
+    //   alert("コクの評価を入力してください。");
+    //   return;
+    // }
+    // if (reviewInfo.chart.aroma === 0 || isNaN(reviewInfo.chart.aroma)) {
+    //   alert("香りの評価を入力してください。");
+    //   return;
+    // }
+    // if (
+    //   reviewInfo.chart.aftertaste === 0 ||
+    //   isNaN(reviewInfo.chart.aftertaste)
+    // ) {
+    //   alert("キレの評価を入力してください。");
+    //   return;
+    // }
+    // // メモは任意入力のためスキップ
 
-    // 店舗情報（'self'がfalse、つまり店で飲んだ場合のみ必須）
-    // このロジックは'varText'変数の値に依存します
-    if (varText === shopVer) {
-      if (!shopInfo.shopName.trim()) {
-        alert("店名を入力してください。");
-        return;
-      }
-      // if (!shopInfo.shopPrice || isNaN(shopInfo.shopPrice)) {
-      //   alert("お店での価格を入力してください。");
-      //   return;
-      // }
-      if (!shopInfo.shopDate) {
-        alert("お店で飲んだ日付を選択してください。");
-        return;
-      }
-      // 住所、URLは任意入力のためスキップ
-    }
+    // // 店舗情報（'self'がfalse、つまり店で飲んだ場合のみ必須）
+    // // このロジックは'varText'変数の値に依存します
+    // if (varText === shopVer) {
+    //   if (!shopInfo.shopName.trim()) {
+    //     alert("店名を入力してください。");
+    //     return;
+    //   }
+    //   // if (!shopInfo.shopPrice || isNaN(shopInfo.shopPrice)) {
+    //   //   alert("お店での価格を入力してください。");
+    //   //   return;
+    //   // }
+    //   if (!shopInfo.shopDate) {
+    //     alert("お店で飲んだ日付を選択してください。");
+    //     return;
+    //   }
+    //   // 住所、URLは任意入力のためスキップ
+    // }
 
     // 新しい記録のデータを作成
     // ここでCoffeeRecordの型に合わせてキー名を修正
     const newRecord: CoffeeRecord = {
       id: uuidv4(),
       name: coffeeInfo.coffeeName, // 名称
-      variety: coffeeInfo.variety, // 品種
+      variety: selfInfo.variety, // 品種
       productionArea: coffeeInfo.productionArea, // 産地
-      roastingDegree: coffeeInfo.roastingDegree, // 焙煎度
+      roastingDegree: selfInfo.roastingDegree, // 焙煎度
       extractionMethod: extractionInfo.extractionMethod,
       extractionMaker: extractionInfo.extractionMaker,
       grindSize: extractionInfo.grindSize, // 挽き目
@@ -234,6 +280,7 @@ const CreatePage = () => {
       aftertaste: reviewInfo.chart.aftertaste, // キレ（1-10）
       memo: reviewInfo.memo, // メモ
       imageUri: coffeeInfo.imageUrl, // 画像のパス
+      imageAlt: coffeeInfo.imageAlt, // 画像のAltテキスト
       self: varText, // true or falseで保存
       shopName: shopInfo.shopName, // 店名（店で飲んだ場合のみ）
       shopPrice: shopInfo.shopPrice, // 店の価格（円）（店で飲んだ場合のみ）
@@ -249,16 +296,19 @@ const CreatePage = () => {
       alert("記録が正常に保存されました！");
 
       // UIを更新するため、データベースから最新のデータを再取得
-      const updatedRecords = await getCoffeeRecords();
-      setCoffeeRecords(updatedRecords);
+      // const updatedRecords = await getCoffeeRecords();
+      // setCoffeeRecords(updatedRecords);
 
       // フォームの入力値をクリア
       setCoffeeInfo({
         imageUrl: "",
+        imageAlt: "",
         coffeeName: "",
         productionArea: "",
-        variety: "選択していません。",
-        roastingDegree: "選択していません。",
+      });
+      setSelfInfo({
+        variety: "選択していません.",
+        roastingDegree: "選択していません.",
       });
       setShopInfo({
         shopName: "",
@@ -299,8 +349,8 @@ const CreatePage = () => {
     // deleteCoffeeRecord関数を呼び出して、特定の記録を削除
     await deleteCoffeeRecord(id);
     // 削除後のリストに更新
-    const updatedRecords = await getCoffeeRecords();
-    setCoffeeRecords(updatedRecords);
+    // const updatedRecords = await getCoffeeRecords();
+    // setCoffeeRecords(updatedRecords);
   };
 
   return (
@@ -341,6 +391,8 @@ const CreatePage = () => {
                 <div className={styles.leftColumn}>
                   <CoffeeBeansComponent
                     coffeeInfo={coffeeInfo}
+                    selfInfo={selfInfo}
+                    setSelfInfo={setSelfInfo}
                     setCoffeeInfo={setCoffeeInfo}
                   />
                   <BrewingRecipeComponent
@@ -365,14 +417,10 @@ const CreatePage = () => {
               <div className={styles.createShopVersionContents}>
                 <div className={styles.leftColumn}>
                   <ShopCoffeeComponent
-                    imageUrl={coffeeInfo.imageUrl}
-                    coffeeName={coffeeInfo.coffeeName}
-                    productionArea={coffeeInfo.productionArea}
-                    shopName={shopInfo.shopName}
-                    shopPrice={shopInfo.shopPrice}
-                    shopDate={shopInfo.shopDate}
-                    shopAddress={shopInfo.shopAddress}
-                    shopUrl={shopInfo.shopUrl}
+                    coffeeInfo={coffeeInfo}
+                    shopInfo={shopInfo}
+                    setShopInfo={setShopInfo}
+                    setCoffeeInfo={setCoffeeInfo}
                   />
                 </div>
                 <div className={styles.rightColumn}>

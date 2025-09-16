@@ -78,7 +78,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ show, message, onClose }) => {
 
 // ImageUploadコンポーネントのProps型を定義
 interface ImageUploadProps {
-  onChange: (url: string) => void;
+  onChange: (url: string, alt: string) => void;
 }
 
 // ImageUploadコンポーネントの引数にpropsを追加し、型を定義
@@ -87,6 +87,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const [uploadedUrl, setUploadedUrl] = useState<string>("");
+  const [uploadedAlt, setUploadedAlt] = useState<string>("");
   const [uploadStatus, setUploadStatus] = useState<
     "idle" | "uploading" | "success" | "error"
   >("idle");
@@ -97,13 +98,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
   const [showMessageBox, setShowMessageBox] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-
+  console.log(file, "← file");
+  console.log(fileName, "← fileName");
   // uploadedUrlが更新されたらonChangeコールバックを呼び出す
-  useEffect(() => {
-    if (uploadedUrl) {
-      onChange(uploadedUrl);
-    }
-  }, [uploadedUrl, onChange]);
+  // useEffect(() => {
+  //   if (uploadedUrl && uploadedAlt) {
+  //     onChange(uploadedUrl, uploadedAlt);
+  //   }
+  // }, [uploadedUrl, uploadedAlt, onChange]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -126,50 +128,50 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
     setFileName(event.target.value);
   };
 
-  const handleUploadConfirm = async () => {
-    setShowConfirmModal(false); // 確認モーダルを閉じる
+  // const handleUploadConfirm = async () => {
+  //   setShowConfirmModal(false); // 確認モーダルを閉じる
 
-    if (!file || !fileName) {
-      setMessage("ファイルと代替テキストは必須です。");
-      setShowMessageBox(true);
-      return;
-    }
+  //   if (!file || !fileName) {
+  //     setMessage("ファイルと代替テキストは必須です。");
+  //     setShowMessageBox(true);
+  //     return;
+  //   }
 
-    setUploadStatus("uploading");
-    setUploadedUrl("");
+  //   setUploadStatus("uploading");
+  //   setUploadedUrl("");
+  //   setUploadedAlt("");
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     formData.append("text", fileName);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("text", fileName);
+  //     // fetch先のパスをApp RouterのAPIルートに合わせて修正
+  //     const res = await fetch("/api/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
 
-      // fetch先のパスをApp RouterのAPIルートに合わせて修正
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (res.ok && data.url) {
-        setUploadedUrl(data.url);
-        setUploadStatus("success");
-        setMessage("アップロードが成功しました！");
-      } else {
-        const errorMessage = data.error || "アップロードに失敗しました。";
-        throw new Error(errorMessage);
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setUploadStatus("error");
-      setMessage(
-        `アップロードに失敗しました: ${
-          error instanceof Error ? error.message : "不明なエラー"
-        }`
-      );
-    } finally {
-      setShowMessageBox(true);
-    }
-  };
+  //     const data = await res.json();
+  //     if (res.ok && data.url) {
+  //       setUploadedUrl(data.url);
+  //       setUploadStatus("success");
+  //       setMessage("アップロードが成功しました！");
+  //     } else {
+  //       const errorMessage = data.error || "アップロードに失敗しました。";
+  //       throw new Error(errorMessage);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //     setUploadStatus("error");
+  //     setMessage(
+  //       `アップロードに失敗しました: ${
+  //         error instanceof Error ? error.message : "不明なエラー"
+  //       }`
+  //     );
+  //   } finally {
+  //     setShowMessageBox(true);
+  //   }
+  // };
 
   return (
     <div className={styles.upload_form_image}>
@@ -204,13 +206,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
       </div>
 
       {/* 確認モーダル */}
-      <Modal
+      {/* <Modal
         show={showConfirmModal}
         title="アップロード確認"
         message="この画像をアップロードしますか？"
         onClose={() => setShowConfirmModal(false)}
         onConfirm={handleUploadConfirm}
-      />
+      /> */}
 
       {/* 通知メッセージボックス */}
       <MessageBox
