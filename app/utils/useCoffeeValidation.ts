@@ -1,5 +1,5 @@
 // =========================
-// utils/useCoffeeValidation.ts
+// utils/useCoffeeValidation.ts - 修正版
 // =========================
 import { useState, useCallback } from "react";
 import type {
@@ -73,7 +73,8 @@ const validationRules = {
     {
       field: "grindSize",
       message: "挽き目を選択してください。",
-      validator: (value: unknown): boolean => value === "選択していません.",
+      // 修正: "選択していません。"に統一（最後のピリオドを追加）
+      validator: (value: unknown): boolean => value === "選択していません。",
     },
     {
       field: "extractionTime",
@@ -217,19 +218,32 @@ export const useCoffeeValidation = () => {
       varText: string
     ): string | null => {
       try {
+        console.log("バリデーション開始:", {
+          varText,
+          selfInfo,
+          coffeeInfo,
+        });
+
         // 共通のコーヒー情報をバリデーション
         const coffeeResult = validateRuleSet(
           coffeeInfo,
           validationRules.coffee
         );
         if (!coffeeResult.isValid && coffeeResult.message) {
+          console.log(
+            "コーヒー情報バリデーションエラー:",
+            coffeeResult.message
+          );
           return coffeeResult.message;
         }
 
         // varTextに応じた条件付きバリデーション
         if (varText === "Self") {
+          console.log("Selfモードのバリデーション実行");
+
           const selfResult = validateRuleSet(selfInfo, validationRules.self);
           if (!selfResult.isValid && selfResult.message) {
+            console.log("Self情報バリデーションエラー:", selfResult.message);
             return selfResult.message;
           }
 
@@ -238,11 +252,18 @@ export const useCoffeeValidation = () => {
             validationRules.extraction
           );
           if (!extractionResult.isValid && extractionResult.message) {
+            console.log(
+              "抽出情報バリデーションエラー:",
+              extractionResult.message
+            );
             return extractionResult.message;
           }
         } else if (varText === "Shop") {
+          console.log("Shopモードのバリデーション実行");
+
           const shopResult = validateRuleSet(shopInfo, validationRules.shop);
           if (!shopResult.isValid && shopResult.message) {
+            console.log("Shop情報バリデーションエラー:", shopResult.message);
             return shopResult.message;
           }
         }
@@ -255,9 +276,14 @@ export const useCoffeeValidation = () => {
 
         const reviewResult = validateRuleSet(reviewInfo, reviewRulesWithPath);
         if (!reviewResult.isValid && reviewResult.message) {
+          console.log(
+            "レビュー情報バリデーションエラー:",
+            reviewResult.message
+          );
           return reviewResult.message;
         }
 
+        console.log("バリデーション成功");
         return null; // バリデーション成功
       } catch (error) {
         console.error("バリデーションエラー:", error);
