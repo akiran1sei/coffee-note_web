@@ -1,9 +1,20 @@
+// =========================
+// 完全版：画像アップロードコンポーネント例
+// =========================
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { uploadImageFromFile, createImageUrl } from "@/app/lib/IndexedDB";
+import type { ImageUploadResult } from "@/app/lib/IndexedDB";
 import styles from "@/app/styles/Form.module.css";
-
-// モーダルコンポーネントのProps型定義
+interface ImageUploadComponentProps {
+  onUploadSuccess?: (result: {
+    imageId: string;
+    imageUrl: string;
+    alt: string;
+  }) => void;
+  onUploadError?: (error: string) => void;
+}
 interface ModalProps {
   show: boolean;
   title: string;
@@ -11,7 +22,6 @@ interface ModalProps {
   onClose: () => void;
   onConfirm: () => void;
 }
-
 // モーダルコンポーネント
 const Modal: React.FC<ModalProps> = ({
   show,
@@ -44,7 +54,6 @@ const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
-
 // メッセージボックスコンポーネントのProps型定義
 interface MessageBoxProps {
   show: boolean;
@@ -76,102 +85,127 @@ const MessageBox: React.FC<MessageBoxProps> = ({ show, message, onClose }) => {
   );
 };
 
-// ImageUploadコンポーネントのProps型を定義
-interface ImageUploadProps {
-  onChange: (url: string, alt: string) => void;
-}
-
-// ImageUploadコンポーネントの引数にpropsを追加し、型を定義
-export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
-  // 状態の型を明示的に指定
+const ImageUploadComponent: React.FC<ImageUploadComponentProps> = ({
+  onUploadSuccess,
+  onUploadError,
+}) => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("");
-  const [uploadedUrl, setUploadedUrl] = useState<string>("");
-  const [uploadedAlt, setUploadedAlt] = useState<string>("");
   const [uploadStatus, setUploadStatus] = useState<
     "idle" | "uploading" | "success" | "error"
   >("idle");
-  // 選択した画像のプレビュー用URLを保存する新しい状態
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  // モーダルとメッセージボックスの状態
+  const [uploadedUrl, setUploadedUrl] = useState<string>("");
+  const [uploadedAlt, setUploadedAlt] = useState<string>("");
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
   const [showMessageBox, setShowMessageBox] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  console.log(file, "← file");
-  console.log(fileName, "← fileName");
-  // uploadedUrlが更新されたらonChangeコールバックを呼び出す
-  // useEffect(() => {
-  //   if (uploadedUrl && uploadedAlt) {
-  //     onChange(uploadedUrl, uploadedAlt);
-  //   }
-  // }, [uploadedUrl, uploadedAlt, onChange]);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const selectedFile = event.target.files[0];
+  // ファイル選択ハンドラー
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
       setFile(selectedFile);
+      setFileName(selectedFile.name.split(".")[0]); // 拡張子を除いたファイル名をデフォルトに
 
-      // ファイルが選択されたらプレビューを表示
+      // プレビュー表示
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
+      reader.onload = (e) => {
+        setPreviewUrl(e.target?.result as string);
       };
       reader.readAsDataURL(selectedFile);
-    } else {
-      setFile(null);
-      setPreviewUrl(null);
     }
   };
 
-  const handleFileNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFileName(event.target.value);
+  // アップロード確認
+  const handleUploadClick = () => {
+    if (!file || !fileName.trim()) {
+      setMessage("ファイルと代替テキストは必須です。");
+      setShowMessageBox(true);
+      return;
+    }
+    setShowConfirmModal(true);
   };
 
-  // const handleUploadConfirm = async () => {
-  //   setShowConfirmModal(false); // 確認モーダルを閉じる
+  // アップロード実行
+  const handleUploadConfirm = async () => {
+    setShowConfirmModal(false);
 
-  //   if (!file || !fileName) {
-  //     setMessage("ファイルと代替テキストは必須です。");
-  //     setShowMessageBox(true);
-  //     return;
-  //   }
+    if (!file || !fileName) {
+      setMessage("ファイルと代替テキストは必須です。");
+      setShowMessageBox(true);
+      return;
+    }
 
-  //   setUploadStatus("uploading");
-  //   setUploadedUrl("");
-  //   setUploadedAlt("");
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     formData.append("text", fileName);
+    setUploadStatus("uploading");
+    setUploadedUrl("");
+    setUploadedAlt("");
 
-  //     // fetch先のパスをApp RouterのAPIルートに合わせて修正
-  //     const res = await fetch("/api/upload", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
+    try {
+      // IndexedDBに画像をアップロード
+      const uploadResult = await uploadImageFromFile(file, {
+        maxSize: 5 * 1024 * 1024, // 5MB制限
+        allowedTypes: ["image/jpeg", "image/png", "image/webp", "image/gif"],
+        quality: 0.8,
+        maxWidth: 1920,
+        maxHeight: 1920,
+      });
 
-  //     const data = await res.json();
-  //     if (res.ok && data.url) {
-  //       setUploadedUrl(data.url);
-  //       setUploadStatus("success");
-  //       setMessage("アップロードが成功しました！");
-  //     } else {
-  //       const errorMessage = data.error || "アップロードに失敗しました。";
-  //       throw new Error(errorMessage);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-  //     setUploadStatus("error");
-  //     setMessage(
-  //       `アップロードに失敗しました: ${
-  //         error instanceof Error ? error.message : "不明なエラー"
-  //       }`
-  //     );
-  //   } finally {
-  //     setShowMessageBox(true);
-  //   }
-  // };
+      if (uploadResult.success && uploadResult.imageId) {
+        // 画像URLを生成
+        const imageUrl = await createImageUrl(uploadResult.imageId);
+
+        if (imageUrl) {
+          setUploadedUrl(imageUrl);
+          setUploadedAlt(fileName);
+          setUploadStatus("success");
+          setMessage("アップロードが成功しました！");
+
+          // 成功時のコールバック
+          if (onUploadSuccess) {
+            onUploadSuccess({
+              imageId: uploadResult.imageId,
+              imageUrl: imageUrl,
+              alt: fileName,
+            });
+          }
+        } else {
+          throw new Error("画像URLの生成に失敗しました");
+        }
+      } else {
+        const errorMessage =
+          uploadResult.error || "アップロードに失敗しました。";
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setUploadStatus("error");
+      const errorMsg = `アップロードに失敗しました: ${
+        error instanceof Error ? error.message : "不明なエラー"
+      }`;
+      setMessage(errorMsg);
+
+      // エラー時のコールバック
+      if (onUploadError) {
+        onUploadError(errorMsg);
+      }
+    } finally {
+      setShowMessageBox(true);
+    }
+  };
+
+  // リセット
+  const handleReset = () => {
+    setFile(null);
+    setFileName("");
+    setUploadStatus("idle");
+    setUploadedUrl("");
+    setUploadedAlt("");
+    setPreviewUrl("");
+    setMessage("");
+    setShowMessageBox(false);
+    setShowConfirmModal(false);
+  };
 
   return (
     <div className={styles.upload_form_image}>
@@ -179,7 +213,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
         <div className={styles.upload_form_item}>
           <label>
             <span>ファイル選択</span>
-            <input type="file" onChange={handleFileChange} required />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              disabled={uploadStatus === "uploading"}
+              title="画像ファイルを選択"
+              placeholder="画像ファイルを選択"
+            />
           </label>
         </div>
         <div className={styles.upload_form_item}>
@@ -187,9 +228,10 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
             <span>代替テキスト</span>
             <input
               type="text"
-              onChange={handleFileNameChange}
-              required
               value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+              placeholder="画像の説明を入力してください"
+              disabled={uploadStatus === "uploading"}
             />
           </label>
         </div>
@@ -202,17 +244,24 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
           >
             {uploadStatus === "uploading" ? "Uploading..." : "Upload to Blob"}
           </button>
+          <button
+            onClick={handleReset}
+            type="button"
+            className={styles.upload_form_button_reset}
+          >
+            リセット
+          </button>
         </div>
       </div>
 
       {/* 確認モーダル */}
-      {/* <Modal
+      <Modal
         show={showConfirmModal}
         title="アップロード確認"
         message="この画像をアップロードしますか？"
         onClose={() => setShowConfirmModal(false)}
         onConfirm={handleUploadConfirm}
-      /> */}
+      />
 
       {/* 通知メッセージボックス */}
       <MessageBox
@@ -237,7 +286,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
       )}
 
       {/* アップロード成功後の画像表示は引き続きuploadedUrlで管理 */}
-      {uploadedUrl && (
+      {/* {uploadedUrl && (
         <div className={styles.uploadedImageContainer}>
           <p>アップロード済み:</p>
           <div className={styles.uploadedImage}>
@@ -249,9 +298,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange }) => {
             />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
 
-export default ImageUpload;
+export default ImageUploadComponent;

@@ -6,7 +6,7 @@ import {
   DateComponent,
 } from "@/app/components/form/item/InputComponent/page";
 
-import ImageUpload from "@/app/components/form/item/ImageUpload/page";
+import ImageUploadComponent from "@/app/components/form/item/ImageUpload/page";
 interface ShopCoffeeFormValue {
   coffeeInfo: {
     imageUrl: string;
@@ -47,33 +47,31 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
   setCoffeeInfo,
   setShopInfo,
 }) => {
+  const handleImageUploadSuccess = (result: {
+    imageId: string;
+    imageUrl: string;
+    alt: string;
+  }) => {
+    setCoffeeInfo((prev) => ({
+      ...prev,
+      imageUrl: result.imageUrl,
+      imageAlt: result.alt,
+    }));
+  };
+
+  const handleImageUploadError = (error: string) => {
+    alert(error);
+  };
   console.log(coffeeInfo, "← coffeeInfo in ShopCoffeeComponent");
   return (
     <>
       <div className={styles.infoContainer}>
         <h2 className={styles.infoTitle}>お店の情報</h2>
         <div className={styles.infoWrapper}>
-          <ImageUpload
-            onChange={(url: string, alt: string) => {
-              // まず、新しい状態を反映させるためのオブジェクトを用意
-              let update = {};
-
-              // urlが存在する場合、imageUrlを更新
-              if (url) {
-                update = { imageUrl: url };
-                // urlがなく、altが存在する場合、imageAltを更新
-              } else if (alt) {
-                update = { imageAlt: alt };
-              }
-
-              // 最後にまとめてstateを更新する
-              setCoffeeInfo({
-                ...coffeeInfo,
-                ...update,
-              });
-            }}
+          <ImageUploadComponent
+            onUploadSuccess={handleImageUploadSuccess}
+            onUploadError={handleImageUploadError}
           />
-
           <InputComponent
             dataTitle="店名"
             value={shopInfo.shopName}

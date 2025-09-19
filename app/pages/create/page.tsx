@@ -1,11 +1,10 @@
+// =========================
+// page.tsx - 修正版
+// =========================
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@/app/styles/Pages.module.css";
-import {
-  addCoffeeRecord,
-  // getCoffeeRecords,
-  deleteCoffeeRecord,
-} from "@/app/lib/IndexedDB";
+import { addCoffeeRecord, deleteCoffeeRecord } from "@/app/lib/IndexedDB";
 import { v4 as uuidv4 } from "uuid";
 import { CoffeeRecord } from "@/app/types/db";
 import { TastingEvaluationComponent } from "@/app/components/form/container/common/TastingEvaluation/page";
@@ -16,9 +15,12 @@ import { MemoAreaComponent } from "@/app/components/form/container/common/MemoAr
 import { PageTitle } from "@/app/components/title/page";
 import { MainButton } from "@/app/components/buttons/page";
 import { useWindowSize } from "@/app/components/useWindowSize/page";
+import { useCoffeeValidation } from "@/app/utils/useCoffeeValidation"; // カスタムフックをインポート
 
 const CreatePage = () => {
   const { width } = useWindowSize();
+  const { validateCoffeeData } = useCoffeeValidation(); // バリデーションフックを使用
+
   const shopVer = "Shop";
   const selfVer = "Self";
 
@@ -29,12 +31,13 @@ const CreatePage = () => {
     coffeeName: "",
     productionArea: "",
   });
-  console.log(coffeeInfo.imageAlt, "← coffeeRecords in CreatePage");
+
   // 自宅の情報
   const [selfInfo, setSelfInfo] = useState({
     variety: "選択していません。",
     roastingDegree: "選択していません。",
   });
+
   // ショップの情報
   const [shopInfo, setShopInfo] = useState({
     shopName: "",
@@ -57,7 +60,6 @@ const CreatePage = () => {
   });
 
   // 自宅で抽出した際の評価チャートとメモ
-
   const [reviewInfo, setReviewInfo] = useState({
     chart: {
       acidity: 0,
@@ -69,24 +71,22 @@ const CreatePage = () => {
     },
     memo: "",
   });
+
   const [isLoad, setIsLoad] = useState(false);
   const [isVersion, setIsVersion] = useState(false);
-  const [varText, setVarText] = useState(selfVer);
+  const [varText, setVarText] = useState<string>("Self");
+  const [coffeeRecords, setCoffeeRecords] = useState<CoffeeRecord[]>([]);
 
   const handleVersion = () => {
     setIsLoad(true);
     setIsVersion(!isVersion);
     if (isVersion) {
       setVarText(selfVer);
-      return setIsLoad(false);
     } else {
       setVarText(shopVer);
-      return setIsLoad(false);
     }
+    setIsLoad(false);
   };
-
-  const [coffeeRecords, setCoffeeRecords] = useState<CoffeeRecord[]>([]);
-  const [recordName, setRecordName] = useState<string>("");
 
   // コンポーネントがマウントされたときに、すべての記録を取得して表示
   useEffect(() => {
@@ -127,177 +127,76 @@ const CreatePage = () => {
     };
     fetchRecords();
   }, []);
-  // useEffect(() => {
-  //   console.log(
-  //     "Coffee records updated:",
-  //     coffeeInfo,
-  //     selfInfo,
-  //     shopInfo,
-  //     extractionInfo,
-  //     reviewInfo,
-  //     varText
-  //   );
-  // }, [coffeeRecords]);
 
-  // フォーム送信時のハンドラー
+  useEffect(() => {
+    console.log(
+      "Coffee records updated:",
+      coffeeInfo,
+      selfInfo,
+      shopInfo,
+      extractionInfo,
+      reviewInfo,
+      varText
+    );
+  }, [coffeeRecords]);
+
+  // フォーム送信時のハンドラー（バリデーション統合版）
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 未入力チェック（バリデーション）
-    // フォーム全体の必須項目
-    // if (!coffeeInfo.coffeeName.trim()) {
-    //   alert("コーヒー豆の名前を入力してください。");
-    //   return;
-    // }
-    // if (!coffeeInfo.imageUrl.trim()) {
-    //   alert("コーヒー豆の画像パスを入力してください。");
-    //   return;
-    // }
-    // if (!coffeeInfo.productionArea.trim()) {
-    //   alert("生産地を入力してください。");
-    //   return;
-    // }
-    // if (coffeeInfo.variety === "選択していません。") {
-    //   alert("品種を選択してください。");
-    //   return;
-    // }
-    // if (coffeeInfo.roastingDegree === "選択していません。") {
-    //   alert("焙煎度を選択してください。");
-    //   return;
-    // }
 
-    // // 抽出情報
-    // if (extractionInfo.extractionMethod === "選択していません。") {
-    //   alert("抽出方法を選択してください。");
-    //   return;
-    // }
-    // if (extractionInfo.extractionMaker === "選択していません。") {
-    //   alert("抽出器具のメーカーを選択してください。");
-    //   return;
-    // }
-    // if (extractionInfo.measurementMethod === "") {
-    //   alert("計測方法を入力してください。");
-    //   return;
-    // }
-    // if (extractionInfo.grindSize === "選択していません.") {
-    //   alert("挽き目を選択してください。");
-    //   return;
-    // }
-    // if (
-    //   extractionInfo.extractionTime <= 0 ||
-    //   isNaN(extractionInfo.extractionTime)
-    // ) {
-    //   alert("抽出時間（秒）を入力してください。");
-    //   return;
-    // }
-    // if (extractionInfo.temperature <= 0 || isNaN(extractionInfo.temperature)) {
-    //   alert("温度（℃）を入力してください。");
-    //   return;
-    // }
-    // if (
-    //   extractionInfo.coffeeAmount <= 0 ||
-    //   isNaN(extractionInfo.coffeeAmount)
-    // ) {
-    //   alert("粉量（g）を入力してください。");
-    //   return;
-    // }
-    // if (extractionInfo.waterAmount <= 0 || isNaN(extractionInfo.waterAmount)) {
-    //   alert("湯量（g）を入力してください。");
-    //   return;
-    // }
+    // カスタムフックを使用してバリデーション実行
+    const validationError = validateCoffeeData(
+      coffeeInfo,
+      selfInfo,
+      extractionInfo,
+      shopInfo,
+      reviewInfo,
+      varText
+    );
 
-    // // レビュー情報
-    // if (reviewInfo.chart.acidity === 0 || isNaN(reviewInfo.chart.acidity)) {
-    //   alert("酸味の評価を入力してください。");
-    //   return;
-    // }
-    // if (
-    //   reviewInfo.chart.bitterness === 0 ||
-    //   isNaN(reviewInfo.chart.bitterness)
-    // ) {
-    //   alert("苦味の評価を入力してください。");
-    //   return;
-    // }
-    // if (reviewInfo.chart.overall === 0 || isNaN(reviewInfo.chart.overall)) {
-    //   alert("全体の好みの評価を入力してください。");
-    //   return;
-    // }
-    // if (reviewInfo.chart.body === 0 || isNaN(reviewInfo.chart.body)) {
-    //   alert("コクの評価を入力してください。");
-    //   return;
-    // }
-    // if (reviewInfo.chart.aroma === 0 || isNaN(reviewInfo.chart.aroma)) {
-    //   alert("香りの評価を入力してください。");
-    //   return;
-    // }
-    // if (
-    //   reviewInfo.chart.aftertaste === 0 ||
-    //   isNaN(reviewInfo.chart.aftertaste)
-    // ) {
-    //   alert("キレの評価を入力してください。");
-    //   return;
-    // }
-    // // メモは任意入力のためスキップ
-
-    // // 店舗情報（'self'がfalse、つまり店で飲んだ場合のみ必須）
-    // // このロジックは'varText'変数の値に依存します
-    // if (varText === shopVer) {
-    //   if (!shopInfo.shopName.trim()) {
-    //     alert("店名を入力してください。");
-    //     return;
-    //   }
-    //   // if (!shopInfo.shopPrice || isNaN(shopInfo.shopPrice)) {
-    //   //   alert("お店での価格を入力してください。");
-    //   //   return;
-    //   // }
-    //   if (!shopInfo.shopDate) {
-    //     alert("お店で飲んだ日付を選択してください。");
-    //     return;
-    //   }
-    //   // 住所、URLは任意入力のためスキップ
-    // }
+    // バリデーションエラーがある場合は処理を停止
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
 
     // 新しい記録のデータを作成
-    // ここでCoffeeRecordの型に合わせてキー名を修正
     const newRecord: CoffeeRecord = {
       id: uuidv4(),
-      name: coffeeInfo.coffeeName, // 名称
-      variety: selfInfo.variety, // 品種
-      productionArea: coffeeInfo.productionArea, // 産地
-      roastingDegree: selfInfo.roastingDegree, // 焙煎度
+      name: coffeeInfo.coffeeName,
+      variety: selfInfo.variety,
+      productionArea: coffeeInfo.productionArea,
+      roastingDegree: selfInfo.roastingDegree,
       extractionMethod: extractionInfo.extractionMethod,
       extractionMaker: extractionInfo.extractionMaker,
-      grindSize: extractionInfo.grindSize, // 挽き目
-      temperature: extractionInfo.temperature, // 温度（℃）
-      coffeeAmount: extractionInfo.coffeeAmount, // 粉量（g）
-      waterAmount: extractionInfo.waterAmount, // 湯量（g）
-      measurementMethod: extractionInfo.measurementMethod, // 計測方法
-      extractionTime: extractionInfo.extractionTime, // 抽出時間
-      acidity: reviewInfo.chart.acidity, // 酸味（1-10）
-      bitterness: reviewInfo.chart.bitterness, // 苦味（1-10）
-      overall: reviewInfo.chart.overall, // 全体の好み（1-55）
-      body: reviewInfo.chart.body, // コク（1-10）
-      aroma: reviewInfo.chart.aroma, // 香り（1-10）
-      aftertaste: reviewInfo.chart.aftertaste, // キレ（1-10）
-      memo: reviewInfo.memo, // メモ
-      imageUri: coffeeInfo.imageUrl, // 画像のパス
-      imageAlt: coffeeInfo.imageAlt, // 画像のAltテキスト
-      self: varText, // true or falseで保存
-      shopName: shopInfo.shopName, // 店名（店で飲んだ場合のみ）
-      shopPrice: shopInfo.shopPrice, // 店の価格（円）（店で飲んだ場合のみ）
-      shopDate: shopInfo.shopDate, // 店で飲んだ日付（店で飲んだ場合のみ）
-      shopAddress: shopInfo.shopAddress, // 店の住所（店で飲んだ場合のみ）
-      shopUrl: shopInfo.shopUrl, // 店のURL（店で飲んだ場合のみ）
-      createdAt: new Date(), // タイムスタンプで保存
+      grindSize: extractionInfo.grindSize,
+      temperature: extractionInfo.temperature,
+      coffeeAmount: extractionInfo.coffeeAmount,
+      waterAmount: extractionInfo.waterAmount,
+      measurementMethod: extractionInfo.measurementMethod,
+      extractionTime: extractionInfo.extractionTime,
+      acidity: reviewInfo.chart.acidity,
+      bitterness: reviewInfo.chart.bitterness,
+      overall: reviewInfo.chart.overall,
+      body: reviewInfo.chart.body,
+      aroma: reviewInfo.chart.aroma,
+      aftertaste: reviewInfo.chart.aftertaste,
+      memo: reviewInfo.memo,
+      imageUri: coffeeInfo.imageUrl,
+      imageAlt: coffeeInfo.imageAlt,
+      self: varText,
+      shopName: shopInfo.shopName,
+      shopPrice: shopInfo.shopPrice,
+      shopDate: shopInfo.shopDate,
+      shopAddress: shopInfo.shopAddress,
+      shopUrl: shopInfo.shopUrl,
+      createdAt: new Date(),
     };
 
     try {
       // addCoffeeRecord関数を呼び出して、データベースに保存
       await addCoffeeRecord(newRecord);
       alert("記録が正常に保存されました！");
-
-      // UIを更新するため、データベースから最新のデータを再取得
-      // const updatedRecords = await getCoffeeRecords();
-      // setCoffeeRecords(updatedRecords);
 
       // フォームの入力値をクリア
       setCoffeeInfo({
@@ -307,8 +206,8 @@ const CreatePage = () => {
         productionArea: "",
       });
       setSelfInfo({
-        variety: "選択していません.",
-        roastingDegree: "選択していません.",
+        variety: "選択していません。",
+        roastingDegree: "選択していません。",
       });
       setShopInfo({
         shopName: "",
@@ -321,7 +220,7 @@ const CreatePage = () => {
         extractionMethod: "選択していません。",
         extractionMaker: "選択していません。",
         measurementMethod: "",
-        grindSize: "選択していません.",
+        grindSize: "選択していません。",
         extractionTime: 0,
         temperature: 0,
         coffeeAmount: 0,
@@ -346,11 +245,7 @@ const CreatePage = () => {
 
   // 記録を削除するハンドラー
   const handleDelete = async (id: string) => {
-    // deleteCoffeeRecord関数を呼び出して、特定の記録を削除
     await deleteCoffeeRecord(id);
-    // 削除後のリストに更新
-    // const updatedRecords = await getCoffeeRecords();
-    // setCoffeeRecords(updatedRecords);
   };
 
   return (
@@ -454,4 +349,5 @@ const CreatePage = () => {
     </>
   );
 };
+
 export default CreatePage;

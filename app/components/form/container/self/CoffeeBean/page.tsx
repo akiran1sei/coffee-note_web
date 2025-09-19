@@ -7,7 +7,7 @@ import {
   CoffeeProcessingSelect,
   CoffeeTypesSelect,
 } from "@/app/components/form/item/SelectComponent/page";
-import ImageUpload from "@/app/components/form/item/ImageUpload/page";
+import ImageUploadComponent from "@/app/components/form/item/ImageUpload/page";
 
 // Propsの型を定義
 interface CoffeeBeansComponentProps {
@@ -46,21 +46,28 @@ export const CoffeeBeansComponent = ({
 }: CoffeeBeansComponentProps) => {
   // ローカルステートは不要になるため削除
 
+  const handleImageUploadSuccess = (result: {
+    imageId: string;
+    imageUrl: string;
+    alt: string;
+  }) => {
+    setCoffeeInfo((prev) => ({
+      ...prev,
+      imageUrl: result.imageUrl,
+      imageAlt: result.alt,
+    }));
+  };
+
+  const handleImageUploadError = (error: string) => {
+    alert(error);
+  };
   return (
     <div className={styles.infoContainer}>
       <h2 className={styles.infoTitle}>珈琲豆の情報</h2>
       <div className={styles.infoWrapper}>
-        <ImageUpload
-          onChange={(url: string, alt: string) => {
-            setCoffeeInfo({
-              ...coffeeInfo,
-              imageUrl: url,
-            });
-            setCoffeeInfo({
-              ...coffeeInfo,
-              imageAlt: alt,
-            });
-          }}
+        <ImageUploadComponent
+          onUploadSuccess={handleImageUploadSuccess}
+          onUploadError={handleImageUploadError}
         />
         <InputComponent
           dataTitle="コーヒー名"
