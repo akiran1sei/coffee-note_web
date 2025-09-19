@@ -1,20 +1,39 @@
-// =========================
-// 完全版：画像アップロードコンポーネント例
-// =========================
 "use client";
-import React, { useState } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import Image from "next/image";
 import { uploadImageFromFile, createImageUrl } from "@/app/lib/IndexedDB";
 import type { ImageUploadResult } from "@/app/lib/IndexedDB";
 import styles from "@/app/styles/Form.module.css";
-interface ImageUploadComponentProps {
-  onUploadSuccess?: (result: {
-    imageId: string;
-    imageUrl: string;
-    alt: string;
-  }) => void;
-  onUploadError?: (error: string) => void;
+
+// 画像データの型定義
+export interface ImageFormData {
+  imageId: string | null;
+  imageUrl: string;
+  imageAlt: string;
+  hasImage: boolean;
 }
+
+// 新しいpropsの型定義
+export interface ImageUploadComponentProps {
+  value: ImageFormData;
+  onChange: (imageData: ImageFormData) => void;
+  onUploadError?: (error: string) => void;
+  disabled?: boolean;
+  required?: boolean;
+}
+
+// 外部から呼び出すための関数を定義
+export interface ImageUploadRef {
+  triggerUpload: () => Promise<ImageFormData | null>;
+  reset: () => void;
+}
+
 interface ModalProps {
   show: boolean;
   title: string;
@@ -22,6 +41,13 @@ interface ModalProps {
   onClose: () => void;
   onConfirm: () => void;
 }
+
+interface MessageBoxProps {
+  show: boolean;
+  message: string;
+  onClose: () => void;
+}
+
 // モーダルコンポーネント
 const Modal: React.FC<ModalProps> = ({
   show,
@@ -30,9 +56,8 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   onConfirm,
 }) => {
-  if (!show) {
-    return null;
-  }
+  if (!show) return null;
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
@@ -54,18 +79,11 @@ const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
-// メッセージボックスコンポーネントのProps型定義
-interface MessageBoxProps {
-  show: boolean;
-  message: string;
-  onClose: () => void;
-}
 
 // メッセージボックスコンポーネント
 const MessageBox: React.FC<MessageBoxProps> = ({ show, message, onClose }) => {
-  if (!show) {
-    return null;
-  }
+  if (!show) return null;
+
   return (
     <div className={styles.messageOverlay}>
       <div className={styles.messageContent}>
@@ -85,222 +103,291 @@ const MessageBox: React.FC<MessageBoxProps> = ({ show, message, onClose }) => {
   );
 };
 
-const ImageUploadComponent: React.FC<ImageUploadComponentProps> = ({
-  onUploadSuccess,
-  onUploadError,
-}) => {
-  const [file, setFile] = useState<File | null>(null);
-  const [fileName, setFileName] = useState<string>("");
-  const [uploadStatus, setUploadStatus] = useState<
-    "idle" | "uploading" | "success" | "error"
-  >("idle");
-  const [uploadedUrl, setUploadedUrl] = useState<string>("");
-  const [uploadedAlt, setUploadedAlt] = useState<string>("");
-  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
-  const [showMessageBox, setShowMessageBox] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
-  const [previewUrl, setPreviewUrl] = useState<string>("");
+const ImageUploadComponent = forwardRef<
+  ImageUploadRef,
+  ImageUploadComponentProps
+>(
+  (
+    { value, onChange, onUploadError, disabled = false, required = false },
+    ref
+  ) => {
+    const [file, setFile] = useState<File | null>(null);
+    const [fileName, setFileName] = useState<string>(value.imageAlt || "");
+    const [uploadStatus, setUploadStatus] = useState<
+      "idle" | "uploading" | "success" | "error"
+    >("idle");
+    const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+    const [showMessageBox, setShowMessageBox] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
+    const [previewUrl, setPreviewUrl] = useState<string>("");
 
-  // ファイル選択ハンドラー
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setFileName(selectedFile.name.split(".")[0]); // 拡張子を除いたファイル名をデフォルトに
+    useEffect(() => {
+      if (value.hasImage && value.imageUrl) {
+        setUploadStatus("success");
+        setFileName(value.imageAlt || "");
+      } else {
+        setUploadStatus("idle");
+        setFileName("");
+      }
+    }, [value]);
 
-      // プレビュー表示
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreviewUrl(e.target?.result as string);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  };
+    const notifyParent = useCallback(
+      (imageData: Partial<ImageFormData>) => {
+        const newImageData: ImageFormData = {
+          imageId: imageData.imageId ?? value.imageId,
+          imageUrl: imageData.imageUrl ?? value.imageUrl,
+          imageAlt: imageData.imageAlt ?? value.imageAlt,
+          hasImage: imageData.hasImage ?? value.hasImage,
+        };
+        onChange(newImageData);
+      },
+      [value, onChange]
+    );
 
-  // アップロード確認
-  const handleUploadClick = () => {
-    if (!file || !fileName.trim()) {
-      setMessage("ファイルと代替テキストは必須です。");
-      setShowMessageBox(true);
-      return;
-    }
-    setShowConfirmModal(true);
-  };
+    // ファイル選択ハンドラー
+    const handleFileChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+          setFile(selectedFile);
+          const nameWithoutExtension = selectedFile.name
+            .split(".")
+            .slice(0, -1)
+            .join(".");
+          const defaultAlt = nameWithoutExtension || selectedFile.name;
+          setFileName(defaultAlt);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            setPreviewUrl(e.target?.result as string);
+          };
+          reader.readAsDataURL(selectedFile);
+          // 修正: この部分を削除
+          // if (value.hasImage) {
+          //   notifyParent({
+          //     imageId: null,
+          //     imageUrl: "",
+          //     imageAlt: defaultAlt,
+          //     hasImage: false,
+          //   });
+          // }
+          setUploadStatus("idle");
+        }
+      },
+      []
+    );
 
-  // アップロード実行
-  const handleUploadConfirm = async () => {
-    setShowConfirmModal(false);
+    // Alt テキスト変更ハンドラー
+    const handleAltTextChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newAlt = e.target.value;
+        setFileName(newAlt);
+        if (value.hasImage) {
+          notifyParent({ imageAlt: newAlt });
+        }
+      },
+      [value.hasImage, notifyParent]
+    );
 
-    if (!file || !fileName) {
-      setMessage("ファイルと代替テキストは必須です。");
-      setShowMessageBox(true);
-      return;
-    }
+    // 新規追加: 外部から呼び出すためのアップロード処理
+    const triggerUpload =
+      useCallback(async (): Promise<ImageFormData | null> => {
+        if (!file || !fileName.trim()) {
+          const message = "ファイルと代替テキストは必須です。";
+          setMessage(message);
+          setShowMessageBox(true);
+          if (onUploadError) onUploadError(message);
+          return null;
+        }
 
-    setUploadStatus("uploading");
-    setUploadedUrl("");
-    setUploadedAlt("");
+        setUploadStatus("uploading");
 
-    try {
-      // IndexedDBに画像をアップロード
-      const uploadResult = await uploadImageFromFile(file, {
-        maxSize: 5 * 1024 * 1024, // 5MB制限
-        allowedTypes: ["image/jpeg", "image/png", "image/webp", "image/gif"],
-        quality: 0.8,
-        maxWidth: 1920,
-        maxHeight: 1920,
+        try {
+          const uploadResult = await uploadImageFromFile(file, {
+            maxSize: 5 * 1024 * 1024,
+            allowedTypes: [
+              "image/jpeg",
+              "image/png",
+              "image/webp",
+              "image/gif",
+            ],
+            quality: 0.8,
+            maxWidth: 1920,
+            maxHeight: 1920,
+          });
+
+          if (uploadResult.success && uploadResult.imageId) {
+            const imageUrl = await createImageUrl(uploadResult.imageId);
+            if (imageUrl) {
+              const uploadedData = {
+                imageId: uploadResult.imageId,
+                imageUrl: imageUrl,
+                imageAlt: fileName,
+                hasImage: true,
+              };
+              notifyParent(uploadedData);
+              setUploadStatus("success");
+              setPreviewUrl("");
+              setMessage("アップロードが成功しました！");
+              setShowMessageBox(true);
+              return uploadedData;
+            } else {
+              throw new Error("画像URLの生成に失敗しました");
+            }
+          } else {
+            const errorMessage =
+              uploadResult.error || "アップロードに失敗しました。";
+            throw new Error(errorMessage);
+          }
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          setUploadStatus("error");
+          const errorMsg = `アップロードに失敗しました: ${
+            error instanceof Error ? error.message : "不明なエラー"
+          }`;
+          setMessage(errorMsg);
+          setShowMessageBox(true);
+          if (onUploadError) onUploadError(errorMsg);
+          return null;
+        }
+      }, [file, fileName, notifyParent, onUploadError]);
+
+    // リセット関数
+    const reset = useCallback(() => {
+      setFile(null);
+      setFileName("");
+      setUploadStatus("idle");
+      setPreviewUrl("");
+      setMessage("");
+      setShowMessageBox(false);
+
+      notifyParent({
+        imageId: null,
+        imageUrl: "",
+        imageAlt: "",
+        hasImage: false,
       });
 
-      if (uploadResult.success && uploadResult.imageId) {
-        // 画像URLを生成
-        const imageUrl = await createImageUrl(uploadResult.imageId);
-
-        if (imageUrl) {
-          setUploadedUrl(imageUrl);
-          setUploadedAlt(fileName);
-          setUploadStatus("success");
-          setMessage("アップロードが成功しました！");
-
-          // 成功時のコールバック
-          if (onUploadSuccess) {
-            onUploadSuccess({
-              imageId: uploadResult.imageId,
-              imageUrl: imageUrl,
-              alt: fileName,
-            });
-          }
-        } else {
-          throw new Error("画像URLの生成に失敗しました");
-        }
-      } else {
-        const errorMessage =
-          uploadResult.error || "アップロードに失敗しました。";
-        throw new Error(errorMessage);
+      const fileInput = document.querySelector(
+        'input[type="file"]'
+      ) as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = "";
       }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setUploadStatus("error");
-      const errorMsg = `アップロードに失敗しました: ${
-        error instanceof Error ? error.message : "不明なエラー"
-      }`;
-      setMessage(errorMsg);
+    }, [notifyParent]);
 
-      // エラー時のコールバック
-      if (onUploadError) {
-        onUploadError(errorMsg);
-      }
-    } finally {
-      setShowMessageBox(true);
-    }
-  };
+    // forwardRefとuseImperativeHandleを使って、親コンポーネントに関数を公開
+    useImperativeHandle(ref, () => ({
+      triggerUpload,
+      reset,
+    }));
 
-  // リセット
-  const handleReset = () => {
-    setFile(null);
-    setFileName("");
-    setUploadStatus("idle");
-    setUploadedUrl("");
-    setUploadedAlt("");
-    setPreviewUrl("");
-    setMessage("");
-    setShowMessageBox(false);
-    setShowConfirmModal(false);
-  };
+    const isUploading = uploadStatus === "uploading";
+    const hasUploadedImage = value.hasImage && Boolean(value.imageUrl);
+    const hasPreview = Boolean(previewUrl) && !hasUploadedImage;
+    const isFileSelected = Boolean(file);
 
-  return (
-    <div className={styles.upload_form_image}>
-      <div className={styles.upload_form_wrap}>
-        <div className={styles.upload_form_item}>
-          <label>
-            <span>ファイル選択</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              disabled={uploadStatus === "uploading"}
-              title="画像ファイルを選択"
-              placeholder="画像ファイルを選択"
-            />
-          </label>
+    return (
+      <div className={styles.upload_form_image}>
+        <div className={styles.upload_form_wrap}>
+          <div className={styles.upload_form_item}>
+            <label>
+              <span>
+                ファイル選択
+                {required && <span className={styles.required}>*</span>}
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                disabled={disabled || isUploading}
+                title="画像ファイルを選択"
+              />
+            </label>
+          </div>
+
+          <div className={styles.upload_form_item}>
+            <label>
+              <span>
+                代替テキスト
+                {required && <span className={styles.required}>*</span>}
+              </span>
+              <input
+                type="text"
+                value={fileName}
+                onChange={handleAltTextChange}
+                placeholder="画像の説明を入力してください"
+                disabled={disabled || isUploading}
+              />
+            </label>
+          </div>
+
+          {/* 独立したアップロードボタンを削除しました */}
+
+          {(hasUploadedImage || isFileSelected) && (
+            <button
+              onClick={reset}
+              type="button"
+              disabled={disabled || isUploading}
+              className={styles.upload_form_button_reset}
+            >
+              リセット
+            </button>
+          )}
         </div>
-        <div className={styles.upload_form_item}>
-          <label>
-            <span>代替テキスト</span>
-            <input
-              type="text"
-              value={fileName}
-              onChange={(e) => setFileName(e.target.value)}
-              placeholder="画像の説明を入力してください"
-              disabled={uploadStatus === "uploading"}
-            />
-          </label>
-        </div>
-        <div className={styles.upload_form_item}>
-          <button
-            type="button"
-            onClick={() => setShowConfirmModal(true)}
-            disabled={!file || uploadStatus === "uploading"}
-            className={styles.upload_form_button_submit}
-          >
-            {uploadStatus === "uploading" ? "Uploading..." : "Upload to Blob"}
-          </button>
-          <button
-            onClick={handleReset}
-            type="button"
-            className={styles.upload_form_button_reset}
-          >
-            リセット
-          </button>
-        </div>
+
+        {/* 通知メッセージボックス */}
+        <MessageBox
+          show={showMessageBox}
+          message={message}
+          onClose={() => setShowMessageBox(false)}
+        />
+
+        {/* プレビュー画像を表示する部分 */}
+        {hasPreview && (
+          <div className={styles.uploadedImageContainer}>
+            <p>プレビュー:</p>
+            <div className={styles.uploadedImage}>
+              <Image
+                src={previewUrl}
+                width={300}
+                height={300}
+                alt={fileName || "プレビュー画像"}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* アップロード成功後の画像表示 */}
+        {hasUploadedImage && (
+          <div className={styles.uploadedImageContainer}>
+            <p>アップロード済み:</p>
+            <div className={styles.uploadedImage}>
+              <Image
+                src={value.imageUrl}
+                width={300}
+                height={300}
+                alt={value.imageAlt || "アップロード済み画像"}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ステータス表示 */}
+        {uploadStatus === "uploading" && (
+          <div className={styles.info_message}>アップロード中...</div>
+        )}
+        {uploadStatus === "error" && (
+          <div className={styles.error_message}>
+            アップロードでエラーが発生しました
+          </div>
+        )}
       </div>
+    );
+  }
+);
 
-      {/* 確認モーダル */}
-      <Modal
-        show={showConfirmModal}
-        title="アップロード確認"
-        message="この画像をアップロードしますか？"
-        onClose={() => setShowConfirmModal(false)}
-        onConfirm={handleUploadConfirm}
-      />
-
-      {/* 通知メッセージボックス */}
-      <MessageBox
-        show={showMessageBox}
-        message={message}
-        onClose={() => setShowMessageBox(false)}
-      />
-
-      {/* プレビュー画像を表示する部分 */}
-      {previewUrl && (
-        <div className={styles.uploadedImageContainer}>
-          <p>プレビュー:</p>
-          <div className={styles.uploadedImage}>
-            <Image
-              src={previewUrl}
-              width={300}
-              height={300}
-              alt={fileName || "プレビュー画像"}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* アップロード成功後の画像表示は引き続きuploadedUrlで管理 */}
-      {/* {uploadedUrl && (
-        <div className={styles.uploadedImageContainer}>
-          <p>アップロード済み:</p>
-          <div className={styles.uploadedImage}>
-            <Image
-              src={uploadedUrl}
-              width={300}
-              height={300}
-              alt={fileName || "アップロード済み画像"}
-            />
-          </div>
-        </div>
-      )} */}
-    </div>
-  );
-};
+ImageUploadComponent.displayName = "ImageUploadComponent";
 
 export default ImageUploadComponent;

@@ -11,32 +11,31 @@ import type {
   ValidationRule,
   ValidationResult,
 } from "@/app/types/validation";
-
 const validationRules = {
   coffee: [
     {
       field: "imageUrl",
       message: "コーヒー豆の画像パスを入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "string" && !value.trim(),
+        typeof value !== "string" || !value.trim(),
     },
     {
       field: "imageAlt",
       message: "コーヒー豆の画像の代替テキストを入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "string" && !value.trim(),
+        typeof value !== "string" || !value.trim(),
     },
     {
       field: "coffeeName",
       message: "コーヒー豆の名前を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "string" && !value.trim(),
+        typeof value !== "string" || !value.trim(),
     },
     {
       field: "productionArea",
       message: "生産地を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "string" && !value.trim(),
+        typeof value !== "string" || !value.trim(),
     },
   ] as ValidationRule<CoffeeInfo>[],
 
@@ -68,37 +67,36 @@ const validationRules = {
       field: "measurementMethod",
       message: "計測方法を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "string" && !value.trim(),
+        typeof value !== "string" || !value.trim(),
     },
     {
       field: "grindSize",
       message: "挽き目を選択してください。",
-      // 修正: "選択していません。"に統一（最後のピリオドを追加）
       validator: (value: unknown): boolean => value === "選択していません。",
     },
     {
       field: "extractionTime",
       message: "抽出時間（秒）を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value <= 0 || isNaN(value)),
+        typeof value !== "number" || value <= 0 || isNaN(value),
     },
     {
       field: "temperature",
       message: "温度（℃）を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value <= 0 || isNaN(value)),
+        typeof value !== "number" || value <= 0 || isNaN(value),
     },
     {
       field: "coffeeAmount",
       message: "粉量（g）を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value <= 0 || isNaN(value)),
+        typeof value !== "number" || value <= 0 || isNaN(value),
     },
     {
       field: "waterAmount",
       message: "湯量（g）を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value <= 0 || isNaN(value)),
+        typeof value !== "number" || value <= 0 || isNaN(value),
     },
   ] as ValidationRule<ExtractionInfo>[],
 
@@ -107,7 +105,7 @@ const validationRules = {
       field: "shopName",
       message: "店名を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "string" && !value.trim(),
+        typeof value !== "string" || !value.trim(),
     },
     {
       field: "shopDate",
@@ -122,41 +120,40 @@ const validationRules = {
       field: "acidity",
       message: "酸味の評価を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value === 0 || isNaN(value)),
+        typeof value !== "number" || value === 0 || isNaN(value),
     },
     {
       field: "bitterness",
       message: "苦味の評価を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value === 0 || isNaN(value)),
+        typeof value !== "number" || value === 0 || isNaN(value),
     },
     {
       field: "overall",
       message: "全体の好みの評価を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value === 0 || isNaN(value)),
+        typeof value !== "number" || value === 0 || isNaN(value),
     },
     {
       field: "body",
       message: "コクの評価を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value === 0 || isNaN(value)),
+        typeof value !== "number" || value === 0 || isNaN(value),
     },
     {
       field: "aroma",
       message: "香りの評価を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value === 0 || isNaN(value)),
+        typeof value !== "number" || value === 0 || isNaN(value),
     },
     {
       field: "aftertaste",
       message: "キレの評価を入力してください。",
       validator: (value: unknown): boolean =>
-        typeof value === "number" && (value === 0 || isNaN(value)),
+        typeof value !== "number" || value === 0 || isNaN(value),
     },
   ] as ValidationRule<ReviewInfo>[],
 };
-
 const getNestedValue = <T>(obj: T, path: string): unknown => {
   return path.split(".").reduce((current: unknown, key: string) => {
     if (current && typeof current === "object" && key in current) {
@@ -242,15 +239,15 @@ export const useCoffeeValidation = () => {
           console.log("Selfモードのバリデーション実行");
 
           const selfResult = validateRuleSet(selfInfo, validationRules.self);
-          if (!selfResult.isValid && selfResult.message) {
-            console.log("Self情報バリデーションエラー:", selfResult.message);
-            return selfResult.message;
-          }
-
           const extractionResult = validateRuleSet(
             extractionInfo,
             validationRules.extraction
           );
+
+          if (!selfResult.isValid && selfResult.message) {
+            console.log("Self情報バリデーションエラー:", selfResult.message);
+            return selfResult.message;
+          }
           if (!extractionResult.isValid && extractionResult.message) {
             console.log(
               "抽出情報バリデーションエラー:",
@@ -275,6 +272,7 @@ export const useCoffeeValidation = () => {
         }));
 
         const reviewResult = validateRuleSet(reviewInfo, reviewRulesWithPath);
+
         if (!reviewResult.isValid && reviewResult.message) {
           console.log(
             "レビュー情報バリデーションエラー:",

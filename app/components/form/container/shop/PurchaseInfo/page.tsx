@@ -6,7 +6,6 @@ import {
   DateComponent,
 } from "@/app/components/form/item/InputComponent/page";
 
-import ImageUploadComponent from "@/app/components/form/item/ImageUpload/page";
 interface ShopCoffeeFormValue {
   coffeeInfo: {
     imageUrl: string;
@@ -47,31 +46,11 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
   setCoffeeInfo,
   setShopInfo,
 }) => {
-  const handleImageUploadSuccess = (result: {
-    imageId: string;
-    imageUrl: string;
-    alt: string;
-  }) => {
-    setCoffeeInfo((prev) => ({
-      ...prev,
-      imageUrl: result.imageUrl,
-      imageAlt: result.alt,
-    }));
-  };
-
-  const handleImageUploadError = (error: string) => {
-    alert(error);
-  };
-  console.log(coffeeInfo, "← coffeeInfo in ShopCoffeeComponent");
   return (
     <>
       <div className={styles.infoContainer}>
         <h2 className={styles.infoTitle}>お店の情報</h2>
         <div className={styles.infoWrapper}>
-          <ImageUploadComponent
-            onUploadSuccess={handleImageUploadSuccess}
-            onUploadError={handleImageUploadError}
-          />
           <InputComponent
             dataTitle="店名"
             value={shopInfo.shopName}

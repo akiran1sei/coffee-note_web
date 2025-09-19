@@ -59,7 +59,11 @@ export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
         </div>
         <div className={`${styles.listItemShopDate}`}>
           <div className={styles.listItemLabel}>{"飲んだ日付"}</div>
-          <div className={styles.listItemValue}>{value.shopDate}</div>
+          <div className={styles.listItemValue}>
+            {value.shopDate instanceof Date
+              ? value.shopDate.toLocaleDateString()
+              : value.shopDate ?? ""}
+          </div>
         </div>
         <div className={`${styles.listItemShopAddress}`}>
           <div className={styles.listItemLabel}>{"店の住所"}</div>
@@ -276,7 +280,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
         </div>
         <div className={`${styles.listItemShopDate}`}>
           <div className={styles.listItemLabel}>{"飲んだ日付"}</div>
-          <div className={styles.listItemValue}>{value.shopDate}</div>
+          <div className={styles.listItemValue}>
+            {value.shopDate instanceof Date
+              ? value.shopDate.toLocaleDateString()
+              : value.shopDate ?? ""}
+          </div>
         </div>
         <div className={`${styles.listItemShopAddress}`}>
           <div className={styles.listItemLabel}>{"店の住所"}</div>

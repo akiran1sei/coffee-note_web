@@ -115,22 +115,28 @@ interface MainButtonType {
   textValue: string; // 表示したいテキスト
   buttonColor: string; // buttonColor: "btn-primary" | "btn-secondary" | "btn-success" | "btn-warning" | "btn-danger";
   widthValue: string; // width: "widthAuto" | "widthNearlyFull";
+  disabled?: boolean; // ← 追加
+  style?: React.CSSProperties;
 }
 
 export const MainButton: React.FC<MainButtonType> = ({
   onClick,
-  type = "button", // デフォルト値を `button` に設定
+  type = "button",
   sizeValue,
   textValue,
   buttonColor,
   widthValue,
+  disabled,
+  style,
 }) => {
   if (sizeValue === "large") {
     return (
       <button
-        type={type} // ここでpropsから受け取った `type` を適用
+        type={type}
         className={`${styles.mainButton} ${styles.buttonShadow} ${styles.largeButton} ${styles[buttonColor]} ${styles[widthValue]}`}
         onClick={onClick}
+        disabled={disabled}
+        style={style}
       >
         <span className={styles.buttonText}>{textValue}</span>
       </button>
@@ -140,6 +146,9 @@ export const MainButton: React.FC<MainButtonType> = ({
       <button
         type={type}
         className={`${styles.mainButton} ${styles.buttonShadow} ${styles.middleButton} ${styles[buttonColor]} ${styles[widthValue]}`}
+        onClick={onClick}
+        disabled={disabled}
+        style={style}
       >
         <span className={styles.buttonText}>{textValue}</span>
       </button>
@@ -149,6 +158,9 @@ export const MainButton: React.FC<MainButtonType> = ({
       <button
         type={type}
         className={`${styles.mainButton} ${styles.buttonShadow} ${styles.smallButton} ${styles[buttonColor]} ${styles[widthValue]}`}
+        onClick={onClick}
+        disabled={disabled}
+        style={style}
       >
         <span className={styles.buttonText}>{textValue}</span>
       </button>
