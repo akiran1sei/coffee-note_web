@@ -21,7 +21,11 @@ export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   };
 
   return (
-    <div className={styles.listShopMobileCard}>
+    <div
+      className={`${styles.listShopMobileCard} ${
+        styles[value.self === "Shop" ? "shop" : "none"]
+      }`}
+    >
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
@@ -177,6 +181,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   const [isFadingIn, setIsFadingIn] = useState(false);
 
   const openListClass = isOpen ? styles.listItemOpen : styles.listItemClose;
+
   const handleClick = () => {
     try {
       setLoad(true);
@@ -199,7 +204,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   }, [isOpen]);
 
   return (
-    <div className={styles.listShopPcCard}>
+    <div
+      className={`${styles.listShopPcCard} ${
+        styles[value.self === "Shop" ? "shop" : "none"]
+      }`}
+    >
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input

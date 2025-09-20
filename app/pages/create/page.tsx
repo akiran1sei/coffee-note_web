@@ -84,29 +84,33 @@ const CreatePage = () => {
 
   const [isLoad, setIsLoad] = useState(false);
   const [isVersion, setIsVersion] = useState(false);
-  const [varText, setVarText] = useState<string>("Self");
+  const [verText, setVerText] = useState<string[]>([shopVer]);
   const [coffeeRecords, setCoffeeRecords] = useState<CoffeeRecord[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string>("");
-
+  useEffect(() => {
+    setVerText([shopVer]);
+  }, []);
   const handleVersion = () => {
     setIsLoad(true);
     setIsVersion(!isVersion);
     if (isVersion) {
-      setVarText(shopVer);
-      console.log(varText);
+      setVerText([shopVer]);
+      console.log(verText);
     } else {
-      setVarText(selfVer);
-      console.log(varText);
+      setVerText([selfVer]);
+      console.log(verText);
     }
     setIsLoad(false);
   };
 
   // 画像データが変更された時のハンドラー
   const handleImageChange = useCallback((newImageData: ImageFormData) => {
+    console.log("画像データ", newImageData);
     setImageData(newImageData);
     console.log("画像データが更新されました:", newImageData);
   }, []);
+  console.log("画像データが更新", imageData);
 
   // 画像アップロードエラー時のハンドラー
   const handleImageUploadError = useCallback((error: string) => {
@@ -146,7 +150,7 @@ const CreatePage = () => {
           aftertaste: reviewInfo.chart.aftertaste,
           memo: reviewInfo.memo,
           id: uuidv4(),
-          self: varText,
+          self: verText[0],
           createdAt: new Date(),
         },
       ]);
@@ -154,20 +158,22 @@ const CreatePage = () => {
     fetchRecords();
   }, []); // 初回マウント時のみ実行
 
-  useEffect(() => {
-    console.log(
-      "Coffee records updated:",
-      coffeeInfo,
-      imageData,
-      selfInfo,
-      shopInfo,
-      extractionInfo,
-      reviewInfo,
-      varText
-    );
-  }, [coffeeRecords, imageData]);
+  // useEffect(() => {
+  //   console.log(
+  //     "Coffee records updated:",
+  //     coffeeInfo,
+  //     imageData,
+  //     selfInfo,
+  //     shopInfo,
+  //     extractionInfo,
+  //     reviewInfo,
+  //     verText
+  //   );
+  // }, [coffeeRecords, imageData]);
 
   // フォーム送信時のハンドラー（バリデーション統合版）
+  // handleSubmit関数を以下のように修正
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -176,37 +182,35 @@ const CreatePage = () => {
 
     try {
       let finalImageData = imageData;
+
       // 画像が選択されている場合、アップロードをトリガーし完了を待つ
       if (imageData.hasImage && imageUploadRef.current) {
         const uploadedResult = await imageUploadRef.current.triggerUpload();
         if (uploadedResult) {
           finalImageData = uploadedResult;
+          console.log("アップロード完了後の画像データ:", finalImageData);
         } else {
-          // アップロードが失敗した場合はここで処理を中断
           setIsSubmitting(false);
           return;
         }
       }
 
-      // バリデーションに最新の画像データを含める
+      // バリデーション用にcoffeeInfoを更新
+      const updatedCoffeeInfo = {
+        ...coffeeInfo,
+        imageUrl: finalImageData.imageUrl || "",
+        imageAlt: finalImageData.imageAlt || "",
+      };
+      console.log("バリデーション用のコーヒー情報:", updatedCoffeeInfo);
+      // バリデーション実行
       const validationError = validateCoffeeData(
-        {
-          ...coffeeInfo,
-          imageUrl: finalImageData.imageUrl,
-          imageAlt: finalImageData.imageAlt,
-        },
+        updatedCoffeeInfo,
         selfInfo,
         extractionInfo,
         shopInfo,
         reviewInfo,
-        varText
+        verText[0]
       );
-
-      // バリデーションエラーがある場合は処理を停止
-      if (validationError) {
-        setSubmitError(validationError);
-        return;
-      }
 
       // 新しい記録のデータを作成
       const newRecord: CoffeeRecord = {
@@ -230,10 +234,10 @@ const CreatePage = () => {
         aroma: reviewInfo.chart.aroma,
         aftertaste: reviewInfo.chart.aftertaste,
         memo: reviewInfo.memo,
-        // 画像データを統合
-        imageUri: finalImageData.imageUrl,
-        imageAlt: finalImageData.imageAlt,
-        self: varText,
+        // 重要: finalImageDataから画像データを設定
+        imageUri: finalImageData.imageUrl || "",
+        imageAlt: finalImageData.imageAlt || "",
+        self: verText[0],
         shopName: shopInfo.shopName,
         shopPrice: shopInfo.shopPrice,
         shopDate: shopInfo.shopDate,
@@ -241,16 +245,19 @@ const CreatePage = () => {
         shopUrl: shopInfo.shopUrl,
         createdAt: new Date(),
       };
+      console.log("保存する最終データ:", newRecord);
+      console.log("画像URL:", newRecord.imageUri);
+      console.log("画像ALT:", newRecord.imageAlt);
+      if (validationError) {
+        setSubmitError(validationError);
+        setIsSubmitting(false);
+        return;
+      }
 
-      console.log("保存するデータ:", newRecord);
-      console.log("画像データ:", finalImageData);
-
-      // addCoffeeRecord関数を呼び出して、データベースに保存
+      // データベースに保存
       await addCoffeeRecord(newRecord);
 
       alert("記録が正常に保存されました！");
-
-      // フォームの入力値をクリア
       handleReset();
     } catch (error) {
       console.error("記録の保存中にエラーが発生しました:", error);
@@ -263,7 +270,6 @@ const CreatePage = () => {
       setIsSubmitting(false);
     }
   };
-
   // フォームリセット関数
   const handleReset = useCallback(() => {
     setCoffeeInfo({
@@ -343,7 +349,7 @@ const CreatePage = () => {
               <MainButton
                 onClick={handleVersion}
                 sizeValue="large"
-                textValue={`Switch to ${varText} Ver.`}
+                textValue={`Switch to ${verText} Ver.`}
                 buttonColor="btn-success"
                 widthValue="widthNearlyFull"
               />
@@ -355,7 +361,7 @@ const CreatePage = () => {
               <MainButton
                 onClick={handleVersion}
                 sizeValue="large"
-                textValue={`Switch to ${varText} Ver.`}
+                textValue={`Switch to ${verText} Ver.`}
                 buttonColor="btn-success"
                 widthValue="widthAuto"
               />

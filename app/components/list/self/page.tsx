@@ -23,7 +23,11 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   };
 
   return (
-    <div className={styles.listSelfMobileCard}>
+    <div
+      className={`${styles.listSelfMobileCard} ${
+        styles[value.self === "Self" ? "self" : "none"]
+      }`}
+    >
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
@@ -215,7 +219,11 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
   return (
-    <div className={styles.listSelfPcCard}>
+    <div
+      className={`${styles.listSelfPcCard} ${
+        styles[value.self === "Self" ? "self" : "none"]
+      }`}
+    >
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input

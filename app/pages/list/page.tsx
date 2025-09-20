@@ -67,8 +67,6 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
   }, []); // 依存配列を空にすることで、コンポーネントの初回レンダリング時のみ実行
 
   console.log(coffeeRecords);
-  const [version, setVersion] = useState(true);
-  // const [version, setVersion] = useState(false);
   const [load, setLoad] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
@@ -93,10 +91,12 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
   const ListPcPage = () => {
     const pcCard = (record: Partial<CoffeeRecord>) => {
       // versionの状態によって、表示するコンポーネントを切り替えます
-      return version ? (
-        <SelfPcCard value={record} onClick={handleDeleteClick} />
-      ) : (
-        <ShopPcCard value={record} onClick={handleDeleteClick} />
+      console.log("PCカードのレコード:", record.self);
+      return (
+        <>
+          <SelfPcCard value={record} onClick={handleDeleteClick} />
+          <ShopPcCard value={record} onClick={handleDeleteClick} />
+        </>
       );
     };
     const cards = Array.from({ length: 5 });
@@ -155,10 +155,11 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
     // const spImg = "https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart";
     // const cards = Array.from({ length: 5 });
     const MobileCard = (record: Partial<CoffeeRecord>) => {
-      return version ? (
-        <SelfMobileCard value={record} onClick={handleDeleteClick} />
-      ) : (
-        <ShopMobileCard value={record} onClick={handleDeleteClick} />
+      return (
+        <>
+          <SelfMobileCard value={record} onClick={handleDeleteClick} />
+          <ShopMobileCard value={record} onClick={handleDeleteClick} />
+        </>
       );
     };
 

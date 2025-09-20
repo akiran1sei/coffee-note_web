@@ -248,11 +248,18 @@
   align-items: stretch;
   justify-content: space-between;
 }
+.listSelfMobileCard.none,
+.listShopMobileCard.none {
+  display: none;
+}
+.listSelfMobileCard.self,
+.listShopMobileCard.shop {
+  display: flex;
+}
 .listSelfMobileCard,
 .listShopMobileCard {
   width: auto;
   height: 100%;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
@@ -627,7 +634,7 @@
   .listShopPcCard {
     width: 95%;
     height: auto;
-    display: grid;
+
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1fr 1fr auto;
     position: relative;
@@ -636,7 +643,16 @@
     justify-items: start;
     align-items: stretch;
   }
-
+  .listShopPcCard.self {
+    display: grid;
+  }
+  .listShopPcCard.shop {
+    display: grid;
+  }
+  .listShopPcCard.none,
+  .listSelfPcCard.none {
+    display: none;
+  }
   .listShopPcCard .accordionHeader {
     width: 100%;
     display: flex;

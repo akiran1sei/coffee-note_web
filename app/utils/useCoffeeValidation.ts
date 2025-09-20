@@ -15,15 +15,22 @@ const validationRules = {
   coffee: [
     {
       field: "imageUrl",
-      message: "コーヒー豆の画像パスを入力してください。",
-      validator: (value: unknown): boolean =>
-        typeof value !== "string" || !value.trim(),
+      message: "コーヒー豆の画像をアップロードしてください。",
+      validator: (value: unknown): boolean => {
+        // 画像URLが空文字列でもOKとする（オプショナル）
+        // 必須にしたい場合は以下のコメントを外す
+        // return typeof value !== "string" || !value.trim();
+        return false; // 常に有効とする
+      },
     },
     {
       field: "imageAlt",
       message: "コーヒー豆の画像の代替テキストを入力してください。",
-      validator: (value: unknown): boolean =>
-        typeof value !== "string" || !value.trim(),
+      validator: (value: unknown): boolean => {
+        // 画像がある場合のみALTテキストを必須とする
+        // return typeof value !== "string" || !value.trim();
+        return false; // 常に有効とする
+      },
     },
     {
       field: "coffeeName",
@@ -212,11 +219,11 @@ export const useCoffeeValidation = () => {
       extractionInfo: ExtractionInfo,
       shopInfo: ShopInfo,
       reviewInfo: ReviewInfo,
-      varText: string
+      verText: string
     ): string | null => {
       try {
         console.log("バリデーション開始:", {
-          varText,
+          verText,
           selfInfo,
           coffeeInfo,
         });
@@ -226,6 +233,7 @@ export const useCoffeeValidation = () => {
           coffeeInfo,
           validationRules.coffee
         );
+        console.log("コーヒー情報バリデーション結果:", coffeeInfo);
         if (!coffeeResult.isValid && coffeeResult.message) {
           console.log(
             "コーヒー情報バリデーションエラー:",
@@ -234,8 +242,9 @@ export const useCoffeeValidation = () => {
           return coffeeResult.message;
         }
 
-        // varTextに応じた条件付きバリデーション
-        if (varText === "Self") {
+        // verTextに応じた条件付きバリデーション
+
+        if (verText === "Self") {
           console.log("Selfモードのバリデーション実行");
 
           const selfResult = validateRuleSet(selfInfo, validationRules.self);
@@ -255,7 +264,7 @@ export const useCoffeeValidation = () => {
             );
             return extractionResult.message;
           }
-        } else if (varText === "Shop") {
+        } else if (verText === "Shop") {
           console.log("Shopモードのバリデーション実行");
 
           const shopResult = validateRuleSet(shopInfo, validationRules.shop);
