@@ -21,7 +21,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   const handleOnChange = () => {
     setIsCheck(!isCheck);
   };
-  console.log("isCheck", isCheck);
+
   return (
     <div className={styles.listSelfMobileCard}>
       <div className={`${styles.listCheckboxContainer}`}>
@@ -210,7 +210,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   const handleOnChange = () => {
     setIsCheck(!isCheck);
   };
-  console.log("isCheck", isCheck);
+
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);

@@ -19,7 +19,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   const handleOnChange = () => {
     setIsCheck(!isCheck);
   };
-  console.log("isCheck", isCheck);
+
   return (
     <div className={styles.listShopMobileCard}>
       <div className={`${styles.listCheckboxContainer}`}>
@@ -193,7 +193,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   const handleOnChange = () => {
     setIsCheck(!isCheck);
   };
-  console.log("isCheck", isCheck);
+
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
