@@ -1,6 +1,5 @@
 "use client";
 import styles from "@/app/styles/Pages.module.css";
-import { getCoffeeRecords, deleteCoffeeRecord } from "@/app/lib/IndexedDB";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -15,27 +14,29 @@ interface PageTitleProps {
 interface CoffeePageProps {
   coffeeDate: CoffeeRecord;
   listItemValue: string;
+  coffeeRecords?: CoffeeRecord[];
+  onDeleteRecord?: (id: string) => void;
 }
 
 // タイトルコンポーネントのモック
-// 本来は共通コンポーネントとして定義されていると想定
 const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
   <h1>{listItemValue}</h1>
 );
 
-// スタイルシートのモック
-// 本来はstyles/Pages.module.cssの内容を記述
-
-const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
+const ListPage: React.FC<CoffeePageProps> = ({
+  coffeeDate,
+  coffeeRecords = [],
+  onDeleteRecord,
+}) => {
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
-  const [coffeeRecords, setCoffeeRecords] = useState<CoffeeRecord[]>([]);
+  const [localRecords, setLocalRecords] =
+    useState<CoffeeRecord[]>(coffeeRecords);
 
   // ウィンドウのリサイズイベントを監視
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleResize = () => {
-        // document.documentElement.clientWidth を使用
         setWindowWidth(document.documentElement.clientWidth);
       };
 
@@ -49,48 +50,48 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
-  // コンポーネントがマウントされた時にデータを取得する
-  useEffect(() => {
-    // 非同期関数を定義し、データを取得
-    const fetchRecords = async () => {
-      try {
-        const records = await getCoffeeRecords();
-        setCoffeeRecords(records); // stateにデータをセット
 
-        console.log("全コーヒー記録:", records); // 取得したデータをログに出力
-      } catch (error) {
-        console.error("記録の取得中にエラーが発生しました:", error);
-      }
-    };
+  // coffeeRecordsが変更されたときにlocalRecordsを更新
+  // useEffect(() => {
+  //   setLocalRecords(coffeeRecords);
+  // }, [coffeeRecords]);
 
-    fetchRecords();
-  }, []); // 依存配列を空にすることで、コンポーネントの初回レンダリング時のみ実行
-
-  console.log(coffeeRecords);
+  // console.log(localRecords);
   const [load, setLoad] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
-  const handleDeleteClick = async (coffee: string) => {
+
+  const handleDeleteClick = async (id: string) => {
+    // 該当する記録を見つける
+    const recordToDelete = localRecords.find((record) => record.id === id);
+    if (!recordToDelete) return;
+
     // ユーザーに削除の確認を求める
     const isConfirmed = window.confirm(
-      `"${coffee}"を削除してもよろしいですか？`
+      `"${recordToDelete.name || "この記録"}"を削除してもよろしいですか？`
     );
 
     if (isConfirmed) {
       try {
-        await deleteCoffeeRecord(coffee);
-        return alert("レコードが正常に削除されました。");
-        // 削除が成功したら親コンポーネントに通知し、リストを更新させる
+        // ローカルの状態から削除
+        setLocalRecords((prev) => prev.filter((record) => record.id !== id));
+
+        // 親コンポーネントに削除を通知（オプション）
+        if (onDeleteRecord) {
+          onDeleteRecord(id);
+        }
+
+        alert("レコードが正常に削除されました。");
       } catch (error) {
         alert("レコードの削除に失敗しました。");
         console.error("削除エラー:", error);
       }
     }
   };
+
   // PC向けのレイアウト
   const ListPcPage = () => {
-    const pcCard = (record: Partial<CoffeeRecord>) => {
-      // versionの状態によって、表示するコンポーネントを切り替えます
+    const pcCard = (record: CoffeeRecord) => {
       console.log("PCカードのレコード:", record.self);
       return (
         <>
@@ -99,13 +100,13 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
         </>
       );
     };
-    const cards = Array.from({ length: 5 });
+
     return (
       <>
         <div
           className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listPcPageWrapper}`}
         >
-          {coffeeRecords.map((record, index) => (
+          {localRecords.map((record, index) => (
             <div
               className={`${styles.listItemCard} ${styles.listPcCard} ${styles.listItemVersion}`}
               key={record.id ?? index}
@@ -120,8 +121,6 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
 
   // タブレット向けのレイアウト
   const ListTabletPage = () => {
-    // 画面の向きによってPC or SPレイアウトを返す
-    // 画面幅が600px未満はSP、600px以上はPCとして扱う（Tailwindのmdブレイクポイント）
     if (windowWidth < 960) {
       return ListMobilePage();
     } else {
@@ -132,10 +131,10 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
   // スマホ向けのレイアウト
   const ListMobilePage = () => {
     const containerRef = useRef<HTMLDivElement>(null);
+
     const scrollRight = () => {
       if (containerRef.current) {
         containerRef.current.scrollBy({
-          // コンテナの幅分だけ右へスクロール
           left: containerRef.current.clientWidth,
           behavior: "smooth",
         });
@@ -145,16 +144,13 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
     const scrollLeft = () => {
       if (containerRef.current) {
         containerRef.current.scrollBy({
-          // コンテナの幅分だけ左へスクロール
           left: -containerRef.current.clientWidth,
           behavior: "smooth",
         });
       }
     };
 
-    // const spImg = "https://placehold.co/600x400/E9E9E9/252525?text=Radar+Chart";
-    // const cards = Array.from({ length: 5 });
-    const MobileCard = (record: Partial<CoffeeRecord>) => {
+    const MobileCard = (record: CoffeeRecord) => {
       return (
         <>
           <SelfMobileCard value={record} onClick={handleDeleteClick} />
@@ -173,7 +169,7 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
           className={`${styles.listPageWrapper} ${styles.pageWrapper} ${styles.listMobilePageWrapper}`}
           ref={containerRef}
         >
-          {coffeeRecords.map((record, index) => (
+          {localRecords.map((record, index) => (
             <div
               className={`${styles.listItemCard} ${styles.listMobileCard} ${styles.listItemVersion}`}
               key={record.id ?? index}
@@ -188,16 +184,14 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
 
   const getLayout = () => {
     if (windowWidth >= 960) {
-      // PC向け (lgブレイクポイント)
       return <ListPcPage />;
     } else if (windowWidth >= 600 && windowWidth < 960) {
-      // タブレット向け (mdブレイクポイント)
       return <ListTabletPage />;
     } else {
-      // スマホ向け (それ以外)
       return <ListMobilePage />;
     }
   };
+
   const handlePopup = () => {
     try {
       setLoad(true);
@@ -208,9 +202,11 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
       setLoad(false);
     }
   };
+
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
+
   return (
     <div className={`${styles.listPageContents} ${styles.pageContents}`}>
       <PageTitle listItemValue="List Page" />
@@ -308,4 +304,5 @@ const ListPage: React.FC<CoffeePageProps> = ({ coffeeDate }) => {
     </div>
   );
 };
+
 export default ListPage;
