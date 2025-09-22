@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 import { ReactNode } from "react";
-import { UpperButton } from "./components/buttons/upper/page";
+import UpperButton from "./components/buttons/upper/page";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

@@ -3,7 +3,7 @@
 import styles from "@/app/styles/Button.module.css";
 import { useState, useRef, useEffect } from "react";
 
-export const UpperButton = () => {
+export default function UpperButton() {
   // 2. 必要なステートとuseRefを定義
   const [isMouseDragging, setIsMouseDragging] = useState(false);
   const [isTouchDragging, setIsTouchDragging] = useState(false);
@@ -135,4 +135,4 @@ export const UpperButton = () => {
       </button>
     </div>
   );
-};
+}
