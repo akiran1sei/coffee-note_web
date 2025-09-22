@@ -1,4 +1,5 @@
 // ShopMobileCard.tsx
+"use client";
 import styles from "@/app/styles/Pages.module.css";
 import React, { useEffect, useState } from "react";
 import { CoffeeRecord } from "@/app/types/db";
