@@ -32,10 +32,10 @@ interface MemoAreaComponentProps {
 }
 
 // 親コンポーネントからpropsとして`reviewInfo`と`setReviewInfo`を受け取る
-export const MemoAreaComponent: React.FC<MemoAreaComponentProps> = ({
+export default function MemoAreaComponent({
   reviewInfo,
   setReviewInfo,
-}) => {
+}: MemoAreaComponentProps) {
   // ローカルステートは不要になるため削除
   // const [memoForm, setMemoForm] = useState(...)
 
@@ -58,4 +58,4 @@ export const MemoAreaComponent: React.FC<MemoAreaComponentProps> = ({
       </div>
     </div>
   );
-};
+}
