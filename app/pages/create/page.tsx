@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import styles from "@/app/styles/Pages.module.css";
-import TastingEvaluationComponent from "@/app/components/form/container/common/TastingEvaluation/page";
+import { TastingEvaluationComponent } from "@/app/components/form/container/common/TastingEvaluation/page";
 import { ShopCoffeeComponent } from "@/app/components/form/container/shop/PurchaseInfo/page";
 import { CoffeeBeansComponent } from "@/app/components/form/container/self/CoffeeBean/page";
 import { BrewingRecipeComponent } from "@/app/components/form/container/self/BrewingRecipe/page";
-import MemoAreaComponent from "@/app/components/form/container/common/MemoArea/page";
+import { MemoAreaComponent } from "@/app/components/form/container/common/MemoArea/page";
 import { PageTitle } from "@/app/components/title/page";
 import { MainButton } from "@/app/components/buttons/page";
 import { useWindowSize } from "@/app/components/useWindowSize/page";

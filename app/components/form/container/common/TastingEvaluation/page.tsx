@@ -33,10 +33,10 @@ interface TastingEvaluationProps {
 }
 
 // 親コンポーネントからpropsとして`reviewInfo`と`setReviewInfo`を受け取る
-export default function TastingEvaluationComponent({
+export const TastingEvaluationComponent = ({
   reviewInfo,
   setReviewInfo,
-}: TastingEvaluationProps) {
+}: TastingEvaluationProps) => {
   // 親から渡された `reviewInfo.chart` を使用してチャートデータを生成
   const data = [
     { taste: "酸味", value: reviewInfo.chart.acidity },
@@ -196,4 +196,4 @@ export default function TastingEvaluationComponent({
       </div>
     </div>
   );
-}
+};
