@@ -2,7 +2,6 @@
 import styles from "@/app/styles/Pages.module.css";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
@@ -11,11 +10,11 @@ import { CoffeeRecord } from "@/app/types/db";
 interface PageTitleProps {
   listItemValue: string;
 }
-interface CoffeePageProps {
-  coffeeDate: CoffeeRecord;
-  listItemValue: string;
-  coffeeRecords?: CoffeeRecord[];
-  onDeleteRecord?: (id: string) => void;
+
+// Next.js App Routerのページコンポーネント用の型
+interface PageProps {
+  params: { [key: string]: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 // タイトルコンポーネントのモック
@@ -23,15 +22,13 @@ const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
   <h1>{listItemValue}</h1>
 );
 
-const ListPage: React.FC<CoffeePageProps> = ({
-  coffeeDate,
-  coffeeRecords = [],
-  onDeleteRecord,
-}) => {
+// ✅ Next.js App Router用のページコンポーネント
+export default function ListPage({ params, searchParams }: PageProps) {
+  // モックデータ（実際の開発では、ここでAPIからデータを取得）
+  const [localRecords, setLocalRecords] = useState<CoffeeRecord[]>([]);
+
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
-  const [localRecords, setLocalRecords] =
-    useState<CoffeeRecord[]>(coffeeRecords);
 
   // ウィンドウのリサイズイベントを監視
   useEffect(() => {
@@ -51,13 +48,6 @@ const ListPage: React.FC<CoffeePageProps> = ({
     }
   }, []);
 
-  // coffeeRecordsが変更されたときにlocalRecordsを更新
-  // useEffect(() => {
-  //   setLocalRecords(coffeeRecords);
-  // }, [coffeeRecords]);
-
-  // console.log(localRecords);
-  const [load, setLoad] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
 
@@ -75,12 +65,6 @@ const ListPage: React.FC<CoffeePageProps> = ({
       try {
         // ローカルの状態から削除
         setLocalRecords((prev) => prev.filter((record) => record.id !== id));
-
-        // 親コンポーネントに削除を通知（オプション）
-        if (onDeleteRecord) {
-          onDeleteRecord(id);
-        }
-
         alert("レコードが正常に削除されました。");
       } catch (error) {
         alert("レコードの削除に失敗しました。");
@@ -194,18 +178,25 @@ const ListPage: React.FC<CoffeePageProps> = ({
 
   const handlePopup = () => {
     try {
-      setLoad(true);
       setIsOpen(!isOpen);
     } catch (error) {
       console.error("エラーです。", error);
-    } finally {
-      setLoad(false);
     }
   };
 
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
+
+  // ✅ データ取得の例（実際のプロジェクトでは適切なAPIを呼び出し）
+  useEffect(() => {
+    // ここで実際のデータを取得
+    // const fetchData = async () => {
+    //   const records = await getCoffeeRecords();
+    //   setLocalRecords(records);
+    // };
+    // fetchData();
+  }, []);
 
   return (
     <div className={`${styles.listPageContents} ${styles.pageContents}`}>
@@ -303,6 +294,4 @@ const ListPage: React.FC<CoffeePageProps> = ({
       {windowWidth > 0 && getLayout()}
     </div>
   );
-};
-
-export default ListPage;
+}
