@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "@/app/styles/Form.module.css";
-import { NumberComponent } from "@/app/components/form/item/InputComponent/page";
+import { NumberComponent } from "@/app/components/form/item/InputComponent";
 
 import {
   ConditionalMeasurementSelector,
@@ -9,7 +9,7 @@ import {
   ExtractionMethodSelect,
   MinuteSecondComponent,
   HourComponent,
-} from "@/app/components/form/item/SelectComponent/page";
+} from "@/app/components/form/item/SelectComponent";
 
 interface BrewingRecipeProps {
   extractionInfo: {

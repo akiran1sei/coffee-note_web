@@ -3,9 +3,9 @@ import styles from "@/app/styles/Pages.module.css";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { IconButton, MainButton } from "@/app/components/buttons/page";
-import { SelfPcCard, SelfMobileCard } from "@/app/components/list/self/page";
-import { ShopPcCard, ShopMobileCard } from "@/app/components/list/shop/page";
+import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
+import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
+import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
 import { CoffeeRecord } from "@/app/types/db";
 
 interface PageTitleProps {

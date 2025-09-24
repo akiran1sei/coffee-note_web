@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link"; // expo-router の Link を next/link に変更
 import styles from "@/app/styles/Pages.module.css"; // CSS Modulesをインポート
 import Image from "next/image";
-import { LinkIconButtonWithShadow } from "./components/buttons/page";
-import { AppTitle } from "./components/title/page";
+import { LinkIconButtonWithShadow } from "./components/buttons/Buttons";
+import { AppTitle } from "./components/title/Title";
 
 // Next.jsではexpo-fontの代わりにCSSでフォントを読み込むため、useEffect内のフォント読み込みロジックは不要
 // react-native-get-random-values もWebでは不要

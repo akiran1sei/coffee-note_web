@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import styles from "@/app/styles/Form.module.css";
-import { InputComponent } from "@/app/components/form/item/InputComponent/page";
+import { InputComponent } from "@/app/components/form/item/InputComponent";
 
 import {
   CoffeeProcessingSelect,
   CoffeeTypesSelect,
-} from "@/app/components/form/item/SelectComponent/page";
+} from "@/app/components/form/item/SelectComponent";
 
 // Propsの型を定義
 interface CoffeeBeansComponentProps {

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import styles from "@/app/styles/Form.module.css";
-import { TextAreaComponent } from "@/app/components/form/item/TextAreaComponent/page";
+import { TextAreaComponent } from "@/app/components/form/item/TextAreaComponent";
 
 // Propsの型を定義
 interface MemoAreaComponentProps {

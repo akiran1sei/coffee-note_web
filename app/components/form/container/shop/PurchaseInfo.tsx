@@ -4,7 +4,7 @@ import styles from "@/app/styles/Form.module.css";
 import {
   InputComponent,
   DateComponent,
-} from "@/app/components/form/item/InputComponent/page";
+} from "@/app/components/form/item/InputComponent";
 
 interface ShopCoffeeFormValue {
   coffeeInfo: {

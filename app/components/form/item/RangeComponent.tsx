@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "@/app/styles/Form.module.css";
 import { translationMap } from "@/app/utils/translations";
-import { OnClickButton } from "@/app/components/buttons/page";
+import { OnClickButton } from "@/app/components/buttons/Buttons";
 
 interface rangeProps {
   dataTitle: string;

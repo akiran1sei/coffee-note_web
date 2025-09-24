@@ -1,7 +1,7 @@
 // components/HeaderComponent.tsx (Next.js版)
 import React from "react";
 import styles from "../../styles/Header.module.css"; // CSS Modulesをインポート
-import { LinkIconButton } from "../buttons/page";
+import { LinkIconButton } from "../buttons/Buttons";
 const HeaderComponent = () => {
   return (
     <header className={styles.header}>

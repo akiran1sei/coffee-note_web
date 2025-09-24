@@ -1,20 +1,18 @@
-// SelfPcCard.tsx
+// ShopMobileCard.tsx
 "use client";
 import styles from "@/app/styles/Pages.module.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CoffeeRecord } from "@/app/types/db";
 import Image from "next/image";
-import { MainButton } from "@/app/components/buttons/page";
+import { MainButton } from "@/app/components/buttons/Buttons";
 import Link from "next/link";
-
-// SelfMobileCard.tsx
 
 interface CardProps {
   value: Partial<CoffeeRecord>;
   onClick: (id: string) => void;
 }
 
-export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
+export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   const checkboxId = `checkbox_${value.id}`;
 
   const [isCheck, setIsCheck] = useState(false);
@@ -25,8 +23,8 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
 
   return (
     <div
-      className={`${styles.listSelfMobileCard} ${
-        styles[value.self === "Self" ? "self" : "none"]
+      className={`${styles.listShopMobileCard} ${
+        styles[value.self === "Shop" ? "shop" : "none"]
       }`}
     >
       <div className={`${styles.listCheckboxContainer}`}>
@@ -43,10 +41,10 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
         </label>
       </div>
 
-      <div className={`${styles.listItemCoffeeBeans}`}>
-        <div className={`${styles.listItemCoffeeName}`}>
-          <div className={styles.listItemLabel}>{"コーヒー名"}</div>
-          <div className={styles.listItemValue}>{value.name}</div>
+      <div className={`${styles.listItemShopData}`}>
+        <div className={`${styles.listItemShopName}`}>
+          <div className={styles.listItemLabel}>{"店名"}</div>
+          <div className={styles.listItemValue}>{value.shopName}</div>
         </div>
         <div className={`${styles.listItemImageBox} ${styles.beansImg}`}>
           <div className={styles.listItemImage}>
@@ -60,51 +58,35 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
             />
           </div>
         </div>
-        <div className={`${styles.listItemVariety}`}>
-          <div className={styles.listItemLabel}>{"品種"}</div>
-          <div className={styles.listItemValue}>{value.variety}</div>
+        <div className={`${styles.listItemShopPrice}`}>
+          <div className={styles.listItemLabel}>{"店の価格（円）"}</div>
+          <div className={styles.listItemValue}>{value.shopPrice}</div>
+        </div>
+        <div className={`${styles.listItemShopDate}`}>
+          <div className={styles.listItemLabel}>{"飲んだ日付"}</div>
+          <div className={styles.listItemValue}>
+            {value.shopDate instanceof Date
+              ? value.shopDate.toLocaleDateString()
+              : value.shopDate ?? ""}
+          </div>
+        </div>
+        <div className={`${styles.listItemShopAddress}`}>
+          <div className={styles.listItemLabel}>{"店の住所"}</div>
+          <div className={styles.listItemValue}>{value.shopAddress}</div>
+        </div>
+        <div className={`${styles.listItemShopUrl}`}>
+          <div className={styles.listItemLabel}>{"店のURL"}</div>
+          <div className={styles.listItemValue}>{value.shopUrl}</div>
+        </div>
+      </div>
+      <div className={`${styles.listItemShopCoffee}`}>
+        <div className={`${styles.listItemCoffeeName}`}>
+          <div className={styles.listItemLabel}>{"コーヒー名"}</div>
+          <div className={styles.listItemValue}>{value.name}</div>
         </div>
         <div className={`${styles.listItemProductionArea}`}>
           <div className={styles.listItemLabel}>{"産地"}</div>
-          <div className={styles.listItemValue}>{value.productionArea} </div>
-        </div>
-        <div className={`${styles.listItemRoastingDegree}`}>
-          <div className={styles.listItemLabel}>{"焙煎度"}</div>
-          <div className={styles.listItemValue}>{value.roastingDegree}</div>
-        </div>
-      </div>
-      <div className={`${styles.listItemBrewingRecipe}`}>
-        <div className={`${styles.listItemExMethod}`}>
-          <div className={styles.listItemLabel}>{"抽出方法"}</div>
-          <div className={styles.listItemValue}>{value.extractionMethod}</div>
-        </div>
-        <div className={`${styles.listItemExMaker}`}>
-          <div className={styles.listItemLabel}>{"抽出器具"}</div>
-          <div className={styles.listItemValue}>{value.extractionMaker}</div>
-        </div>
-        <div className={`${styles.listItemGrindSize}`}>
-          <div className={styles.listItemLabel}>{"挽き目"}</div>
-          <div className={styles.listItemValue}>{value.grindSize}</div>
-        </div>
-        <div className={`${styles.listItemTemperature}`}>
-          <div className={styles.listItemLabel}>{"温度（℃）"}</div>
-          <div className={styles.listItemValue}>{value.temperature}</div>
-        </div>
-        <div className={`${styles.listItemCoffeeAmount}`}>
-          <div className={styles.listItemLabel}>{"粉量（ｇ）"}</div>
-          <div className={styles.listItemValue}>{value.coffeeAmount}</div>
-        </div>
-        <div className={`${styles.listItemWaterAmount}`}>
-          <div className={styles.listItemLabel}>{"湯量（ｇ）"}</div>
-          <div className={styles.listItemValue}>{value.waterAmount}</div>
-        </div>
-        <div className={`${styles.listItemMeasurementMethod}`}>
-          <div className={styles.listItemLabel}>{"計測方法"}</div>
-          <div className={styles.listItemValue}>{value.measurementMethod}</div>
-        </div>
-        <div className={`${styles.listItemExTime}`}>
-          <div className={styles.listItemLabel}>{"抽出時間"}</div>
-          <div className={styles.listItemValue}>{value.extractionTime}</div>
+          <div className={styles.listItemValue}>{value.productionArea}</div>
         </div>
       </div>
       <div className={`${styles.listItemTasting}`}>
@@ -138,6 +120,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
               width={200}
               height={200}
               src="/images/no-image.png"
+              // src={value.chart}
               alt="レーダーチャートのプレビュー画像"
             />
           </div>
@@ -146,7 +129,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
       <div className={`${styles.listItemMemoArea}`}>
         <div className={`${styles.listItemMemo}`}>
           <div className={styles.listItemLabel}>{"メモ"}</div>
-          <div className={styles.listItemValue}>{value.memo}</div>
+          <div className={styles.listItemValue}>{value.memo} </div>
         </div>
       </div>
 
@@ -192,13 +175,14 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   );
 };
 
-export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
+export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   const checkboxId = `checkbox_${value.id}`;
   const [isOpen, setIsOpen] = useState(false);
   const [load, setLoad] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
 
   const openListClass = isOpen ? styles.listItemOpen : styles.listItemClose;
+
   const handleClick = () => {
     try {
       setLoad(true);
@@ -219,10 +203,11 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
+
   return (
     <div
-      className={`${styles.listSelfPcCard} ${
-        styles[value.self === "Self" ? "self" : "none"]
+      className={`${styles.listShopPcCard} ${
+        styles[value.self === "Shop" ? "shop" : "none"]
       }`}
     >
       <div className={`${styles.listCheckboxContainer}`}>
@@ -238,19 +223,27 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
           />
         </label>
       </div>
-      <div className={`${styles.accordionHeader}`}>
-        <Link href={`/pages/item/${value.id}`} className={styles.listItemLink}>
-          <div className={`${styles.listItemCoffeeName}`}>
-            <div className={styles.listItemLabel}>{"コーヒー名"}</div>
-            <div className={styles.listItemValue}>{value.name}</div>
-          </div>
-        </Link>
-        <div className={`${styles.accordionToggle}`} onClick={handleClick}>
+      <div className={`${styles.accordionHeader} `}>
+        <div className={`${styles.listItemShopName}`}>
+          <Link
+            href={`/pages/item/${value.id}`}
+            className={styles.listItemLink}
+          >
+            <div className={styles.listItemLabel}>{"店名"}</div>
+            <div className={styles.listItemValue}>{value.shopName}</div>
+          </Link>
+        </div>
+
+        <div className={`${styles.accordionToggle}`}>
           <span className={`${styles.accordionValueBox} ${openListClass}`}>
             <span className={styles.accordionLabel}>{"全体の好み:"}</span>
             <span className={styles.accordionValue}>{value.overall}</span>
           </span>
-          <span className={`${styles.accordionToggleIcon} ${openListClass}`}>
+
+          <span
+            className={`${styles.accordionToggleIcon}  ${openListClass}`}
+            onClick={handleClick}
+          >
             <Image
               src="/images/arrow_drop_up.svg"
               alt="Toggle"
@@ -273,8 +266,9 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
           </span>
         </div>
       </div>
+
       <div
-        className={`${styles.listItemCoffeeBeans} ${openListClass} ${
+        className={`${styles.listItemShopData} ${openListClass} ${
           !isFadingIn ? styles.fade_out : styles.fade_in
         }`}
       >
@@ -290,55 +284,39 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
             />
           </div>
         </div>
-        <div className={`${styles.listItemVariety}`}>
-          <div className={styles.listItemLabel}>{"品種"}</div>
-          <div className={styles.listItemValue}>{value.variety}</div>
+        <div className={`${styles.listItemShopPrice}`}>
+          <div className={styles.listItemLabel}>{"店の価格（円）"}</div>
+          <div className={styles.listItemValue}>{value.shopPrice}</div>
+        </div>
+        <div className={`${styles.listItemShopDate}`}>
+          <div className={styles.listItemLabel}>{"飲んだ日付"}</div>
+          <div className={styles.listItemValue}>
+            {value.shopDate instanceof Date
+              ? value.shopDate.toLocaleDateString()
+              : value.shopDate ?? ""}
+          </div>
+        </div>
+        <div className={`${styles.listItemShopAddress}`}>
+          <div className={styles.listItemLabel}>{"店の住所"}</div>
+          <div className={styles.listItemValue}>{value.shopAddress}</div>
+        </div>
+        <div className={`${styles.listItemShopUrl}`}>
+          <div className={styles.listItemLabel}>{"店のURL"}</div>
+          <div className={styles.listItemValue}>{value.shopUrl}</div>
+        </div>
+      </div>
+      <div
+        className={`${styles.listItemShopCoffee} ${openListClass} ${
+          !isFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
+        <div className={`${styles.listItemCoffeeName}`}>
+          <div className={styles.listItemLabel}>{"コーヒー名"}</div>
+          <div className={styles.listItemValue}>{value.name}</div>
         </div>
         <div className={`${styles.listItemProductionArea}`}>
           <div className={styles.listItemLabel}>{"産地"}</div>
           <div className={styles.listItemValue}>{value.productionArea}</div>
-        </div>
-        <div className={`${styles.listItemRoastingDegree}`}>
-          <div className={styles.listItemLabel}>{"焙煎度"}</div>
-          <div className={styles.listItemValue}>{value.roastingDegree}</div>
-        </div>
-      </div>
-      <div
-        className={`${styles.listItemBrewingRecipe} ${openListClass} ${
-          !isFadingIn ? styles.fade_out : styles.fade_in
-        }`}
-      >
-        <div className={`${styles.listItemExMethod}`}>
-          <div className={styles.listItemLabel}>{"抽出方法"}</div>
-          <div className={styles.listItemValue}>{value.extractionMethod}</div>
-        </div>
-        <div className={`${styles.listItemExMaker}`}>
-          <div className={styles.listItemLabel}>{"抽出器具"}</div>
-          <div className={styles.listItemValue}>{value.extractionMaker}</div>
-        </div>
-        <div className={`${styles.listItemGrindSize}`}>
-          <div className={styles.listItemLabel}>{"挽き目"}</div>
-          <div className={styles.listItemValue}>{value.grindSize}</div>
-        </div>
-        <div className={`${styles.listItemTemperature}`}>
-          <div className={styles.listItemLabel}>{"温度（℃）"}</div>
-          <div className={styles.listItemValue}>{value.temperature}</div>
-        </div>
-        <div className={`${styles.listItemCoffeeAmount}`}>
-          <div className={styles.listItemLabel}>{"粉量（ｇ）"}</div>
-          <div className={styles.listItemValue}>{value.coffeeAmount}</div>
-        </div>
-        <div className={`${styles.listItemWaterAmount}`}>
-          <div className={styles.listItemLabel}>{"湯量（ｇ）"}</div>
-          <div className={styles.listItemValue}>{value.waterAmount}</div>
-        </div>
-        <div className={`${styles.listItemMeasurementMethod}`}>
-          <div className={styles.listItemLabel}>{"計測方法"}</div>
-          <div className={styles.listItemValue}>{value.measurementMethod}</div>
-        </div>
-        <div className={`${styles.listItemExTime}`}>
-          <div className={styles.listItemLabel}>{"抽出時間"}</div>
-          <div className={styles.listItemValue}>{value.extractionTime}</div>
         </div>
       </div>
       <div
@@ -398,11 +376,6 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
       >
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
-          onClick={() => {
-            if (value.id) {
-              onClick(value.id);
-            }
-          }}
         >
           <MainButton
             sizeValue="large"
@@ -411,7 +384,14 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
             widthValue="widthNearlyFull"
           />
         </div>
-        <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
+        <div
+          className={`${styles.buttonContent} ${styles.editButtonContent}`}
+          onClick={() => {
+            if (value.id) {
+              onClick(value.id);
+            }
+          }}
+        >
           <Link
             href={`/pages/item/${value.id}`}
             className={styles.listItemLink}

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { RangeComponent } from "../../../item/RangeComponent/page";
+import { RangeComponent } from "../../item/RangeComponent";
 import styles from "@/app/styles/Form.module.css";
 import { ResponsiveRadar } from "@nivo/radar";
 

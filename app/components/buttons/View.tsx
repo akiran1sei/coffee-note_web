@@ -2,8 +2,8 @@ import {
   MainButton,
   MainLinkButton,
   IconButton,
-} from "@/app/components/buttons/page";
-import { PageTitle } from "@/app/components/title/page";
+} from "@/app/components/buttons/Buttons";
+import { PageTitle } from "@/app/components/title/Title";
 
 import styles from "@/app/styles/Pages.module.css";
 const ButtonView = () => {
