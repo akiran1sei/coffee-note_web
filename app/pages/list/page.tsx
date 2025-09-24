@@ -12,10 +12,10 @@ interface PageTitleProps {
 }
 
 // Next.js App Routerのページコンポーネント用の型
-interface PageProps {
-  params: { [key: string]: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
+// interface PageProps {
+//   params: { [key: string]: string };
+//   searchParams: { [key: string]: string | string[] | undefined };
+// }
 
 // タイトルコンポーネントのモック
 const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
@@ -23,7 +23,7 @@ const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
 );
 
 // ✅ Next.js App Router用のページコンポーネント
-export default function ListPage({ params, searchParams }: PageProps) {
+export default function ListPage() {
   // モックデータ（実際の開発では、ここでAPIからデータを取得）
   const [localRecords, setLocalRecords] = useState<CoffeeRecord[]>([]);
 
