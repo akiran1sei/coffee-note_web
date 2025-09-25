@@ -8,8 +8,6 @@ import {
 
 interface ShopCoffeeFormValue {
   coffeeInfo: {
-    imageUrl: string;
-    imageAlt: string;
     coffeeName: string;
     productionArea: string;
   };
@@ -23,8 +21,6 @@ interface ShopCoffeeFormValue {
   };
   setCoffeeInfo: React.Dispatch<
     React.SetStateAction<{
-      imageUrl: string;
-      imageAlt: string;
       coffeeName: string;
       productionArea: string;
     }>

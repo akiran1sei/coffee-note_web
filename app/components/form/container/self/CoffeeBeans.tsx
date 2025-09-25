@@ -11,8 +11,6 @@ import {
 // Propsの型を定義
 interface CoffeeBeansComponentProps {
   coffeeInfo: {
-    imageUrl: string;
-    imageAlt: string;
     coffeeName: string;
     productionArea: string;
   };
@@ -22,8 +20,6 @@ interface CoffeeBeansComponentProps {
   };
   setCoffeeInfo: React.Dispatch<
     React.SetStateAction<{
-      imageUrl: string;
-      imageAlt: string;
       coffeeName: string;
       productionArea: string;
     }>
