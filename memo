@@ -1,0 +1,54 @@
+; 使用例 databaseのCRUD操作
+; 1. データ取得 (GET)
+;     // 全ユーザー取得
+;     fetch('/api/database?model=user&limit=10&page=1')
+
+;     // 特定ユーザー取得
+;     fetch('/api/database?model=user&id=123')
+
+;     // 全投稿取得
+;     fetch('/api/database?model=post&limit=5&page=2')
+
+; 2. データ作成 (POST)
+;         // ユーザー作成
+;     fetch('/api/database', {
+;     method: 'POST',
+;     headers: { 'Content-Type': 'application/json' },
+;     body: JSON.stringify({
+;         model: 'user',
+;         data: {
+;         name: 'John Doe',
+;         email: 'john@example.com'
+;         }
+;     })
+;     })
+
+;     // 投稿作成
+;     fetch('/api/database', {
+;     method: 'POST',
+;     headers: { 'Content-Type': 'application/json' },
+;     body: JSON.stringify({
+;         model: 'post',
+;         data: {
+;         title: 'My Post',
+;         content: 'This is content'
+;         }
+;     })
+;     })
+;     3. データ更新 (PUT)
+;         fetch('/api/database', {
+;         method: 'PUT',
+;         headers: { 'Content-Type': 'application/json' },
+;         body: JSON.stringify({
+;             model: 'user',
+;             id: '123',
+;             data: {
+;             name: 'Updated Name',
+;             email: 'updated@example.com'
+;             }
+;         })
+;         })
+;     4. データ削除 (DELETE)
+;             fetch('/api/database?model=user&id=123', {
+;         method: 'DELETE'
+;         })
