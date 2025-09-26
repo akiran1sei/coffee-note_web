@@ -16,7 +16,7 @@ interface CardProps {
 
 export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   const checkboxId = `checkbox_${value.id}`;
-
+  console.log("セルフモバイルカードの値:", value);
   const [isCheck, setIsCheck] = useState(false);
 
   const handleOnChange = () => {
@@ -26,7 +26,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   return (
     <div
       className={`${styles.listSelfMobileCard} ${
-        styles[value.self === "Self" ? "self" : "none"]
+        styles[value.self === "self" ? "self" : "none"]
       }`}
     >
       <div className={`${styles.listCheckboxContainer}`}>
@@ -53,10 +53,8 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
             <Image
               width={200}
               height={200}
-              src="/images/no-image.png"
-              // src={value.imageUri}
-              alt="レーダーチャートのプレビュー画像"
-              // alt={value.imgAlt}
+              src={`${value.imageUri}` || "/images/no-image.png"}
+              alt={`${value.imageAlt}` || "no-image"}
             />
           </div>
         </div>
@@ -193,6 +191,7 @@ export const SelfMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
 };
 
 export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
+  console.log("セルフPCカードの値:", value.imageUri);
   const checkboxId = `checkbox_${value.id}`;
   const [isOpen, setIsOpen] = useState(false);
   const [load, setLoad] = useState(false);
@@ -222,7 +221,7 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   return (
     <div
       className={`${styles.listSelfPcCard} ${
-        styles[value.self === "Self" ? "self" : "none"]
+        styles[value.self === "self" ? "self" : "none"]
       }`}
     >
       <div className={`${styles.listCheckboxContainer}`}>
@@ -283,10 +282,8 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClick }) => {
             <Image
               width={200}
               height={200}
-              src="/images/no-image.png"
-              // src={value.imageUri}
-              alt="レーダーチャートのプレビュー画像"
-              // alt={value.imgAlt}
+              src={`${value.imageUri}` || "/images/no-image.png"}
+              alt={`${value.imageAlt}` || "no-image"}
             />
           </div>
         </div>

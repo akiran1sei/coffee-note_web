@@ -12,17 +12,14 @@ export async function GET(request: NextRequest) {
     await connectDB();
     console.log("GET: データベースに接続しました");
 
-    // URLSearchParamsからクエリパラメータを取得
-    const { searchParams } = new URL(request.url);
-    console.log("GET: クエリパラメータ", searchParams.toString());
-    // const id = searchParams.get("id");
-    // const model = searchParams.get("model"); // 'user', 'post' など
-    // const limit = searchParams.get("limit") || "10";
-    // const page = searchParams.get("page") || "1";
+    const records = await CoffeeModel.find().then((data) => {
+      console.log("records", data);
+      return data;
+    });
 
     return NextResponse.json({
       success: true,
-      // data,
+      data: records,
       message: "データの取得に成功しました",
     });
   } catch (error) {

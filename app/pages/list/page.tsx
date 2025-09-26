@@ -76,7 +76,7 @@ export default function ListPage() {
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (record: CoffeeRecord) => {
-      console.log("PCカードのレコード:", record.self);
+      console.log("PCカードのレコード:", record);
       return (
         <>
           <SelfPcCard value={record} onClick={handleDeleteClick} />
@@ -191,11 +191,12 @@ export default function ListPage() {
   // ✅ データ取得の例（実際のプロジェクトでは適切なAPIを呼び出し）
   useEffect(() => {
     // ここで実際のデータを取得
-    // const fetchData = async () => {
-    //   const records = await getCoffeeRecords();
-    //   setLocalRecords(records);
-    // };
-    // fetchData();
+    const fetchData = async () => {
+      const records = await fetch("/api/database").then((res) => res.json());
+      console.log("records", records.data);
+      return setLocalRecords(records.data);
+    };
+    fetchData();
   }, []);
 
   return (
