@@ -149,7 +149,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
         </div>
         <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
           <Link
-            href={`/pages/item/${value.id}`}
+            href={`/pages/update/${value.id}`}
             className={styles.listItemLink}
           >
             <MainButton
@@ -226,7 +226,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
       <div className={`${styles.accordionHeader} `}>
         <div className={`${styles.listItemShopName}`}>
           <Link
-            href={`/pages/item/${value.id}`}
+            href={`/pages/update/${value.id}`}
             className={styles.listItemLink}
           >
             <div className={styles.listItemLabel}>{"店名"}</div>
@@ -391,7 +391,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
           }}
         >
           <Link
-            href={`/pages/item/${value.id}`}
+            href={`/pages/update/${value.id}`}
             className={styles.listItemLink}
           >
             <MainButton

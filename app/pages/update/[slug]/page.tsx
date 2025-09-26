@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback, useRef, use } from "react";
 import styles from "@/app/styles/Pages.module.css";
 import { TastingEvaluationComponent } from "@/app/components/form/container/common/TastingEvaluation";
 import { ShopCoffeeComponent } from "@/app/components/form/container/shop/PurchaseInfo";
@@ -9,24 +9,32 @@ import { MemoAreaComponent } from "@/app/components/form/container/common/MemoAr
 import { PageTitle } from "@/app/components/title/Title";
 import { MainButton } from "@/app/components/buttons/Buttons";
 import { useWindowSize } from "@/app/utils/useWindowSize";
+import { CoffeeRecord } from "@/app/types/db";
 import ImageUploadComponent, {
   ImageFormData,
   ImageUploadRef,
 } from "@/app/components/form/item/ImageUpload";
-
-const CoffeeItemPage = () => {
+import { validateString, validateNumber } from "@/app/utils/validation";
+// slugが単一の文字列の場合
+interface UpdatePageProps {
+  params: {
+    slug: string;
+  };
+}
+const UpdatePage = ({ params }: UpdatePageProps) => {
+  // ウィンドウサイズの取得
   const { width } = useWindowSize();
+
   const imageUploadRef = useRef<ImageUploadRef>(null);
 
   const shopVer = "Shop";
   const selfVer = "Self";
-
+  const [coffeeData, setCoffeeData] = useState<CoffeeRecord[]>([]);
+  console.log("Coffee Data001:", coffeeData);
   // 共通の項目
   const [coffeeInfo, setCoffeeInfo] = useState({
     coffeeName: "",
     productionArea: "",
-    imageUrl: "",
-    imageAlt: "",
   });
 
   // 画像データを分離して管理
@@ -106,10 +114,150 @@ const CoffeeItemPage = () => {
     e.preventDefault();
 
     // 簡易的なバリデーション
-    if (!coffeeInfo.coffeeName.trim()) {
-      alert("コーヒー名を入力してください");
-      return;
+    if (!validateString(coffeeInfo.coffeeName, "コーヒー名")) return;
+    if (!validateString(coffeeInfo.productionArea, "生産地")) return;
+    if (!validateString(imageData.imageUrl, "画像のURL")) return;
+    if (!validateString(imageData.imageAlt, "画像の説明")) return;
+    if (verText[0] === selfVer) {
+      if (!validateString(selfInfo.variety, "品種")) return;
+      if (!validateString(selfInfo.roastingDegree, "焙煎度")) return;
+      if (!validateString(extractionInfo.extractionMethod, "抽出方法")) return;
+      if (!validateString(extractionInfo.extractionMaker, "抽出器")) return;
+      if (!validateString(extractionInfo.measurementMethod, "計量方法")) return;
+      if (!validateString(extractionInfo.grindSize, "挽き目")) return;
+      if (!validateNumber(extractionInfo.extractionTime, "抽出時間")) return;
+      if (!validateNumber(extractionInfo.temperature, "温度")) return;
+      if (!validateNumber(extractionInfo.coffeeAmount, "コーヒー豆の量"))
+        return;
+      if (!validateNumber(extractionInfo.waterAmount, "水の量")) return;
+    } else if (verText[0] === shopVer) {
+      if (!validateString(shopInfo.shopName, "ショップ名")) return;
+      if (!validateString(shopInfo.shopPrice, "価格")) return;
+      if (!validateString(shopInfo.shopAddress, "住所")) return;
+      if (!validateString(shopInfo.shopUrl, "URL")) return;
     }
+    if (!validateNumber(reviewInfo.chart.acidity, "酸味")) return;
+    if (!validateNumber(reviewInfo.chart.bitterness, "苦味")) return;
+    if (!validateNumber(reviewInfo.chart.body, "ボディ")) return;
+    if (!validateNumber(reviewInfo.chart.aroma, "香り")) return;
+    if (!validateNumber(reviewInfo.chart.aftertaste, "余韻")) return;
+    if (!validateNumber(reviewInfo.chart.overall, "総合評価")) return;
+    if (!validateString(reviewInfo.memo, "メモ")) return;
+    if (verText[0] === selfVer) {
+      // 自分で淹れた場合のデータ統合
+      const Data = {
+        model: "coffee", // APIルートで使用するモデル名
+        data: {
+          // 基本情報
+          name: coffeeInfo.coffeeName,
+
+          productionArea: coffeeInfo.productionArea,
+
+          // 自分で淹れた場合の識別
+          self: "self",
+
+          // 焙煎・抽出情報（selfInfoとextractionInfoから）
+          variety: selfInfo.variety,
+          roastingDegree: selfInfo.roastingDegree,
+          extractionMethod: extractionInfo.extractionMethod,
+          extractionMaker: extractionInfo.extractionMaker,
+          grindSize: extractionInfo.grindSize,
+          temperature: extractionInfo.temperature,
+          coffeeAmount: extractionInfo.coffeeAmount,
+          waterAmount: extractionInfo.waterAmount,
+          measurementMethod: extractionInfo.measurementMethod,
+          extractionTime: extractionInfo.extractionTime,
+
+          // 評価情報（reviewInfoから）
+          acidity: reviewInfo.chart.acidity,
+          bitterness: reviewInfo.chart.bitterness,
+          overall: reviewInfo.chart.overall,
+          body: reviewInfo.chart.body,
+          aroma: reviewInfo.chart.aroma,
+          aftertaste: reviewInfo.chart.aftertaste,
+
+          // 共通情報
+          memo: reviewInfo.memo,
+          imageUri: imageData.imageUrl,
+          imageAlt: imageData.imageAlt,
+
+          // 店舗情報は空（自分で淹れた場合は不要）
+          shopName: null,
+          shopPrice: null,
+          shopDate: null,
+          shopAddress: null,
+          shopUrl: null,
+        },
+      };
+
+      const response = await fetch("/api/database", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Data),
+      });
+
+      const result = await response.json();
+      console.log("Response from server (self):", result);
+      return result;
+    } else if (verText[0] === shopVer) {
+      // 店で飲んだ場合のデータ統合
+      const Data = {
+        model: "coffee", // APIルートで使用するモデル名
+        data: {
+          // 基本情報
+          name: coffeeInfo.coffeeName,
+
+          productionArea: coffeeInfo.productionArea,
+
+          // 店で飲んだ場合の識別
+          self: "shop",
+
+          // 焙煎・抽出情報は空（店で飲んだ場合は不要）
+          variety: null,
+          extractionMethod: null,
+          extractionMaker: null,
+          grindSize: null,
+          temperature: null,
+          coffeeAmount: null,
+          waterAmount: null,
+          measurementMethod: null,
+          extractionTime: null,
+
+          // 評価情報（reviewInfoから）
+          acidity: reviewInfo.chart.acidity,
+          bitterness: reviewInfo.chart.bitterness,
+          overall: reviewInfo.chart.overall,
+          body: reviewInfo.chart.body,
+          aroma: reviewInfo.chart.aroma,
+          aftertaste: reviewInfo.chart.aftertaste,
+
+          // 共通情報
+          memo: reviewInfo.memo,
+          imageUri: imageData.imageUrl,
+          imageAlt: imageData.imageAlt,
+
+          // 店舗情報（shopInfoから）
+          shopName: shopInfo.shopName,
+          shopPrice: shopInfo.shopPrice,
+          shopDate: shopInfo.shopDate,
+          shopAddress: shopInfo.shopAddress,
+          shopUrl: shopInfo.shopUrl,
+        },
+      };
+
+      console.log("Data (shop):", Data);
+      const response = await fetch("/api/database", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Data),
+      });
+
+      const result = await response.json();
+      console.log("Response from server (shop):", result);
+      return result;
+    }
+
+    // どちらでもない場合のエラーハンドリング
 
     // フォームデータを表示（実際の保存処理は削除）
     console.log("フォームデータ:", {
@@ -130,8 +278,6 @@ const CoffeeItemPage = () => {
     setCoffeeInfo({
       coffeeName: "",
       productionArea: "",
-      imageUrl: "",
-      imageAlt: "",
     });
 
     setImageData({
@@ -182,12 +328,21 @@ const CoffeeItemPage = () => {
       memo: "",
     });
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`/api/database/${params.slug}`);
+      // const response = await fetch(`/api/database?id=${params.slug}`);
+      const data = await response.json();
+      setCoffeeData(data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
       <div className={`${styles.createPageContents} ${styles.pageContents}`}>
         <h1 className={styles.pageTitle}>
-          <PageTitle value="Coffee Item Page" />
+          <PageTitle value="Update Page" />
         </h1>
         <div className={`${styles.createPageWrapper} ${styles.pageWrapper}`}>
           {width && width < 600 ? (
@@ -259,11 +414,7 @@ const CoffeeItemPage = () => {
               <div className={styles.createShopVersionContents}>
                 <div className={styles.leftColumn}>
                   <ShopCoffeeComponent
-                    coffeeInfo={{
-                      ...coffeeInfo,
-                      imageUrl: imageData.imageUrl,
-                      imageAlt: imageData.imageAlt,
-                    }}
+                    coffeeInfo={coffeeInfo}
                     shopInfo={shopInfo}
                     setShopInfo={setShopInfo}
                     setCoffeeInfo={setCoffeeInfo}
@@ -314,4 +465,4 @@ const CoffeeItemPage = () => {
   );
 };
 
-export default CoffeeItemPage;
+export default UpdatePage;
