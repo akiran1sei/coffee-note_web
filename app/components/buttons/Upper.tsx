@@ -26,8 +26,6 @@ export default function UpperButton() {
         y: rect.top,
       };
 
-      console.log("マウス - ボタンの現在座標:", currentPosition);
-
       // マウスカーソルとボタンの相対位置を計算
       mouseOffset.current = {
         x: e.clientX - rect.left,
@@ -49,8 +47,6 @@ export default function UpperButton() {
         x: rect.left,
         y: rect.top,
       };
-
-      console.log("タッチ - ボタンの現在座標:", currentPosition);
 
       // タッチ位置とボタンの相対位置を計算
       touchOffset.current = {

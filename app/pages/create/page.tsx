@@ -14,10 +14,11 @@ import ImageUploadComponent, {
   ImageUploadRef,
 } from "@/app/components/form/item/ImageUpload";
 import { validateString, validateNumber } from "@/app/utils/validation";
+import { useRouter } from "next/navigation";
 const CreatePage = () => {
   const { width } = useWindowSize();
   const imageUploadRef = useRef<ImageUploadRef>(null);
-
+  const router = useRouter();
   const shopVer = "Shop";
   const selfVer = "Self";
 
@@ -44,7 +45,7 @@ const CreatePage = () => {
   // ショップの情報
   const [shopInfo, setShopInfo] = useState({
     shopName: "",
-    shopPrice: "",
+    shopPrice: 0,
     shopDate: new Date(),
     shopAddress: "",
     shopUrl: "https://example.com",
@@ -122,7 +123,7 @@ const CreatePage = () => {
       if (!validateNumber(extractionInfo.waterAmount, "水の量")) return;
     } else if (verText[0] === shopVer) {
       if (!validateString(shopInfo.shopName, "ショップ名")) return;
-      if (!validateString(shopInfo.shopPrice, "価格")) return;
+      if (!validateNumber(shopInfo.shopPrice, "価格")) return;
       if (!validateString(shopInfo.shopAddress, "住所")) return;
       if (!validateString(shopInfo.shopUrl, "URL")) return;
     }
@@ -132,7 +133,7 @@ const CreatePage = () => {
     if (!validateNumber(reviewInfo.chart.aroma, "香り")) return;
     if (!validateNumber(reviewInfo.chart.aftertaste, "余韻")) return;
     if (!validateNumber(reviewInfo.chart.overall, "総合評価")) return;
-    if (!validateString(reviewInfo.memo, "メモ")) return;
+
     if (verText[0] === selfVer) {
       // 自分で淹れた場合のデータ統合
       const Data = {
@@ -172,11 +173,11 @@ const CreatePage = () => {
           imageAlt: imageData.imageAlt,
 
           // 店舗情報は空（自分で淹れた場合は不要）
-          shopName: null,
-          shopPrice: null,
-          shopDate: null,
-          shopAddress: null,
-          shopUrl: null,
+          shopName: "",
+          shopPrice: 0,
+          shopDate: "",
+          shopAddress: "",
+          shopUrl: "https://example.com",
         },
       };
 
@@ -186,9 +187,9 @@ const CreatePage = () => {
         body: JSON.stringify(Data),
       });
 
-      const result = await response.json();
-      console.log("Response from server (self):", result);
-      return result;
+      await response.json();
+
+      return await router.push("/pages/list");
     } else if (verText[0] === shopVer) {
       // 店で飲んだ場合のデータ統合
       const Data = {
@@ -203,15 +204,15 @@ const CreatePage = () => {
           self: "shop",
 
           // 焙煎・抽出情報は空（店で飲んだ場合は不要）
-          variety: null,
-          extractionMethod: null,
-          extractionMaker: null,
-          grindSize: null,
-          temperature: null,
-          coffeeAmount: null,
-          waterAmount: null,
-          measurementMethod: null,
-          extractionTime: null,
+          variety: "ー",
+          extractionMethod: "ー",
+          extractionMaker: "ー",
+          grindSize: "ー",
+          temperature: 0,
+          coffeeAmount: 0,
+          waterAmount: 0,
+          measurementMethod: "ー",
+          extractionTime: 0,
 
           // 評価情報（reviewInfoから）
           acidity: reviewInfo.chart.acidity,
@@ -235,30 +236,17 @@ const CreatePage = () => {
         },
       };
 
-      console.log("Data (shop):", Data);
       const response = await fetch("/api/database", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(Data),
       });
 
-      const result = await response.json();
-      console.log("Response from server (shop):", result);
-      return result;
+      await response.json();
+      return await router.push("/pages/list");
     }
 
     // どちらでもない場合のエラーハンドリング
-
-    // フォームデータを表示（実際の保存処理は削除）
-    console.log("フォームデータ:", {
-      coffeeInfo,
-      imageData,
-      selfInfo,
-      shopInfo,
-      extractionInfo,
-      reviewInfo,
-      version: verText[0],
-    });
 
     alert("フォームデータがコンソールに出力されました");
   };
@@ -289,7 +277,7 @@ const CreatePage = () => {
 
     setShopInfo({
       shopName: "",
-      shopPrice: "",
+      shopPrice: 0,
       shopDate: new Date(),
       shopAddress: "",
       shopUrl: "https://example.com",

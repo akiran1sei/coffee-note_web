@@ -4,6 +4,7 @@ import styles from "@/app/styles/Form.module.css";
 import {
   InputComponent,
   DateComponent,
+  NumberComponent,
 } from "@/app/components/form/item/InputComponent";
 
 interface ShopCoffeeFormValue {
@@ -14,7 +15,7 @@ interface ShopCoffeeFormValue {
 
   shopInfo: {
     shopName: string;
-    shopPrice: string;
+    shopPrice: number;
     shopDate: Date;
     shopAddress: string;
     shopUrl: string;
@@ -28,7 +29,7 @@ interface ShopCoffeeFormValue {
   setShopInfo: React.Dispatch<
     React.SetStateAction<{
       shopName: string;
-      shopPrice: string;
+      shopPrice: number;
       shopDate: Date;
       shopAddress: string;
       shopUrl: string;
@@ -58,10 +59,10 @@ export const ShopCoffeeComponent: React.FC<ShopCoffeeFormValue> = ({
             }}
             labelText="shopName"
           />
-          <InputComponent
+          <NumberComponent
             dataTitle="店の価格（円）"
             value={shopInfo.shopPrice}
-            onChange={(value: string) => {
+            onChange={(value: number) => {
               setShopInfo({
                 ...shopInfo,
                 shopPrice: value,

@@ -7,7 +7,7 @@
  * @returns true: 有効、false: 無効（アラート表示）
  */
 export function validateString(value: string, fieldName: string): boolean {
-  if (!value.trim()) {
+  if (!value.trim() || value.trim() === "ー") {
     alert(`${fieldName}を入力してください`);
     return false;
   }

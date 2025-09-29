@@ -14,7 +14,6 @@ interface CardProps {
 
 export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   const checkboxId = `checkbox_${value.id}`;
-  console.log("ショップモバイルカードの値:", value);
   const [isCheck, setIsCheck] = useState(false);
 
   const handleOnChange = () => {
@@ -175,8 +174,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
 
 export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
   const checkboxId = `checkbox_${value.id}`;
-  // console.log("ショップモバイルカードの値:", value);
-  console.log("ショップモバイルカードの値:", value.self);
+
   const [isOpen, setIsOpen] = useState(false);
   const [load, setLoad] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
@@ -374,6 +372,11 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
       >
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+          onClick={() => {
+            if (value.id) {
+              onClick(value.id);
+            }
+          }}
         >
           <MainButton
             sizeValue="large"
@@ -382,14 +385,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
             widthValue="widthNearlyFull"
           />
         </div>
-        <div
-          className={`${styles.buttonContent} ${styles.editButtonContent}`}
-          onClick={() => {
-            if (value.id) {
-              onClick(value.id);
-            }
-          }}
-        >
+        <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
           <Link
             href={`/pages/update/${value.id}`}
             className={styles.listItemLink}

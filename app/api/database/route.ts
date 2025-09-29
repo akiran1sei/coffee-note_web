@@ -11,11 +11,10 @@ export async function GET(request: NextRequest) {
     console.log("GET: データベースに接続しました");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
-    console.log("ID parameter:", id); // IDパラメータの確認
+
     if (id) {
       const coffeeRecord = await CoffeeModel.findOne({ id: id }).then(
         (data) => {
-          console.log("coffeeRecord", data);
           return data;
         }
       );
@@ -27,7 +26,6 @@ export async function GET(request: NextRequest) {
       });
     }
     const records = await CoffeeModel.find().then((data) => {
-      console.log("records", data);
       return data;
     });
 
@@ -87,99 +85,100 @@ export async function POST(request: NextRequest) {
 }
 
 // PUT - データの更新
-// export async function PUT(request: NextRequest) {
-//   try {
-//     await connectDB();
-//     console.log("PUT: データベースに接続しました");
-
-//     const body = await request.json();
-//     const { model, id, data } = body;
-
-//     if (!model || !id || !data) {
-//       return NextResponse.json(
-//         { error: "モデル、ID、データが必要です" },
-//         { status: 400 }
-//       );
-//     }
-
-//     let updatedData;
-
-//     switch (model) {
-//       case "user":
-//         // updatedData = await User.findByIdAndUpdate(id, data, { new: true });
-//         updatedData = {
-//           id,
-//           ...data,
-//           updatedAt: new Date(),
-//         }; // サンプルデータ
-//         break;
-
-//       case "post":
-//         // updatedData = await Post.findByIdAndUpdate(id, data, { new: true });
-//         updatedData = {
-//           id,
-//           ...data,
-//           updatedAt: new Date(),
-//         }; // サンプルデータ
-//         break;
-
-//       default:
-//         return NextResponse.json(
-//           { error: "無効なモデルが指定されました" },
-//           { status: 400 }
-//         );
-//     }
-
-//     if (!updatedData) {
-//       return NextResponse.json(
-//         { error: "データが見つかりません" },
-//         { status: 404 }
-//       );
-//     }
-
-//     return NextResponse.json({
-//       success: true,
-//       data: updatedData,
-//       message: "データの更新に成功しました",
-//     });
-//   } catch (error) {
-//     console.error("PUT: データベースエラー:", error);
-//     const errorMessage =
-//       error instanceof Error ? error.message : "不明なエラーが発生しました";
-//     return NextResponse.json(
-//       { error: "エラー", details: errorMessage }, // ✅ 型安全にエラーメッセージを取得
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// DELETE - データの削除
-export async function DELETE(request: NextRequest) {
+export async function PUT(request: NextRequest) {
   try {
     await connectDB();
-    console.log("DELETE: データベースに接続しました");
+    console.log("POST: データベースに接続しました");
 
     const body = await request.json();
-    const { id } = body;
+    const { data } = body;
 
-    const coffeeRecord = await CoffeeModel.findOneAndDelete({ id: id }).then(
-      (data) => {
-        console.log("削除データ:", data);
-        return data;
-      }
+    if (!data) {
+      return NextResponse.json({ error: "データが必要です" }, { status: 400 });
+    }
+
+    // データの作成処理
+
+    const updataItem = await CoffeeModel.updateOne(
+      // 第1引数: _idのみで検索（一意のレコードを特定）
+      { _id: data._id },
+
+      // 第2引数: $set オペレーターを使い、data の内容をセット
+      { $set: data }
     );
-
-    return NextResponse.json({
-      success: true,
-      data: coffeeRecord,
-      message: "データの削除に成功しました",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: updataItem,
+        message: "データの更新に成功しました",
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    console.error("DELETE: データベースエラー:", error);
+    console.error("PUT: データベースエラー:", error);
     const errorMessage =
       error instanceof Error ? error.message : "不明なエラーが発生しました";
     return NextResponse.json(
       { error: "エラー", details: errorMessage }, // ✅ 型安全にエラーメッセージを取得
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE - データの削除
+// (Next.js API Route: app/api/...)
+// ※ connectDB、CoffeeModel、NextRequest、NextResponse のインポートが必要です。
+
+export async function DELETE(request: NextRequest) {
+  try {
+    // 1. データベース接続
+    await connectDB();
+    console.log("DELETE: データベースに接続しました");
+
+    // 2. リクエストボディの解析とIDの抽出
+    const body = await request.json();
+    const { id } = body; // 削除対象のID (例: プライマリキー)
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: "削除対象のIDが指定されていません" },
+        { status: 400 } // Bad Request
+      );
+    }
+
+    // 3. データ削除の実行
+    // findOneAndDeleteは削除されたドキュメントを返します
+    const deletedRecord = await CoffeeModel.findOneAndDelete({ id: id });
+
+    if (!deletedRecord) {
+      // IDに一致するレコードが見つからなかった場合
+      return NextResponse.json(
+        {
+          success: false,
+          message: `ID: ${id} に一致するデータは見つかりませんでした`,
+        },
+        { status: 404 } // Not Found
+      );
+    }
+
+    // 4. 成功レスポンス
+    return NextResponse.json({
+      success: true,
+      data: deletedRecord,
+      message: "データの削除に成功しました",
+    });
+  } catch (error) {
+    // 5. エラーハンドリング
+    console.error("DELETE: データベースエラー:", error);
+
+    // エラーメッセージの抽出と500 Internal Server Error レスポンスの返却
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "不明なサーバーエラーが発生しました";
+
+    return NextResponse.json(
+      { error: "エラー", details: errorMessage },
       { status: 500 }
     );
   }

@@ -53,7 +53,7 @@ export default function ListPage() {
 
   const handleDeleteClick = async (id: string) => {
     // 該当する記録を見つける
-    const response = await fetch("/api/database", {
+    const response = await fetch(`/api/database?id=${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),

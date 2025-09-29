@@ -9,6 +9,7 @@ import {
   ExtractionMethodSelect,
   MinuteSecondComponent,
   HourComponent,
+  CoffeeProcessingSelect,
 } from "@/app/components/form/item/SelectComponent";
 
 interface BrewingRecipeProps {
@@ -82,6 +83,15 @@ export const BrewingRecipeComponent: React.FC<BrewingRecipeProps> = ({
             labelText="measurement"
           />
         )}
+        <CoffeeProcessingSelect
+          dataTitle="挽き目"
+          value={extractionInfo.grindSize}
+          onChange={(value: string) => {
+            setExtractionInfo({ ...extractionInfo, grindSize: value });
+          }}
+          labelText="grindSize"
+        />
+
         <NumberComponent
           dataTitle="温度（℃）"
           value={extractionInfo.temperature}
