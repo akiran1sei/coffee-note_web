@@ -9,10 +9,13 @@ import Link from "next/link";
 
 interface CardProps {
   value: Partial<CoffeeRecord>;
-  onClick: (id: string) => void;
+  onClickDelete: (id: string) => void;
 }
 
-export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
+export const ShopMobileCard: React.FC<CardProps> = ({
+  value,
+  onClickDelete,
+}) => {
   const checkboxId = `checkbox_${value.id}`;
   const [isCheck, setIsCheck] = useState(false);
 
@@ -135,7 +138,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
           onClick={() => {
             if (value.id) {
-              onClick(value.id);
+              onClickDelete(value.id);
             }
           }}
         >
@@ -172,7 +175,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({ value, onClick }) => {
   );
 };
 
-export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
+export const ShopPcCard: React.FC<CardProps> = ({ value, onClickDelete }) => {
   const checkboxId = `checkbox_${value.id}`;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -374,7 +377,7 @@ export const ShopPcCard: React.FC<CardProps> = ({ value, onClick }) => {
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
           onClick={() => {
             if (value.id) {
-              onClick(value.id);
+              onClickDelete(value.id);
             }
           }}
         >

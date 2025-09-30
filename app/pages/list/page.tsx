@@ -83,15 +83,12 @@ export default function ListPage() {
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (record: CoffeeRecord) => {
-      console.log("PCカードのレコード:", record);
-      return (
-        <>
-          <SelfPcCard value={record} onClick={handleDeleteClick} />
-          <ShopPcCard value={record} onClick={handleDeleteClick} />
-        </>
-      );
+      return record.self === "self" ? (
+        <SelfPcCard value={record} onClickDelete={handleDeleteClick} />
+      ) : record.self === "shop" ? (
+        <ShopPcCard value={record} onClickDelete={handleDeleteClick} />
+      ) : null;
     };
-
     return (
       <>
         <div
@@ -142,14 +139,12 @@ export default function ListPage() {
     };
 
     const MobileCard = (record: CoffeeRecord) => {
-      return (
-        <>
-          <SelfMobileCard value={record} onClick={handleDeleteClick} />
-          <ShopMobileCard value={record} onClick={handleDeleteClick} />
-        </>
-      );
+      return record.self === "self" ? (
+        <SelfMobileCard value={record} onClickDelete={handleDeleteClick} />
+      ) : record.self === "shop" ? (
+        <ShopMobileCard value={record} onClickDelete={handleDeleteClick} />
+      ) : null;
     };
-
     return (
       <>
         <div className={styles.listScrollButtons}>
