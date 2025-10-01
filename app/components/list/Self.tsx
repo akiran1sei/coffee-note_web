@@ -12,17 +12,28 @@ import Link from "next/link";
 interface CardProps {
   value: Partial<CoffeeRecord>;
   onClickDelete: (id: string) => void;
+  onCheckboxChange: (data: { id: string; isChecked: boolean }) => void;
+  isChecked: boolean;
 }
 
 export const SelfMobileCard: React.FC<CardProps> = ({
   value,
   onClickDelete,
+  onCheckboxChange,
+  isChecked,
 }) => {
   const checkboxId = `checkbox_${value.id}`;
-  const [isCheck, setIsCheck] = useState(false);
 
-  const handleOnChange = () => {
-    setIsCheck(!isCheck);
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.checked;
+
+    // ❌ 修正: 自身の状態の更新を削除 (親の状態が真実であるため)
+    // setIsChecked(newValue);
+
+    // 修正: 親の関数を呼び出して、IDと新しいチェック状態を渡す
+    if (value.id) {
+      onCheckboxChange({ id: value.id, isChecked: newValue });
+    }
   };
 
   return (
@@ -39,7 +50,8 @@ export const SelfMobileCard: React.FC<CardProps> = ({
             id={checkboxId}
             title="チェックボックス"
             className={styles.listCheckboxInput}
-            checked={isCheck}
+            // 修正点3: 自身の状態を使用
+            checked={isChecked}
             onChange={handleOnChange}
           />
         </label>
@@ -192,7 +204,12 @@ export const SelfMobileCard: React.FC<CardProps> = ({
   );
 };
 
-export const SelfPcCard: React.FC<CardProps> = ({ value, onClickDelete }) => {
+export const SelfPcCard: React.FC<CardProps> = ({
+  value,
+  onClickDelete,
+  onCheckboxChange,
+  isChecked,
+}) => {
   const checkboxId = `checkbox_${value.id}`;
   const [isOpen, setIsOpen] = useState(false);
   const [load, setLoad] = useState(false);
@@ -210,10 +227,16 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClickDelete }) => {
     }
   };
 
-  const [isCheck, setIsCheck] = useState(false);
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.checked;
 
-  const handleOnChange = () => {
-    setIsCheck(!isCheck);
+    // ❌ 修正: 自身の状態の更新を削除 (親の状態が真実であるため)
+    // setIsChecked(newValue);
+
+    // 修正: 親の関数を呼び出して、IDと新しいチェック状態を渡す
+    if (value.id) {
+      onCheckboxChange({ id: value.id, isChecked: newValue });
+    }
   };
 
   useEffect(() => {
@@ -228,12 +251,13 @@ export const SelfPcCard: React.FC<CardProps> = ({ value, onClickDelete }) => {
       <div className={`${styles.listCheckboxContainer}`}>
         <label htmlFor={checkboxId} className={styles.listCheckboxLabel}>
           <input
-            id={checkboxId}
             type="checkbox"
             name="checkbox"
+            id={checkboxId}
             title="チェックボックス"
             className={styles.listCheckboxInput}
-            checked={isCheck}
+            // 修正点3: 自身の状態を使用
+            checked={isChecked}
             onChange={handleOnChange}
           />
         </label>

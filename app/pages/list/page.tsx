@@ -1,7 +1,7 @@
 "use client";
 import styles from "@/app/styles/Pages.module.css";
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
@@ -10,7 +10,7 @@ import { CoffeeRecord } from "@/app/types/db";
 interface PageTitleProps {
   listItemValue: string;
 }
-
+type CheckboxChangeData = { id: string; isChecked: boolean };
 // Next.js App Routerのページコンポーネント用の型
 // interface PageProps {
 //   params: { [key: string]: string };
@@ -26,27 +26,10 @@ const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
 export default function ListPage() {
   // モックデータ（実際の開発では、ここでAPIからデータを取得）
   const [localRecords, setLocalRecords] = useState<CoffeeRecord[]>([]);
-
+  // const [isChecked, setIsChecked] = useState<CheckedValue>(false);
+  const [checkedIds, setCheckedIds] = useState<string[]>([]);
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
-
-  // ウィンドウのリサイズイベントを監視
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleResize = () => {
-        setWindowWidth(document.documentElement.clientWidth);
-      };
-
-      // コンポーネントがマウントされた時に初期幅を設定
-      setWindowWidth(document.documentElement.clientWidth);
-
-      // リサイズイベントリスナーを追加
-      window.addEventListener("resize", handleResize);
-
-      // クリーンアップ関数
-      return () => window.removeEventListener("resize", handleResize);
-    }
-  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
@@ -79,14 +62,68 @@ export default function ListPage() {
       }
     }
   };
+  const handleCheckboxChange = useCallback(
+    ({ id, isChecked }: CheckboxChangeData) => {
+      console.log(
+        `親コンポーネントで受け取った値 - ID: ${id}, チェック状態: ${isChecked}`
+      );
 
+      setCheckedIds((prevIds) => {
+        if (isChecked) {
+          // チェックされた場合: IDがまだリストになければ追加
+          return Array.from(new Set([...prevIds, id]));
+        } else {
+          // チェックが外された場合: IDをリストから削除
+          return prevIds.filter((checkedId) => checkedId !== id);
+        }
+      });
+    },
+    []
+  ); // 依存配列は空のまま
+
+  // 確認のためのログ
+  useEffect(() => {
+    console.log("現在チェックされているIDリスト:", checkedIds);
+  }, [checkedIds]);
+  // ウィンドウのリサイズイベントを監視
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setWindowWidth(document.documentElement.clientWidth);
+      };
+
+      // コンポーネントがマウントされた時に初期幅を設定
+      setWindowWidth(document.documentElement.clientWidth);
+
+      // リサイズイベントリスナーを追加
+      window.addEventListener("resize", handleResize);
+
+      // クリーンアップ関数
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+  // 確認のためのログ
+  useEffect(() => {
+    console.log("現在チェックされているIDリスト:", checkedIds);
+  }, [checkedIds]);
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (record: CoffeeRecord) => {
+      const isRecordChecked = checkedIds.includes(record.id ?? "");
       return record.self === "self" ? (
-        <SelfPcCard value={record} onClickDelete={handleDeleteClick} />
+        <SelfPcCard
+          value={record}
+          onClickDelete={handleDeleteClick}
+          onCheckboxChange={handleCheckboxChange}
+          isChecked={isRecordChecked}
+        />
       ) : record.self === "shop" ? (
-        <ShopPcCard value={record} onClickDelete={handleDeleteClick} />
+        <ShopPcCard
+          value={record}
+          onClickDelete={handleDeleteClick}
+          onCheckboxChange={handleCheckboxChange}
+          isChecked={isRecordChecked}
+        />
       ) : null;
     };
     return (
@@ -139,10 +176,22 @@ export default function ListPage() {
     };
 
     const MobileCard = (record: CoffeeRecord) => {
+      const isRecordChecked = checkedIds.includes(record.id ?? "");
+
       return record.self === "self" ? (
-        <SelfMobileCard value={record} onClickDelete={handleDeleteClick} />
+        <SelfMobileCard
+          value={record}
+          onClickDelete={handleDeleteClick}
+          onCheckboxChange={handleCheckboxChange}
+          isChecked={isRecordChecked}
+        />
       ) : record.self === "shop" ? (
-        <ShopMobileCard value={record} onClickDelete={handleDeleteClick} />
+        <ShopMobileCard
+          value={record}
+          onClickDelete={handleDeleteClick}
+          onCheckboxChange={handleCheckboxChange}
+          isChecked={isRecordChecked}
+        />
       ) : null;
     };
     return (
