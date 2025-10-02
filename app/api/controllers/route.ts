@@ -1,4 +1,4 @@
-// app/api/database/route.ts
+// app/api/controllers/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/utils/database";
 import { CoffeeModel } from "@/app/utils/schemaModels";

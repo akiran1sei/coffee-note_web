@@ -194,7 +194,7 @@ const UpdatePage = ({ params }: UpdatePageProps) => {
         },
       };
 
-      const response = await fetch("/api/database", {
+      const response = await fetch("/api/controllers", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(Data),
@@ -249,7 +249,7 @@ const UpdatePage = ({ params }: UpdatePageProps) => {
         },
       };
 
-      const response = await fetch("/api/database", {
+      const response = await fetch("/api/controllers", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(Data),
@@ -329,7 +329,7 @@ const UpdatePage = ({ params }: UpdatePageProps) => {
       const slug = awaitedParams.slug;
 
       // 348行目の警告箇所を修正後のslugに置き換え
-      const response = await fetch(`/api/database?id=${slug}`);
+      const response = await fetch(`/api/controllers?id=${slug}`);
       const data = await response.json();
 
       // --- 修正箇所 ---

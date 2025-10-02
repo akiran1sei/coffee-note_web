@@ -181,7 +181,7 @@ const CreatePage = () => {
         },
       };
 
-      const response = await fetch("/api/database", {
+      const response = await fetch("/api/controllers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(Data),
@@ -236,7 +236,7 @@ const CreatePage = () => {
         },
       };
 
-      const response = await fetch("/api/database", {
+      const response = await fetch("/api/controllers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(Data),

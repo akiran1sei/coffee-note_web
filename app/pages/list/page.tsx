@@ -36,7 +36,7 @@ export default function ListPage() {
 
   const handleDeleteClick = async (id: string) => {
     // 該当する記録を見つける
-    const response = await fetch(`/api/database?id=${id}`, {
+    const response = await fetch(`/api/controllers?id=${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
@@ -84,7 +84,7 @@ export default function ListPage() {
 
     // ...（APIへのフェッチ処理）
 
-    const response = await fetch(`/api/database`, {
+    const response = await fetch(`/api/controllers`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: id }), // IDの配列をJSONとして送信
@@ -298,7 +298,7 @@ export default function ListPage() {
   useEffect(() => {
     // ここで実際のデータを取得
     const fetchData = async () => {
-      const records = await fetch("/api/database").then((res) => res.json());
+      const records = await fetch("/api/controllers").then((res) => res.json());
       console.log("records", records.data);
       return setLocalRecords(records.data);
     };
