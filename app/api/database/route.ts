@@ -139,6 +139,66 @@ export async function DELETE(request: NextRequest) {
     const body = await request.json();
     const { id } = body; // 削除対象のID (例: プライマリキー)
 
+    let idsToDelete: string[]; // 最終的に処理するIDの配列
+
+    // 💡 Array.isArray() を使ってidが配列かどうかをチェックする
+    if (Array.isArray(id)) {
+      // id が配列の場合 (例: ['a', 'b'] または ['a'])
+      idsToDelete = id;
+      console.log("IDは配列として渡されました。件数:", idsToDelete.length);
+      const deleteResult = await CoffeeModel.deleteMany({
+        // _idフィールドの値が idsToDelete 配列に含まれているドキュメントをすべて削除
+        id: { $in: idsToDelete },
+      });
+
+      // deleteResult には、削除が成功したか、何件削除されたかの情報（deletedCount）が含まれます。
+      console.log(
+        `${deleteResult.deletedCount} 件のレコードが正常に削除されました。`
+      );
+
+      if (!deleteResult) {
+        // IDに一致するレコードが見つからなかった場合
+        return NextResponse.json(
+          {
+            success: false,
+            message: `ID: ${id} に一致するデータは見つかりませんでした`,
+          },
+          { status: 404 } // Not Found
+        );
+      }
+      // 4. 成功レスポンス
+      return NextResponse.json({
+        success: true,
+        data: deleteResult,
+        message: "データの削除に成功しました",
+      });
+    } else if (typeof id === "string") {
+      // id が単一の文字列の場合 (例: 'a')
+      // 処理を配列に統一するために、単一の値を要素とする配列に変換する
+
+      console.log("IDは単一の値として渡されました。");
+      const deletedRecord = await CoffeeModel.findOneAndDelete({ id: id });
+      if (!deletedRecord) {
+        // IDに一致するレコードが見つからなかった場合
+        return NextResponse.json(
+          {
+            success: false,
+            message: `ID: ${id} に一致するデータは見つかりませんでした`,
+          },
+          { status: 404 } // Not Found
+        );
+      }
+      // 4. 成功レスポンス
+      return NextResponse.json({
+        success: true,
+        data: deletedRecord,
+        message: "データの削除に成功しました",
+      });
+    } else {
+      // その他の予期しない型の場合
+      console.error("無効なID形式です:", id);
+      return;
+    }
     if (!id) {
       return NextResponse.json(
         { success: false, message: "削除対象のIDが指定されていません" },
@@ -148,25 +208,6 @@ export async function DELETE(request: NextRequest) {
 
     // 3. データ削除の実行
     // findOneAndDeleteは削除されたドキュメントを返します
-    const deletedRecord = await CoffeeModel.findOneAndDelete({ id: id });
-
-    if (!deletedRecord) {
-      // IDに一致するレコードが見つからなかった場合
-      return NextResponse.json(
-        {
-          success: false,
-          message: `ID: ${id} に一致するデータは見つかりませんでした`,
-        },
-        { status: 404 } // Not Found
-      );
-    }
-
-    // 4. 成功レスポンス
-    return NextResponse.json({
-      success: true,
-      data: deletedRecord,
-      message: "データの削除に成功しました",
-    });
   } catch (error) {
     // 5. エラーハンドリング
     console.error("DELETE: データベースエラー:", error);

@@ -62,6 +62,61 @@ export default function ListPage() {
       }
     }
   };
+  const handleMultiDeleteClick = async (id: string[]) => {
+    // 💡 id配列が空でないことを確認し、最初の要素を代表として使う
+    const firstId = id[0];
+
+    // id配列が空の場合の処理（重要）
+    if (!firstId) {
+      alert("削除対象のIDが指定されていません。");
+      return;
+    }
+
+    // 該当する記録を見つける
+    // record.id（string）が、firstId（string）と一致するかを比較
+    const recordToDelete = localRecords.find((record) => record.id === firstId);
+
+    // 【解説】
+    // 最初のID（firstId: string）を使って検索することで、
+    // string === string の比較になり、TS2367エラーが解消されます。
+
+    if (!recordToDelete) return; // レコードが見つからない場合は処理を中断
+
+    // ...（APIへのフェッチ処理）
+
+    const response = await fetch(`/api/database`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: id }), // IDの配列をJSONとして送信
+    });
+    const data = await response.json();
+    console.log("DELETE response data:", data);
+    // ユーザーに削除の確認を求める（最初のレコード名を表示）
+    const isConfirmed = window.confirm(
+      `"${recordToDelete.name || "この記録"}"を含む、合計${
+        id.length
+      }件の記録を削除してもよろしいですか？`
+    );
+    if (isConfirmed) {
+      try {
+        // ...（APIへのDELETEリクエスト）
+
+        // 💡 修正点: ローカルの状態から「id配列に含まれるすべてのID」を削除
+        setLocalRecords((prev) =>
+          prev.filter(
+            (record) =>
+              // id配列（string[]）に record.id（string）が含まれていない（!includes）ものを残す
+              !id.includes(record.id)
+          )
+        );
+        alert("レコードが正常に削除されました。");
+      } catch (error) {
+        alert("レコードの削除に失敗しました。");
+        console.error("削除エラー:", error);
+      }
+    }
+  };
+
   const handleCheckboxChange = useCallback(
     ({ id, isChecked }: CheckboxChangeData) => {
       console.log(
@@ -277,6 +332,11 @@ export default function ListPage() {
         <div className={`${styles.listButtonContainer} `}>
           <div
             className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
+            onClick={() => {
+              if (checkedIds) {
+                handleMultiDeleteClick(checkedIds);
+              }
+            }}
           >
             <MainButton
               sizeValue="large"
