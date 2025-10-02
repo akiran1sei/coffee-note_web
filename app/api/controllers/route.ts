@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/utils/database";
 import { CoffeeModel } from "@/app/utils/schemaModels";
-// データベースモデルをインポート（例：User、Post など）
 
 // GET - データの取得
 export async function GET(request: NextRequest) {
@@ -126,9 +125,6 @@ export async function PUT(request: NextRequest) {
 }
 
 // DELETE - データの削除
-// (Next.js API Route: app/api/...)
-// ※ connectDB、CoffeeModel、NextRequest、NextResponse のインポートが必要です。
-
 export async function DELETE(request: NextRequest) {
   try {
     // 1. データベース接続
