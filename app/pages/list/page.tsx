@@ -30,7 +30,8 @@ export default function ListPage() {
   const [checkedIds, setCheckedIds] = useState<string[]>([]);
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
-
+  const [searchValue, setSearchValue] = useState("");
+  const [searchGetValue, setSearchGetValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
 
@@ -135,6 +136,34 @@ export default function ListPage() {
     },
     []
   ); // 依存配列は空のまま
+
+  const getLayout = () => {
+    if (windowWidth >= 960) {
+      return <ListPcPage />;
+    } else if (windowWidth >= 600 && windowWidth < 960) {
+      return <ListTabletPage />;
+    } else {
+      return <ListMobilePage />;
+    }
+  };
+  const handleSearch = async () => {
+    const request = await fetch(`/api/utility?data=${searchValue}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const getData = await request.json();
+    console.log(getData);
+    setSearchGetValue(getData.data);
+    return;
+  };
+  console.log("サーチ：：：", searchGetValue);
+  const handlePopup = () => {
+    try {
+      setIsOpen(!isOpen);
+    } catch (error) {
+      console.error("エラーです。", error);
+    }
+  };
 
   // 確認のためのログ
   useEffect(() => {
@@ -272,24 +301,6 @@ export default function ListPage() {
     );
   };
 
-  const getLayout = () => {
-    if (windowWidth >= 960) {
-      return <ListPcPage />;
-    } else if (windowWidth >= 600 && windowWidth < 960) {
-      return <ListTabletPage />;
-    } else {
-      return <ListMobilePage />;
-    }
-  };
-
-  const handlePopup = () => {
-    try {
-      setIsOpen(!isOpen);
-    } catch (error) {
-      console.error("エラーです。", error);
-    }
-  };
-
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
@@ -315,9 +326,12 @@ export default function ListPage() {
             id="search-input"
             name="search"
             placeholder="Search..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
           <div
             className={`${styles.buttonContent} ${styles.searchButtonContent}`}
+            onClick={handleSearch}
           >
             <MainButton
               sizeValue="small"
