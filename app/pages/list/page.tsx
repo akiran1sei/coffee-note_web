@@ -157,6 +157,22 @@ export default function ListPage() {
     }
   };
 
+  const listItem = [
+    "酸味 昇順",
+    "酸味 降順",
+    "苦味 昇順",
+    "苦味 降順",
+    "コク 昇順",
+    "コク 降順",
+    "香り 昇順",
+    "香り 降順",
+    "キレ 昇順",
+    "キレ 降順",
+    "全体 昇順",
+    "全体 降順",
+    "作成日時 昇順",
+    "作成日時 降順",
+  ];
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (record: CoffeeRecord) => {
@@ -395,20 +411,13 @@ export default function ListPage() {
           <div className={styles.modalHeader}>並び替え基準を選択</div>
           <div className={styles.modalBody}>
             <ul className={styles.modalList}>
-              <li className={styles.modalListItem}>酸味 昇順</li>
-              <li className={styles.modalListItem}>酸味 降順</li>
-              <li className={styles.modalListItem}>苦味 昇順</li>
-              <li className={styles.modalListItem}>苦味 降順</li>
-              <li className={styles.modalListItem}>コク 昇順</li>
-              <li className={styles.modalListItem}>コク 降順</li>
-              <li className={styles.modalListItem}>香り 昇順</li>
-              <li className={styles.modalListItem}>香り 降順</li>
-              <li className={styles.modalListItem}>キレ 昇順</li>
-              <li className={styles.modalListItem}>キレ 降順</li>
-              <li className={styles.modalListItem}>全体 昇順</li>
-              <li className={styles.modalListItem}>全体 降順</li>
-              <li className={styles.modalListItem}>作成日時 昇順</li>
-              <li className={styles.modalListItem}>作成日時 降順</li>
+              {listItem.map((item) => {
+                return (
+                  <li className={styles.modalListItem} key={item}>
+                    {item}
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div

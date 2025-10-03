@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const getData = searchParams.get("data");
 
-    console.log(getData);
     // パラメータがない場合はエラーを避ける（オプション）
     if (getData) {
       const searchCondition = new RegExp(getData, "i");
