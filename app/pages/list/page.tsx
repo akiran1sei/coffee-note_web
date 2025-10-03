@@ -33,7 +33,7 @@ export default function ListPage() {
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
   const [searchValue, setSearchValue] = useState("");
-  const [searchGetValue, setSearchGetValue] = useState("");
+  const [sortValue, setSortValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
 
@@ -157,7 +157,7 @@ export default function ListPage() {
     }
   };
 
-  const listItem = [
+  const listSortItem = [
     "酸味 昇順",
     "酸味 降順",
     "苦味 昇順",
@@ -173,6 +173,7 @@ export default function ListPage() {
     "作成日時 昇順",
     "作成日時 降順",
   ];
+  const handleSort = () => {};
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (record: CoffeeRecord) => {
@@ -317,19 +318,42 @@ export default function ListPage() {
   useEffect(() => {
     // ここで実際のデータを取得
     const fetchData = async () => {
-      const records = await fetch("/api/controllers").then((res) => res.json());
+      const records = await fetch(`/api/controllers?sort=${sortValue}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }).then((res) => res.json());
       console.log("records", records.data);
       return setLocalRecords(records.data);
     };
     fetchData();
   }, []);
 
+  // useEffect(() => {
+  //   const handleSearch = async () => {
+  //     const request = await fetch(
+  //       `/api/controllers?data=${searchValue}`,
+  //       {
+  //         method: "GET",
+  //         headers: { "Content-Type": "application/json" },
+  //       }
+  //     );
+  //     const getData = await request.json();
+
+  //     setLocalRecords(getData.data);
+
+  //     return;
+  //   };
+  //   handleSearch();
+  // }, [searchValue]);
   useEffect(() => {
     const handleSearch = async () => {
-      const request = await fetch(`/api/controllers?data=${searchValue}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const request = await fetch(
+        `/api/controllers?search=${searchValue}&sort=${sortValue}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const getData = await request.json();
 
       setLocalRecords(getData.data);
@@ -337,7 +361,7 @@ export default function ListPage() {
       return;
     };
     handleSearch();
-  }, [searchValue]);
+  }, [searchValue, sortValue]);
 
   return (
     <div className={`${styles.listPageContents} ${styles.pageContents}`}>
@@ -411,9 +435,13 @@ export default function ListPage() {
           <div className={styles.modalHeader}>並び替え基準を選択</div>
           <div className={styles.modalBody}>
             <ul className={styles.modalList}>
-              {listItem.map((item) => {
+              {listSortItem.map((item) => {
                 return (
-                  <li className={styles.modalListItem} key={item}>
+                  <li
+                    className={styles.modalListItem}
+                    key={item}
+                    onClick={handleSort}
+                  >
                     {item}
                   </li>
                 );

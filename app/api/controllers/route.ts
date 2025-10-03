@@ -10,8 +10,9 @@ export async function GET(request: NextRequest) {
     console.log("GET: データベースに接続しました");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
-    const getData = searchParams.get("data");
-    console.log(getData);
+    const getSearch = searchParams.get("search");
+    const getSort = searchParams.get("sort");
+    console.log("get", getSearch, getSort);
     if (id) {
       const coffeeRecord = await CoffeeModel.findOne({ id: id }).then(
         (data) => {
@@ -24,9 +25,9 @@ export async function GET(request: NextRequest) {
         data: coffeeRecord,
         message: "データの取得に成功しました",
       });
-    } else if (getData) {
-      console.log("getData", getData);
-      const searchCondition = new RegExp(getData, "i");
+    } else if (getSearch) {
+      console.log("getSearch", getSearch);
+      const searchCondition = new RegExp(getSearch, "i");
       console.log("searchCondition", searchCondition);
       const coffeeName = await CoffeeModel.find({
         // ★ ここが OR 条件のための修正点
@@ -42,16 +43,18 @@ export async function GET(request: NextRequest) {
       console.log("coffeeName", coffeeName);
       // 結果をクライアントに返す
       return NextResponse.json({ data: coffeeName });
-    }
-    const records = await CoffeeModel.find().then((data) => {
-      return data;
-    });
+    } else if (getSort === "") {
+      console.log("ソートでーす");
+      const records = await CoffeeModel.find().then((data) => {
+        return data;
+      });
 
-    return NextResponse.json({
-      success: true,
-      data: records,
-      message: "データの取得に成功しました",
-    });
+      return NextResponse.json({
+        success: true,
+        data: records,
+        message: "データの取得に成功しました",
+      });
+    }
   } catch (error) {
     console.error("GET: データベースエラー:", error);
     const errorMessage =
