@@ -16,7 +16,6 @@ export async function GET(request: NextRequest) {
       const coffeeName = await CoffeeModel.find({
         name: searchCondition,
       });
-
       // 結果をクライアントに返す
       return NextResponse.json({ data: coffeeName });
     } else if (!getData) {

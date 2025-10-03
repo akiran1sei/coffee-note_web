@@ -10,7 +10,8 @@ export async function GET(request: NextRequest) {
     console.log("GET: データベースに接続しました");
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
-
+    const getData = searchParams.get("data");
+    console.log(getData);
     if (id) {
       const coffeeRecord = await CoffeeModel.findOne({ id: id }).then(
         (data) => {
@@ -23,6 +24,24 @@ export async function GET(request: NextRequest) {
         data: coffeeRecord,
         message: "データの取得に成功しました",
       });
+    } else if (getData) {
+      console.log("getData", getData);
+      const searchCondition = new RegExp(getData, "i");
+      console.log("searchCondition", searchCondition);
+      const coffeeName = await CoffeeModel.find({
+        // ★ ここが OR 条件のための修正点
+        $or: [
+          // 条件 1: name が検索条件に当てはまる
+          { name: searchCondition },
+
+          // 条件 2: shopName が検索条件に当てはまる
+          { shopName: searchCondition },
+        ],
+      });
+
+      console.log("coffeeName", coffeeName);
+      // 結果をクライアントに返す
+      return NextResponse.json({ data: coffeeName });
     }
     const records = await CoffeeModel.find().then((data) => {
       return data;

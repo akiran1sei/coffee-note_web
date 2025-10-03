@@ -2,6 +2,8 @@
 import styles from "@/app/styles/Pages.module.css";
 import * as React from "react";
 import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
+
 import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
@@ -146,17 +148,7 @@ export default function ListPage() {
       return <ListMobilePage />;
     }
   };
-  const handleSearch = async () => {
-    const request = await fetch(`/api/utility?data=${searchValue}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const getData = await request.json();
-    console.log(getData);
-    setSearchGetValue(getData.data);
-    return;
-  };
-  console.log("サーチ：：：", searchGetValue);
+
   const handlePopup = () => {
     try {
       setIsOpen(!isOpen);
@@ -165,31 +157,6 @@ export default function ListPage() {
     }
   };
 
-  // 確認のためのログ
-  useEffect(() => {
-    console.log("現在チェックされているIDリスト:", checkedIds);
-  }, [checkedIds]);
-  // ウィンドウのリサイズイベントを監視
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleResize = () => {
-        setWindowWidth(document.documentElement.clientWidth);
-      };
-
-      // コンポーネントがマウントされた時に初期幅を設定
-      setWindowWidth(document.documentElement.clientWidth);
-
-      // リサイズイベントリスナーを追加
-      window.addEventListener("resize", handleResize);
-
-      // クリーンアップ関数
-      return () => window.removeEventListener("resize", handleResize);
-    }
-  }, []);
-  // 確認のためのログ
-  useEffect(() => {
-    console.log("現在チェックされているIDリスト:", checkedIds);
-  }, [checkedIds]);
   // PC向けのレイアウト
   const ListPcPage = () => {
     const pcCard = (record: CoffeeRecord) => {
@@ -301,6 +268,31 @@ export default function ListPage() {
     );
   };
 
+  // 確認のためのログ
+  useEffect(() => {
+    console.log("現在チェックされているIDリスト:", checkedIds);
+  }, [checkedIds]);
+  // ウィンドウのリサイズイベントを監視
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setWindowWidth(document.documentElement.clientWidth);
+      };
+
+      // コンポーネントがマウントされた時に初期幅を設定
+      setWindowWidth(document.documentElement.clientWidth);
+
+      // リサイズイベントリスナーを追加
+      window.addEventListener("resize", handleResize);
+
+      // クリーンアップ関数
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+  // 確認のためのログ
+  useEffect(() => {
+    console.log("現在チェックされているIDリスト:", checkedIds);
+  }, [checkedIds]);
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
@@ -316,31 +308,45 @@ export default function ListPage() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleSearch = async () => {
+      const request = await fetch(`/api/controllers?data=${searchValue}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const getData = await request.json();
+
+      setLocalRecords(getData.data);
+
+      return;
+    };
+    handleSearch();
+  }, [searchValue]);
+
   return (
     <div className={`${styles.listPageContents} ${styles.pageContents}`}>
       <PageTitle listItemValue="List Page" />
       <div className={`${styles.listSearchArea}`}>
         <label htmlFor="search-input">
+          <div className={styles.listSearchImage}>
+            <Image
+              width={30}
+              height={30}
+              src={"/images/search.svg"}
+              alt="検索アイコン"
+            />
+          </div>
+        </label>
+        <div className={` ${styles.listSearchInput}`}>
           <input
             type="text"
             id="search-input"
             name="search"
-            placeholder="Search..."
+            placeholder="店名 or コーヒー名"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-          <div
-            className={`${styles.buttonContent} ${styles.searchButtonContent}`}
-            onClick={handleSearch}
-          >
-            <MainButton
-              sizeValue="small"
-              textValue="検索"
-              buttonColor="btn-secondary"
-              widthValue="widthAuto"
-            />
-          </div>
-        </label>
+        </div>
       </div>
       <div className={`${styles.listMultiButtonArea}`}>
         <div className={`${styles.listButtonContainer} `}>
