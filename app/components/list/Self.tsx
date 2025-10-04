@@ -6,7 +6,7 @@ import { CoffeeRecord } from "@/app/types/db";
 import Image from "next/image";
 import { MainButton } from "@/app/components/buttons/Buttons";
 import Link from "next/link";
-
+import RadarChart from "./RadarChart";
 // SelfMobileCard.tsx
 
 interface CardProps {
@@ -144,14 +144,9 @@ export const SelfMobileCard: React.FC<CardProps> = ({
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
           <div className={styles.listItemValue}>{value.overall}</div>
         </div>
-        <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
-          <div className={styles.listItemImage}>
-            <Image
-              width={200}
-              height={200}
-              src="/images/no-image.png"
-              alt="レーダーチャートのプレビュー画像"
-            />
+        <div className={`${styles.listItemChartBox} ${styles.chartImg}`}>
+          <div className={styles.listItemChart}>
+            <RadarChart value={value} />
           </div>
         </div>
       </div>
@@ -395,14 +390,9 @@ export const SelfPcCard: React.FC<CardProps> = ({
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
           <div className={styles.listItemValue}>{value.overall}</div>
         </div>
-        <div className={`${styles.listItemImageBox} ${styles.chartImg}`}>
-          <div className={styles.listItemImage}>
-            <Image
-              width={200}
-              height={200}
-              src="/images/no-image.png"
-              alt="レーダーチャートのプレビュー画像"
-            />
+        <div className={`${styles.listItemChartBox} ${styles.chartImg}`}>
+          <div className={styles.listItemChart}>
+            <RadarChart value={value} />
           </div>
         </div>
       </div>

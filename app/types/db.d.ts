@@ -14,12 +14,12 @@ export interface CoffeeRecord {
   waterAmount: number; // 湯量（g）
   measurementMethod: string; // 計測方法
   extractionTime: number; // 抽出時間
-  acidity: number; // 酸味（1-10）
-  bitterness: number; // 苦味（1-10）
-  overall: number; // 全体の好み（1-55）
-  body: number; // コク（1-10）
-  aroma: number; // 香り（1-10）
-  aftertaste: number; // キレ（1-10）
+  acidity: number; // 酸味（1-5）
+  bitterness: number; // 苦味（1-5）
+  body: number; // コク（1-5）
+  aroma: number; // 香り（1-5）
+  aftertaste: number; // キレ（1-5）
+  overall: number; // 全体の好み（1-5）
   memo: string; // メモ
   imageUri: string; // 画像のパス
   imageAlt: string; // 画像の代替テキスト
