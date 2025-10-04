@@ -16,18 +16,17 @@ import ImageUploadComponent, {
 } from "@/app/components/form/item/ImageUpload";
 import { validateString, validateNumber } from "@/app/utils/validation";
 import { useRouter } from "next/navigation";
-// slugが単一の文字列の場合
-// Next.js App RouterのPropsの型を定義
+
+// Next.js 15以降では params と searchParams は Promise になります
 interface UpdatePageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  // ★ 修正点: searchParams を追加する
-  // クエリパラメータ（例: ?foo=bar）を含み、必須ではない型として定義します。
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 }
+
 const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
   // ウィンドウサイズの取得
   const { width } = useWindowSize();
@@ -151,22 +150,17 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
     if (!validateNumber(reviewInfo.chart.aroma, "香り")) return;
     if (!validateNumber(reviewInfo.chart.aftertaste, "余韻")) return;
     if (!validateNumber(reviewInfo.chart.overall, "総合評価")) return;
-    // if (!validateString(reviewInfo.memo, "メモ")) return;
+
     if (verText[0] === selfVer) {
       // 自分で淹れた場合のデータ統合
       const Data = {
-        model: "coffee", // APIルートで使用するモデル名
+        model: "coffee",
         data: {
-          // 基本情報
           _id: coffeeId._id,
           id: coffeeId.id,
           name: coffeeInfo.coffeeName,
           productionArea: coffeeInfo.productionArea,
-
-          // 自分で淹れた場合の識別
           self: "self",
-
-          // 焙煎・抽出情報（selfInfoとextractionInfoから）
           variety: selfInfo.variety,
           roastingDegree: selfInfo.roastingDegree,
           extractionMethod: extractionInfo.extractionMethod,
@@ -177,21 +171,15 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
           waterAmount: extractionInfo.waterAmount,
           measurementMethod: extractionInfo.measurementMethod,
           extractionTime: extractionInfo.extractionTime,
-
-          // 評価情報（reviewInfoから）
           acidity: reviewInfo.chart.acidity,
           bitterness: reviewInfo.chart.bitterness,
           overall: reviewInfo.chart.overall,
           body: reviewInfo.chart.body,
           aroma: reviewInfo.chart.aroma,
           aftertaste: reviewInfo.chart.aftertaste,
-
-          // 共通情報
           memo: reviewInfo.memo,
           imageUri: imageData.imageUrl,
           imageAlt: imageData.imageAlt,
-
-          // 店舗情報は空（自分で淹れた場合は不要）
           shopName: "ー",
           shopPrice: 0,
           shopDate: 0,
@@ -211,18 +199,13 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
     } else if (verText[0] === shopVer) {
       // 店で飲んだ場合のデータ統合
       const Data = {
-        model: "coffee", // APIルートで使用するモデル名
+        model: "coffee",
         data: {
-          // 基本情報
           _id: coffeeId._id,
           id: coffeeId.id,
           name: coffeeInfo.coffeeName,
           productionArea: coffeeInfo.productionArea,
-
-          // 店で飲んだ場合の識別
           self: "shop",
-
-          // 焙煎・抽出情報は空（店で飲んだ場合は不要）
           variety: "ー",
           extractionMethod: "ー",
           extractionMaker: "ー",
@@ -232,21 +215,15 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
           waterAmount: 0,
           measurementMethod: "ー",
           extractionTime: 0,
-
-          // 評価情報（reviewInfoから）
           acidity: reviewInfo.chart.acidity,
           bitterness: reviewInfo.chart.bitterness,
           overall: reviewInfo.chart.overall,
           body: reviewInfo.chart.body,
           aroma: reviewInfo.chart.aroma,
           aftertaste: reviewInfo.chart.aftertaste,
-
-          // 共通情報
           memo: reviewInfo.memo,
           imageUri: imageData.imageUrl,
           imageAlt: imageData.imageAlt,
-
-          // 店舗情報（shopInfoから）
           shopName: shopInfo.shopName,
           shopPrice: shopInfo.shopPrice,
           shopDate: shopInfo.shopDate,
@@ -262,11 +239,8 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
       });
 
       await response.json();
-
       return await router.push("/pages/list");
     }
-
-    // どちらでもない場合のエラーハンドリング
 
     alert("フォームデータがコンソールに出力されました");
   };
@@ -326,35 +300,27 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
       memo: "",
     });
   }, []);
-  // page.tsx の fetchData 関数部分を修正
 
   useEffect(() => {
-    // (中略：params.slugの処理)
     const fetchData = async () => {
-      const awaitedParams = await Promise.resolve(params);
+      // paramsをawaitで解決
+      const awaitedParams = await params;
       const slug = awaitedParams.slug;
 
-      // 348行目の警告箇所を修正後のslugに置き換え
       const response = await fetch(`/api/controllers?id=${slug}`);
       const data = await response.json();
 
-      // --- 修正箇所 ---
       let coffeeRecords = [];
 
       if (Array.isArray(data.data)) {
-        // data.dataが配列（期待通り）の場合
         coffeeRecords = data.data;
       } else if (data.data) {
-        // data.dataが単一のオブジェクトの場合（今回のエラーの原因として最有力）
-        // 配列に格納してからセットする
         coffeeRecords = [data.data];
       }
 
-      // APIからデータが取得できた場合、フォームのステートを一度に設定する
       if (coffeeRecords.length > 0) {
-        const items = coffeeRecords[0]; // 配列の最初の要素を使用
+        const items = coffeeRecords[0];
 
-        // ★ dataMap() の中身をここに移動 ★
         setCoffeeId({
           id: items.id,
           _id: items._id,
@@ -364,16 +330,19 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
           coffeeName: items.name,
           productionArea: items.productionArea,
         });
+
         setImageData({
           imageId: null,
           imageUrl: items.imageUri,
           imageAlt: items.imageAlt,
-          hasImage: items.imageUri ? true : false, // hasImageも適切に設定
+          hasImage: items.imageUri ? true : false,
         });
+
         setSelfInfo({
           variety: items.variety,
           roastingDegree: items.roastingDegree,
         });
+
         setShopInfo({
           shopName: items.shopName,
           shopPrice: items.shopPrice,
@@ -381,6 +350,7 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
           shopAddress: items.shopAddress,
           shopUrl: items.shopUrl,
         });
+
         setExtractionInfo({
           extractionMethod: items.extractionMethod,
           extractionMaker: items.extractionMaker,
@@ -391,6 +361,7 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
           coffeeAmount: items.coffeeAmount,
           waterAmount: items.waterAmount,
         });
+
         setReviewInfo({
           chart: {
             acidity: items.acidity,
@@ -403,21 +374,19 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
           memo: items.memo || "",
         });
 
-        // バージョン設定（取得したデータがSelfかShopかによって切り替える）
         if (items.self === "self") {
-          setIsVersion(true); // Self バージョン
+          setIsVersion(true);
           setVerText(["Self"]);
         } else {
-          setIsVersion(false); // Shop バージョン
+          setIsVersion(false);
           setVerText(["Shop"]);
         }
       }
-      // setCoffeeData はこの処理が完了した後で呼び出す必要はないため削除。
-      // もし必要なら setCoffeeData(coffeeRecords); を残しても良いが、
-      // フォーム初期化には items (最初の要素) のみ使うのが一般的です。
     };
+
     fetchData();
   }, [params]);
+
   return (
     <>
       <div className={`${styles.createPageContents} ${styles.pageContents}`}>
@@ -452,7 +421,6 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
           )}
 
           <form className={styles.pageForm} onSubmit={handleSubmit}>
-            {/* 画像アップロードセクション（共通） */}
             <div className={styles.imageUploadSection}>
               <h2>画像アップロード</h2>
               <ImageUploadComponent
@@ -514,8 +482,6 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
                 </div>
               </div>
             )}
-
-            {/* エラー表示は削除 */}
 
             <div
               className={`${styles.buttonContent} ${styles.saveButtonContent}`}
