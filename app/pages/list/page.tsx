@@ -9,15 +9,12 @@ import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
 import { CoffeeRecord } from "@/app/types/db";
 
+// NOTE: component imports assumed from user's context (e.g. "@/app/types/db")
+
 interface PageTitleProps {
   listItemValue: string;
 }
 type CheckboxChangeData = { id: string; isChecked: boolean };
-// Next.js App Routerのページコンポーネント用の型
-// interface PageProps {
-//   params: { [key: string]: string };
-//   searchParams: { [key: string]: string | string[] | undefined };
-// }
 
 // タイトルコンポーネントのモック
 const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
@@ -28,24 +25,23 @@ const PageTitle: React.FC<PageTitleProps> = ({ listItemValue }) => (
 export default function ListPage() {
   // モックデータ（実際の開発では、ここでAPIからデータを取得）
   const [localRecords, setLocalRecords] = useState<CoffeeRecord[]>([]);
-  // const [isChecked, setIsChecked] = useState<CheckedValue>(false);
   const [checkedIds, setCheckedIds] = useState<string[]>([]);
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
   const [searchValue, setSearchValue] = useState("");
-  const [sortValue, setSortValue] = useState("");
+
+  // ★ 修正点 1: sortObject の型を Record<string, 1 | -1> に修正し、JSON文字列をStateから除外
+  const [sortObject, setSortObject] = useState<Record<string, 1 | -1>>({
+    createdAt: -1,
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [isFadingIn, setIsFadingIn] = useState(false);
 
+  // NOTE: window.confirm/alert は、動作環境によっては表示されないため、
+  // 実際のプロダクションコードではカスタムモーダルを使用してください。
+
   const handleDeleteClick = async (id: string) => {
-    // 該当する記録を見つける
-    const response = await fetch(`/api/controllers?id=${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    const data = await response.json();
-    console.log("DELETE response data:", data);
     const recordToDelete = localRecords.find((record) => record.id === id);
     if (!recordToDelete) return;
 
@@ -56,66 +52,75 @@ export default function ListPage() {
 
     if (isConfirmed) {
       try {
-        // ローカルの状態から削除
-        setLocalRecords((prev) => prev.filter((record) => record.id !== id));
-        alert("レコードが正常に削除されました。");
+        const response = await fetch(`/api/controllers`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }), // 単一IDを送信
+        });
+
+        const data = await response.json();
+        console.log("DELETE response data:", data);
+
+        if (response.ok) {
+          // ローカルの状態から削除
+          setLocalRecords((prev) => prev.filter((record) => record.id !== id));
+          alert("レコードが正常に削除されました。");
+        } else {
+          alert(
+            `レコードの削除に失敗しました: ${data.message || "Unknown error"}`
+          );
+        }
       } catch (error) {
         alert("レコードの削除に失敗しました。");
-        console.error("削除エラー:", error);
+        console.error("単一削除エラー:", error);
       }
     }
   };
-  const handleMultiDeleteClick = async (id: string[]) => {
-    // 💡 id配列が空でないことを確認し、最初の要素を代表として使う
-    const firstId = id[0];
 
-    // id配列が空の場合の処理（重要）
-    if (!firstId) {
+  const handleMultiDeleteClick = async (idArray: string[]) => {
+    if (idArray.length === 0) {
       alert("削除対象のIDが指定されていません。");
       return;
     }
 
-    // 該当する記録を見つける
-    // record.id（string）が、firstId（string）と一致するかを比較
-    const recordToDelete = localRecords.find((record) => record.id === firstId);
-
-    // 【解説】
-    // 最初のID（firstId: string）を使って検索することで、
-    // string === string の比較になり、TS2367エラーが解消されます。
-
-    if (!recordToDelete) return; // レコードが見つからない場合は処理を中断
-
-    // ...（APIへのフェッチ処理）
-
-    const response = await fetch(`/api/controllers`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: id }), // IDの配列をJSONとして送信
-    });
-    const data = await response.json();
-    console.log("DELETE response data:", data);
-    // ユーザーに削除の確認を求める（最初のレコード名を表示）
-    const isConfirmed = window.confirm(
-      `"${recordToDelete.name || "この記録"}"を含む、合計${
-        id.length
-      }件の記録を削除してもよろしいですか？`
+    // 最初のレコード名を表示用に取得
+    const recordToDelete = localRecords.find(
+      (record) => record.id === idArray[0]
     );
+    const name = recordToDelete ? recordToDelete.name : "この記録";
+
+    // ユーザーに削除の確認を求める
+    const isConfirmed = window.confirm(
+      `"${name}"を含む、合計${idArray.length}件の記録を削除してもよろしいですか？`
+    );
+
     if (isConfirmed) {
       try {
-        // ...（APIへのDELETEリクエスト）
+        const response = await fetch(`/api/controllers`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: idArray }), // IDの配列を送信
+        });
 
-        // 💡 修正点: ローカルの状態から「id配列に含まれるすべてのID」を削除
-        setLocalRecords((prev) =>
-          prev.filter(
-            (record) =>
-              // id配列（string[]）に record.id（string）が含まれていない（!includes）ものを残す
-              !id.includes(record.id)
-          )
-        );
-        alert("レコードが正常に削除されました。");
+        const data = await response.json();
+        console.log("Multi DELETE response data:", data);
+
+        if (response.ok) {
+          // 💡 ローカルの状態から「idArrayに含まれるすべてのID」を削除
+          setLocalRecords((prev) =>
+            prev.filter((record) => !idArray.includes(record.id))
+          );
+          // チェックリストをクリア
+          setCheckedIds([]);
+          alert("複数レコードが正常に削除されました。");
+        } else {
+          alert(
+            `レコードの削除に失敗しました: ${data.message || "Unknown error"}`
+          );
+        }
       } catch (error) {
         alert("レコードの削除に失敗しました。");
-        console.error("削除エラー:", error);
+        console.error("複数削除エラー:", error);
       }
     }
   };
@@ -137,7 +142,7 @@ export default function ListPage() {
       });
     },
     []
-  ); // 依存配列は空のまま
+  );
 
   const getLayout = () => {
     if (windowWidth >= 960) {
@@ -157,24 +162,35 @@ export default function ListPage() {
     }
   };
 
+  /**
+   * 並び替えオプションのリスト。
+   * label: ユーザーに表示する文字列
+   * sort: Mongoose の .sort() にそのまま渡せるオブジェクト (Record<string, 1 | -1>)
+   */
   const listSortItem = [
-    "酸味 昇順",
-    "酸味 降順",
-    "苦味 昇順",
-    "苦味 降順",
-    "コク 昇順",
-    "コク 降順",
-    "香り 昇順",
-    "香り 降順",
-    "キレ 昇順",
-    "キレ 降順",
-    "全体 昇順",
-    "全体 降順",
-    "作成日時 昇順",
-    "作成日時 降順",
-  ];
-  const handleSort = () => {};
-  // PC向けのレイアウト
+    { label: "酸味 昇順", sort: { acidity: 1 } },
+    { label: "酸味 降順", sort: { acidity: -1 } },
+    { label: "苦味 昇順", sort: { bitterness: 1 } },
+    { label: "苦味 降順", sort: { bitterness: -1 } },
+    { label: "コク 昇順", sort: { body: 1 } },
+    { label: "コク 降順", sort: { body: -1 } },
+    { label: "香り 昇順", sort: { aroma: 1 } },
+    { label: "香り 降順", sort: { aroma: -1 } },
+    { label: "キレ 昇順", sort: { sharpness: 1 } },
+    { label: "キレ 降順", sort: { sharpness: -1 } },
+    { label: "全体 昇順", sort: { overall: 1 } },
+    { label: "全体 降順", sort: { overall: -1 } },
+    { label: "作成日時 昇順", sort: { createdAt: 1 } },
+    { label: "作成日時 降順", sort: { createdAt: -1 } },
+  ] as const;
+
+  // ★ 修正点 2: handleSort の引数型を Record<string, 1 | -1> に修正
+  const handleSort = (itemSortObject: Record<string, 1 | -1>) => {
+    setSortObject(itemSortObject); // オブジェクトをStateに保存
+    setIsOpen(false); // ポップアップを閉じる
+  };
+
+  // PC向けのレイアウト (簡略化)
   const ListPcPage = () => {
     const pcCard = (record: CoffeeRecord) => {
       const isRecordChecked = checkedIds.includes(record.id ?? "");
@@ -214,14 +230,12 @@ export default function ListPage() {
 
   // タブレット向けのレイアウト
   const ListTabletPage = () => {
-    if (windowWidth < 960) {
-      return ListMobilePage();
-    } else {
-      return ListPcPage();
-    }
+    // タブレットのレイアウトはモバイルとPCの中間またはPCに準拠することが多いため、
+    // ここでは簡略化のため、PC/モバイルのいずれかにフォールバックさせます。
+    return windowWidth >= 960 ? <ListPcPage /> : <ListMobilePage />;
   };
 
-  // スマホ向けのレイアウト
+  // スマホ向けのレイアウト (簡略化)
   const ListMobilePage = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -285,10 +299,6 @@ export default function ListPage() {
     );
   };
 
-  // 確認のためのログ
-  useEffect(() => {
-    console.log("現在チェックされているIDリスト:", checkedIds);
-  }, [checkedIds]);
   // ウィンドウのリサイズイベントを監視
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -306,62 +316,51 @@ export default function ListPage() {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
-  // 確認のためのログ
-  useEffect(() => {
-    console.log("現在チェックされているIDリスト:", checkedIds);
-  }, [checkedIds]);
+
   useEffect(() => {
     setIsFadingIn(isOpen);
   }, [isOpen]);
 
-  // ✅ データ取得の例（実際のプロジェクトでは適切なAPIを呼び出し）
+  // ★ 修正点 3: データ取得の useEffect を一つに統合（古い空の依存配列のものは削除）
   useEffect(() => {
-    // ここで実際のデータを取得
-    const fetchData = async () => {
-      const records = await fetch(`/api/controllers?sort=${sortValue}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }).then((res) => res.json());
-      console.log("records", records.data);
-      return setLocalRecords(records.data);
-    };
-    fetchData();
-  }, []);
+    const handleFetchData = async () => {
+      // ソートオブジェクトをAPIに送信するためにJSON文字列に変換
+      const sortString = JSON.stringify(sortObject);
 
-  // useEffect(() => {
-  //   const handleSearch = async () => {
-  //     const request = await fetch(
-  //       `/api/controllers?data=${searchValue}`,
-  //       {
-  //         method: "GET",
-  //         headers: { "Content-Type": "application/json" },
-  //       }
-  //     );
-  //     const getData = await request.json();
+      try {
+        const response = await fetch(
+          `/api/controllers?search=${searchValue}&sort=${sortString}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
 
-  //     setLocalRecords(getData.data);
-
-  //     return;
-  //   };
-  //   handleSearch();
-  // }, [searchValue]);
-  useEffect(() => {
-    const handleSearch = async () => {
-      const request = await fetch(
-        `/api/controllers?search=${searchValue}&sort=${sortValue}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
+        // サーバーエラーの場合、JSONパースを避ける
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("API Error:", response.status, errorText);
+          // エラーが発生した場合はデータの更新を行わない
+          return;
         }
-      );
-      const getData = await request.json();
 
-      setLocalRecords(getData.data);
+        // JSONをパース
+        const getData = await response.json();
 
-      return;
+        // データが存在するか確認
+        if (getData.data) {
+          setLocalRecords(getData.data);
+        }
+      } catch (error) {
+        console.error("データ取得中にエラーが発生しました:", error);
+      }
     };
-    handleSearch();
-  }, [searchValue, sortValue]);
+
+    // マウント時と依存値が変更されたときに実行
+    handleFetchData();
+
+    // NOTE: checkedIdsのログ出力はデバッグ用であり、依存配列に入れると無駄なfetchを発生させるため除外
+  }, [searchValue, sortObject]); // searchValue または sortObject が変わったら再取得
 
   return (
     <div className={`${styles.listPageContents} ${styles.pageContents}`}>
@@ -393,9 +392,7 @@ export default function ListPage() {
           <div
             className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
             onClick={() => {
-              if (checkedIds) {
-                handleMultiDeleteClick(checkedIds);
-              }
+              handleMultiDeleteClick(checkedIds);
             }}
           >
             <MainButton
@@ -435,14 +432,14 @@ export default function ListPage() {
           <div className={styles.modalHeader}>並び替え基準を選択</div>
           <div className={styles.modalBody}>
             <ul className={styles.modalList}>
-              {listSortItem.map((item) => {
+              {listSortItem.map((item, index) => {
                 return (
                   <li
                     className={styles.modalListItem}
-                    key={item}
-                    onClick={handleSort}
+                    key={index}
+                    onClick={() => handleSort(item.sort)} // ★ オブジェクトを直接渡す
                   >
-                    {item}
+                    {item.label}
                   </li>
                 );
               })}

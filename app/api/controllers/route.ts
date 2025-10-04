@@ -1,7 +1,24 @@
-// app/api/controllers/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/utils/database";
 import { CoffeeModel } from "@/app/utils/schemaModels";
+
+// ソートパラメータをパースし、失敗時にデフォルト値を返すヘルパー関数
+const getParsedSort = (sortString: string | null) => {
+  // デフォルトは作成日時降順 (新しい順)
+  const defaultSort = { createdAt: -1 };
+
+  if (!sortString) {
+    return defaultSort;
+  }
+
+  try {
+    // JSON文字列をパース
+    return JSON.parse(sortString);
+  } catch (e) {
+    console.error("SortパラメータのJSONパースエラー:", e);
+    return defaultSort;
+  }
+};
 
 // GET - データの取得
 export async function GET(request: NextRequest) {
@@ -12,55 +29,54 @@ export async function GET(request: NextRequest) {
     const id = searchParams.get("id");
     const getSearch = searchParams.get("search");
     const getSort = searchParams.get("sort");
-    console.log("get", getSearch, getSort);
+
+    console.log("getSearch::getSort", getSearch, "::", getSort);
+
+    // 1. ID指定による単一レコード取得
     if (id) {
-      const coffeeRecord = await CoffeeModel.findOne({ id: id }).then(
-        (data) => {
-          return data;
-        }
-      );
+      const coffeeRecord = await CoffeeModel.findOne({ id: id });
 
       return NextResponse.json({
         success: true,
         data: coffeeRecord,
         message: "データの取得に成功しました",
       });
-    } else if (getSearch) {
-      console.log("getSearch", getSearch);
-      const searchCondition = new RegExp(getSearch, "i");
-      console.log("searchCondition", searchCondition);
-      const coffeeName = await CoffeeModel.find({
-        // ★ ここが OR 条件のための修正点
-        $or: [
-          // 条件 1: name が検索条件に当てはまる
-          { name: searchCondition },
-
-          // 条件 2: shopName が検索条件に当てはまる
-          { shopName: searchCondition },
-        ],
-      });
-
-      console.log("coffeeName", coffeeName);
-      // 結果をクライアントに返す
-      return NextResponse.json({ data: coffeeName });
-    } else if (getSort === "") {
-      console.log("ソートでーす");
-      const records = await CoffeeModel.find().then((data) => {
-        return data;
-      });
-
-      return NextResponse.json({
-        success: true,
-        data: records,
-        message: "データの取得に成功しました",
-      });
     }
+
+    // 2. 検索 (Search) または 全件取得の処理
+
+    // Mongooseのソートオブジェクトを取得
+    const sortObject = getParsedSort(getSort);
+
+    let findCondition = {};
+    if (getSearch && getSearch !== "") {
+      // 検索文字列が空でない場合
+      const searchCondition = new RegExp(getSearch, "i");
+      findCondition = {
+        $or: [{ name: searchCondition }, { shopName: searchCondition }],
+      };
+    }
+    // else: 検索文字列が空 ("") の場合、findCondition は {} のままとなり、全件検索になる
+
+    // 検索条件とソート条件を適用してデータを取得
+    const coffeeRecords = await CoffeeModel.find(findCondition).sort(
+      sortObject
+    );
+
+    return NextResponse.json({
+      success: true,
+      data: coffeeRecords,
+      message: "データの取得に成功しました",
+    });
   } catch (error) {
+    // 5. エラーハンドリング
     console.error("GET: データベースエラー:", error);
     const errorMessage =
       error instanceof Error ? error.message : "不明なエラーが発生しました";
+
+    // サーバーエラーが発生した場合は、500 ステータスコードとエラー情報を返す
     return NextResponse.json(
-      { error: "エラー", details: errorMessage }, // ✅ 型安全にエラーメッセージを取得
+      { error: "エラー", details: errorMessage },
       { status: 500 }
     );
   }
@@ -81,10 +97,10 @@ export async function POST(request: NextRequest) {
 
     // データの作成処理
     const newData = {
-      id: Date.now(),
+      id: Date.now().toString(), // MongooseのIDとは別に、クライアント側で利用するIDとして文字列化
       ...data,
       createdAt: new Date(),
-    }; // サンプルデータ
+    };
     await CoffeeModel.create(newData);
     return NextResponse.json(
       {
@@ -99,7 +115,7 @@ export async function POST(request: NextRequest) {
     const errorMessage =
       error instanceof Error ? error.message : "不明なエラーが発生しました";
     return NextResponse.json(
-      { error: "エラー", details: errorMessage }, // ✅ 型安全にエラーメッセージを取得
+      { error: "エラー", details: errorMessage },
       { status: 500 }
     );
   }
@@ -109,7 +125,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     await connectDB();
-    console.log("POST: データベースに接続しました");
+    console.log("PUT: データベースに接続しました");
 
     const body = await request.json();
     const { data } = body;
@@ -118,13 +134,12 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "データが必要です" }, { status: 400 });
     }
 
-    // データの作成処理
-
+    // データの更新処理
     const updataItem = await CoffeeModel.updateOne(
-      // 第1引数: _idのみで検索（一意のレコードを特定）
-      { _id: data._id },
+      // idフィールドで検索
+      { id: data.id },
 
-      // 第2引数: $set オペレーターを使い、data の内容をセット
+      // $set オペレーターを使い、data の内容をセット
       { $set: data }
     );
     return NextResponse.json(
@@ -140,7 +155,7 @@ export async function PUT(request: NextRequest) {
     const errorMessage =
       error instanceof Error ? error.message : "不明なエラーが発生しました";
     return NextResponse.json(
-      { error: "エラー", details: errorMessage }, // ✅ 型安全にエラーメッセージを取得
+      { error: "エラー", details: errorMessage },
       { status: 500 }
     );
   }
@@ -149,88 +164,73 @@ export async function PUT(request: NextRequest) {
 // DELETE - データの削除
 export async function DELETE(request: NextRequest) {
   try {
-    // 1. データベース接続
     await connectDB();
     console.log("DELETE: データベースに接続しました");
 
-    // 2. リクエストボディの解析とIDの抽出
     const body = await request.json();
-    const { id } = body; // 削除対象のID (例: プライマリキー)
+    const { id } = body;
 
-    let idsToDelete: string[]; // 最終的に処理するIDの配列
-
-    // 💡 Array.isArray() を使ってidが配列かどうかをチェックする
-    if (Array.isArray(id)) {
-      // id が配列の場合 (例: ['a', 'b'] または ['a'])
-      idsToDelete = id;
-      console.log("IDは配列として渡されました。件数:", idsToDelete.length);
-      const deleteResult = await CoffeeModel.deleteMany({
-        // _idフィールドの値が idsToDelete 配列に含まれているドキュメントをすべて削除
-        id: { $in: idsToDelete },
-      });
-
-      // deleteResult には、削除が成功したか、何件削除されたかの情報（deletedCount）が含まれます。
-      console.log(
-        `${deleteResult.deletedCount} 件のレコードが正常に削除されました。`
-      );
-
-      if (!deleteResult) {
-        // IDに一致するレコードが見つからなかった場合
-        return NextResponse.json(
-          {
-            success: false,
-            message: `ID: ${id} に一致するデータは見つかりませんでした`,
-          },
-          { status: 404 } // Not Found
-        );
-      }
-      // 4. 成功レスポンス
-      return NextResponse.json({
-        success: true,
-        data: deleteResult,
-        message: "データの削除に成功しました",
-      });
-    } else if (typeof id === "string") {
-      // id が単一の文字列の場合 (例: 'a')
-      // 処理を配列に統一するために、単一の値を要素とする配列に変換する
-
-      console.log("IDは単一の値として渡されました。");
-      const deletedRecord = await CoffeeModel.findOneAndDelete({ id: id });
-      if (!deletedRecord) {
-        // IDに一致するレコードが見つからなかった場合
-        return NextResponse.json(
-          {
-            success: false,
-            message: `ID: ${id} に一致するデータは見つかりませんでした`,
-          },
-          { status: 404 } // Not Found
-        );
-      }
-      // 4. 成功レスポンス
-      return NextResponse.json({
-        success: true,
-        data: deletedRecord,
-        message: "データの削除に成功しました",
-      });
-    } else {
-      // その他の予期しない型の場合
-      console.error("無効なID形式です:", id);
-      return;
-    }
-    if (!id) {
+    // ★ 修正点: IDが指定されていない場合のチェックを最初に行う
+    if (!id || (Array.isArray(id) && id.length === 0)) {
       return NextResponse.json(
         { success: false, message: "削除対象のIDが指定されていません" },
         { status: 400 } // Bad Request
       );
     }
 
-    // 3. データ削除の実行
-    // findOneAndDeleteは削除されたドキュメントを返します
+    if (Array.isArray(id)) {
+      // 💡 配列として渡された場合 (複数削除)
+      console.log("IDは配列として渡されました。件数:", id.length);
+      const deleteResult = await CoffeeModel.deleteMany({
+        // idフィールドの値が id 配列に含まれているドキュメントをすべて削除
+        id: { $in: id },
+      });
+
+      if (deleteResult.deletedCount === 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `データは見つかりませんでした`,
+          },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({
+        success: true,
+        data: deleteResult,
+        message: `${deleteResult.deletedCount} 件のデータ削除に成功しました`,
+      });
+    } else if (typeof id === "string") {
+      // 💡 単一の文字列として渡された場合 (単一削除)
+      console.log("IDは単一の値として渡されました:", id);
+      const deletedRecord = await CoffeeModel.findOneAndDelete({ id: id });
+
+      if (!deletedRecord) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `ID: ${id} に一致するデータは見つかりませんでした`,
+          },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({
+        success: true,
+        data: deletedRecord,
+        message: "データの削除に成功しました",
+      });
+    } else {
+      // 💡 予期しない型の場合
+      console.error("無効なID形式です:", id);
+      return NextResponse.json(
+        { success: false, message: "無効なID形式が指定されました" },
+        { status: 400 }
+      );
+    }
   } catch (error) {
     // 5. エラーハンドリング
     console.error("DELETE: データベースエラー:", error);
 
-    // エラーメッセージの抽出と500 Internal Server Error レスポンスの返却
     const errorMessage =
       error instanceof Error
         ? error.message
