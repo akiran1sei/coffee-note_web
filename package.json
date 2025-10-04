@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nivo/radar": "^0.99.0",
+    "@react-pdf/renderer": "^4.3.1",
     "@types/uuid": "^10.0.0",
     "@vercel/functions": "^3.1.0",
     "dotenv": "^17.2.2",
