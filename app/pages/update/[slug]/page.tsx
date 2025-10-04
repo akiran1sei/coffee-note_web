@@ -17,12 +17,18 @@ import ImageUploadComponent, {
 import { validateString, validateNumber } from "@/app/utils/validation";
 import { useRouter } from "next/navigation";
 // slugが単一の文字列の場合
+// Next.js App RouterのPropsの型を定義
 interface UpdatePageProps {
   params: {
     slug: string;
   };
+  // ★ 修正点: searchParams を追加する
+  // クエリパラメータ（例: ?foo=bar）を含み、必須ではない型として定義します。
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 }
-const UpdatePage = ({ params }: UpdatePageProps) => {
+const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
   // ウィンドウサイズの取得
   const { width } = useWindowSize();
   const router = useRouter();
