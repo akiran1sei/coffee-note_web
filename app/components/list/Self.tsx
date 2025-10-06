@@ -390,7 +390,7 @@ export const SelfPcCard: React.FC<CardProps> = ({
           <div className={styles.listItemLabel}>{"全体の好み"}</div>
           <div className={styles.listItemValue}>{value.overall}</div>
         </div>
-        <div className={`${styles.listItemChartBox} ${styles.chartImg}`}>
+        <div className={`${styles.itemChartImageBox} ${styles.chartImg}`}>
           <div className={styles.listItemChart}>
             <RadarChart value={value} />
           </div>

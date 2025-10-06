@@ -1,6 +1,6 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import React from "react";
-
+import styles from "@/app/styles/Form.module.css";
 interface TastingValue {
   acidity?: number;
   bitterness?: number;
@@ -26,7 +26,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ value }) => {
   ];
 
   return (
-    <div style={{ height: 250, width: 270 }}>
+    <div className={styles.radarChartBox}>
       <ResponsiveRadar
         data={data}
         keys={["score"]} // データセットのキー。データ配列の 'score' プロパティを使う。
