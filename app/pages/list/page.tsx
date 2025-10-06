@@ -8,7 +8,10 @@ import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
 import { CoffeeRecord } from "@/app/types/db";
-
+// import DownloadButton from "@/app/components/buttons/PDFDownloadButton";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDF_Contents } from "@/app/components/pdf/PDF_Contents";
+import PDFDownloadButton from "@/app/components/buttons/PDFDownloadButton";
 // NOTE: component imports assumed from user's context (e.g. "@/app/types/db")
 
 interface PageTitleProps {
@@ -29,7 +32,7 @@ export default function ListPage() {
   // ウィンドウ幅の状態を管理
   const [windowWidth, setWindowWidth] = useState(0);
   const [searchValue, setSearchValue] = useState("");
-
+  const [pdfValue, setPdfValue] = useState<CoffeeRecord[]>([]);
   // ★ 修正点 1: sortObject の型を Record<string, 1 | -1> に修正し、JSON文字列をStateから除外
   const [sortObject, setSortObject] = useState<Record<string, 1 | -1>>({
     createdAt: -1,
@@ -121,6 +124,53 @@ export default function ListPage() {
       } catch (error) {
         alert("レコードの削除に失敗しました。");
         console.error("複数削除エラー:", error);
+      }
+    }
+  };
+  const handleMultiPDFClick = async (idArray: string[]) => {
+    if (idArray.length === 0) {
+      alert("PDFダウンロード対象のIDが指定されていません。");
+      return;
+    }
+
+    // 最初のレコード名を表示用に取得
+    const recordToDelete = localRecords.find(
+      (record) => record.id === idArray[0]
+    );
+    const name = recordToDelete ? recordToDelete.name : "この記録";
+
+    // ユーザーにダウンロードの確認を求める
+    const isConfirmed = window.confirm(
+      `"${name}"を含む、合計${idArray.length}件の記録をダウンロードしてもよろしいですか？`
+    );
+
+    if (isConfirmed) {
+      try {
+        const response = await fetch(`/api/pdf?id=${idArray}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+        setPdfValue(data.data);
+        // if (response.ok) {
+        //   // 💡 ローカルの状態から「idArrayに含まれるすべてのID」を削除
+        //   setLocalRecords((prev) =>
+        //     prev.filter((record) => !idArray.includes(record.id))
+        //   );
+        //   // チェックリストをクリア
+        //   setCheckedIds([]);
+        //   alert("複数レコードが正常にダウンロードされました。");
+        // } else {
+        //   alert(
+        //     `レコードのダウンロードクライアント1に失敗しました: ${
+        //       data.message || "Unknown error"
+        //     }`
+        //   );
+        // }
+      } catch (error) {
+        alert("レコードのダウンロードクライアン2に失敗しました。");
+        console.error("複数ダウンロードエラー:", error);
       }
     }
   };
@@ -402,13 +452,22 @@ export default function ListPage() {
               widthValue="widthNearlyFull"
             />
           </div>
-          <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
-            <MainButton
-              sizeValue="large"
-              textValue="チェックPDF"
-              buttonColor="btn-success"
-              widthValue="widthNearlyFull"
-            />
+          <div
+            className={`${styles.buttonContent} ${styles.pdfButtonContent}`}
+            onClick={() => {
+              handleMultiPDFClick(checkedIds);
+            }}
+          >
+            <PDFDownloadButton value={pdfValue} />
+
+            {/* <PDFDownloadLink
+              document={<PDF_Contents coffees={pdfValue} />}
+              fileName="my_report.pdf" // ダウンロード時のファイル名
+            >
+              {({ loading }) =>
+                loading ? "PDFを準備中..." : "PDFをダウンロード"
+              }
+            </PDFDownloadLink> */}
           </div>
         </div>
       </div>
