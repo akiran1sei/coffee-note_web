@@ -11,7 +11,7 @@ import RadarChart from "./RadarChart";
 interface CardProps {
   value: Partial<CoffeeRecord>;
   onClickDelete: (id: string) => void;
-  onClickDownload: (id: string) => void;
+
   onCheckboxChange: (data: { id: string; isChecked: boolean }) => void;
   isChecked: boolean;
 }
@@ -19,7 +19,6 @@ interface CardProps {
 export const ShopMobileCard: React.FC<CardProps> = ({
   value,
   onClickDelete,
-  onClickDownload,
   onCheckboxChange,
   isChecked,
 }) => {
@@ -171,14 +170,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({
             />
           </Link>
         </div>
-        <div
-          className={`${styles.buttonContent} ${styles.pdfButtonContent}`}
-          onClick={() => {
-            if (value.id) {
-              onClickDownload(value.id);
-            }
-          }}
-        >
+        <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
           <MainButton
             sizeValue="large"
             textValue="PDFへダウンロード"
@@ -194,7 +186,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({
 export const ShopPcCard: React.FC<CardProps> = ({
   value,
   onClickDelete,
-  onClickDownload,
+
   onCheckboxChange,
   isChecked,
 }) => {
@@ -423,14 +415,7 @@ export const ShopPcCard: React.FC<CardProps> = ({
             />
           </Link>
         </div>
-        <div
-          className={`${styles.buttonContent} ${styles.pdfButtonContent}`}
-          onClick={() => {
-            if (value.id) {
-              onClickDownload(value.id);
-            }
-          }}
-        >
+        <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
           <MainButton
             sizeValue="large"
             textValue="PDFへダウンロード"

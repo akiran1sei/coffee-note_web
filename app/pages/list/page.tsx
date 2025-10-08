@@ -141,32 +141,7 @@ export default function ListPage() {
     },
     []
   );
-  const handleDownloadClick = async (id: string) => {
-    const recordToDownload = localRecords.find((record) => record.id === id);
-    if (!recordToDownload) return;
 
-    // ユーザーにダウンロードの確認を求める
-    const isConfirmed = window.confirm(
-      `"${
-        recordToDownload.name || "この記録"
-      }"をダウンロードしてもよろしいですか？`
-    );
-
-    if (isConfirmed) {
-      try {
-        const response = await fetch(`/api/controllers?id=${id}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        const data = await response.json();
-        console.log("GET response data:", data.data);
-      } catch (error) {
-        alert("レコードのダウンロードに失敗しました。");
-        console.error("単一ダウンロードエラー:", error);
-      }
-    }
-  };
   const getLayout = () => {
     if (windowWidth >= 960) {
       return <ListPcPage />;
@@ -228,7 +203,6 @@ export default function ListPage() {
         <ShopPcCard
           value={record}
           onClickDelete={handleDeleteClick}
-          onClickDownload={handleDownloadClick}
           onCheckboxChange={handleCheckboxChange}
           isChecked={isRecordChecked}
         />
@@ -295,7 +269,6 @@ export default function ListPage() {
         <ShopMobileCard
           value={record}
           onClickDelete={handleDeleteClick}
-          onClickDownload={handleDownloadClick}
           onCheckboxChange={handleCheckboxChange}
           isChecked={isRecordChecked}
         />
