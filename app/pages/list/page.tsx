@@ -8,7 +8,7 @@ import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
 import { CoffeeRecord } from "@/app/types/db";
-
+import PdfDownloadButton from "@/app/components/buttons/PDFDownloadButton";
 interface PageTitleProps {
   listItemValue: string;
 }
@@ -406,7 +406,7 @@ export default function ListPage() {
               // handleMultiPDFClick(checkedIds);
             }}
           >
-            {/* <PDFDownloadButton value={pdfValue} /> */}
+            <PdfDownloadButton />
           </div>
         </div>
       </div>
