@@ -4,14 +4,14 @@ import styles from "@/app/styles/Pages.module.css";
 import React, { useEffect, useState } from "react";
 import { CoffeeRecord } from "@/app/types/db";
 import Image from "next/image";
-import { MainButton } from "@/app/components/buttons/Buttons";
+import { MainButton, MainLinkButton } from "@/app/components/buttons/Buttons";
 import Link from "next/link";
 import RadarChart from "./RadarChart";
 
 interface CardProps {
   value: Partial<CoffeeRecord>;
   onClickDelete: (id: string) => void;
-
+  onClickDownload: (value: Partial<CoffeeRecord>) => void;
   onCheckboxChange: (data: { id: string; isChecked: boolean }) => void;
   isChecked: boolean;
 }
@@ -19,6 +19,7 @@ interface CardProps {
 export const ShopMobileCard: React.FC<CardProps> = ({
   value,
   onClickDelete,
+  onClickDownload,
   onCheckboxChange,
   isChecked,
 }) => {
@@ -144,13 +145,13 @@ export const ShopMobileCard: React.FC<CardProps> = ({
       <div className={`${styles.listButtonContainer}`}>
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
-          onClick={() => {
-            if (value.id) {
-              onClickDelete(value.id);
-            }
-          }}
         >
           <MainButton
+            onClick={() => {
+              if (value.id) {
+                onClickDelete(value.id);
+              }
+            }}
             sizeValue="large"
             textValue="削除"
             buttonColor="btn-danger"
@@ -158,17 +159,13 @@ export const ShopMobileCard: React.FC<CardProps> = ({
           />
         </div>
         <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
-          <Link
-            href={`/pages/update/${value.id}`}
-            className={styles.listItemLink}
-          >
-            <MainButton
-              sizeValue="large"
-              textValue="編集"
-              buttonColor="btn-main"
-              widthValue="widthNearlyFull"
-            />
-          </Link>
+          <MainLinkButton
+            sizeValue={"large"}
+            textValue={"編集"}
+            urlValue={`/pages/update/${value.id}`}
+            buttonColor={"btn-main"}
+            widthValue={"widthNearlyFull"}
+          />
         </div>
         <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
           <MainButton
@@ -176,6 +173,11 @@ export const ShopMobileCard: React.FC<CardProps> = ({
             textValue="PDFへダウンロード"
             buttonColor="btn-success"
             widthValue="widthNearlyFull"
+            onClick={() => {
+              if (value.id) {
+                onClickDownload(value);
+              }
+            }}
           />
         </div>
       </div>
@@ -186,7 +188,7 @@ export const ShopMobileCard: React.FC<CardProps> = ({
 export const ShopPcCard: React.FC<CardProps> = ({
   value,
   onClickDelete,
-
+  onClickDownload,
   onCheckboxChange,
   isChecked,
 }) => {
@@ -389,13 +391,13 @@ export const ShopPcCard: React.FC<CardProps> = ({
       >
         <div
           className={`${styles.buttonContent} ${styles.deleteButtonContent}`}
-          onClick={() => {
-            if (value.id) {
-              onClickDelete(value.id);
-            }
-          }}
         >
           <MainButton
+            onClick={() => {
+              if (value.id) {
+                onClickDelete(value.id);
+              }
+            }}
             sizeValue="large"
             textValue="削除"
             buttonColor="btn-danger"
@@ -403,17 +405,13 @@ export const ShopPcCard: React.FC<CardProps> = ({
           />
         </div>
         <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
-          <Link
-            href={`/pages/update/${value.id}`}
-            className={styles.listItemLink}
-          >
-            <MainButton
-              sizeValue="large"
-              textValue="編集"
-              buttonColor="btn-main"
-              widthValue="widthNearlyFull"
-            />
-          </Link>
+          <MainLinkButton
+            sizeValue={"large"}
+            textValue={"編集"}
+            urlValue={`/pages/update/${value.id}`}
+            buttonColor={"btn-main"}
+            widthValue={"widthNearlyFull"}
+          />
         </div>
         <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
           <MainButton
@@ -421,6 +419,7 @@ export const ShopPcCard: React.FC<CardProps> = ({
             textValue="PDFへダウンロード"
             buttonColor="btn-success"
             widthValue="widthNearlyFull"
+            onClick={() => onClickDownload(value)}
           />
         </div>
       </div>

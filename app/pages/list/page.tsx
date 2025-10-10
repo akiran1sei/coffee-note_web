@@ -8,7 +8,7 @@ import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
 import { CoffeeRecord } from "@/app/types/db";
-import PdfDownloadButton from "@/app/components/buttons/PDFDownloadButton";
+import { PdfDownloadButton } from "@/app/components/buttons/PDFDownloadButton";
 interface PageTitleProps {
   listItemValue: string;
 }
@@ -33,11 +33,27 @@ export default function ListPage() {
     createdAt: -1,
   });
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [isFadingIn, setIsFadingIn] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isPdfOpen, setIsPdfOpen] = useState(false);
+  const [isSortFadingIn, setIsSortFadingIn] = useState(false);
+  const [isPdfFadingIn, setIsPdfFadingIn] = useState(false);
 
   // NOTE: window.confirm/alert は、動作環境によっては表示されないため、
   // 実際のプロダクションコードではカスタムモーダルを使用してください。
+  const handleSortPopup = () => {
+    try {
+      setIsSortOpen(!isSortOpen);
+    } catch (error) {
+      console.error("エラーです。", error);
+    }
+  };
+  const handlePdfPopup = () => {
+    try {
+      setIsPdfOpen(!isPdfOpen);
+    } catch (error) {
+      console.error("エラーです。", error);
+    }
+  };
 
   const handleDeleteClick = async (id: string) => {
     const recordToDelete = localRecords.find((record) => record.id === id);
@@ -71,6 +87,39 @@ export default function ListPage() {
       } catch (error) {
         alert("レコードの削除に失敗しました。");
         console.error("単一削除エラー:", error);
+      }
+    }
+  };
+
+  const handleDownloadClick = async (value: Partial<CoffeeRecord>) => {
+    // ...
+    // id が undefined の可能性があるため、ここでチェックが必要です
+    if (!value.id) {
+      console.error("IDが欠落しています");
+      return;
+    }
+    const response = await fetch(`/api/controllers?id=${value.id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await response.json();
+    console.log("GET response data:", [data.data]);
+    setPdfValue([data.data]);
+    const isConfirmed = window.confirm(
+      `"${value.name || "この記録"}"をダウンロードしてもよろしいですか？`
+    );
+
+    const pdf_value = async () => {
+      await handlePdfPopup();
+    };
+    if (isConfirmed) {
+      try {
+        await pdf_value();
+        return;
+      } catch (error) {
+        alert("レコードのダウンロードに失敗しました。");
+        console.error("単一ダウンロードエラー:", error);
       }
     }
   };
@@ -152,14 +201,6 @@ export default function ListPage() {
     }
   };
 
-  const handlePopup = () => {
-    try {
-      setIsOpen(!isOpen);
-    } catch (error) {
-      console.error("エラーです。", error);
-    }
-  };
-
   /**
    * 並び替えオプションのリスト。
    * label: ユーザーに表示する文字列
@@ -185,7 +226,7 @@ export default function ListPage() {
   // ★ 修正点 2: handleSort の引数型を Record<string, 1 | -1> に修正
   const handleSort = (itemSortObject: Record<string, 1 | -1>) => {
     setSortObject(itemSortObject); // オブジェクトをStateに保存
-    setIsOpen(false); // ポップアップを閉じる
+    setIsSortOpen(false); // ポップアップを閉じる
   };
 
   // PC向けのレイアウト (簡略化)
@@ -196,6 +237,7 @@ export default function ListPage() {
         <SelfPcCard
           value={record}
           onClickDelete={handleDeleteClick}
+          onClickDownload={handleDownloadClick}
           onCheckboxChange={handleCheckboxChange}
           isChecked={isRecordChecked}
         />
@@ -203,6 +245,7 @@ export default function ListPage() {
         <ShopPcCard
           value={record}
           onClickDelete={handleDeleteClick}
+          onClickDownload={handleDownloadClick}
           onCheckboxChange={handleCheckboxChange}
           isChecked={isRecordChecked}
         />
@@ -262,6 +305,7 @@ export default function ListPage() {
         <SelfMobileCard
           value={record}
           onClickDelete={handleDeleteClick}
+          onClickDownload={handleDownloadClick}
           onCheckboxChange={handleCheckboxChange}
           isChecked={isRecordChecked}
         />
@@ -269,6 +313,7 @@ export default function ListPage() {
         <ShopMobileCard
           value={record}
           onClickDelete={handleDeleteClick}
+          onClickDownload={handleDownloadClick}
           onCheckboxChange={handleCheckboxChange}
           isChecked={isRecordChecked}
         />
@@ -316,8 +361,11 @@ export default function ListPage() {
   }, []);
 
   useEffect(() => {
-    setIsFadingIn(isOpen);
-  }, [isOpen]);
+    setIsSortFadingIn(isSortOpen);
+  }, [isSortOpen]);
+  useEffect(() => {
+    setIsPdfFadingIn(isPdfOpen);
+  }, [isPdfOpen]);
 
   // ★ 修正点 3: データ取得の useEffect を一つに統合（古い空の依存配列のものは削除）
   useEffect(() => {
@@ -397,22 +445,25 @@ export default function ListPage() {
               sizeValue="large"
               textValue="チェック削除"
               buttonColor="btn-danger"
-              widthValue="widthNearlyFull"
+              widthValue="widthAuto"
             />
           </div>
           <div
             className={`${styles.buttonContent} ${styles.pdfButtonContent}`}
-            onClick={() => {
-              // handleMultiPDFClick(checkedIds);
-            }}
+            onClick={handlePdfPopup}
           >
-            <PdfDownloadButton />
+            <MainButton
+              sizeValue="large"
+              textValue="PDFダウンロード"
+              buttonColor="btn-secondary"
+              widthValue="widthAuto"
+            />
           </div>
         </div>
       </div>
       <div
         className={`${styles.buttonContent} ${styles.sortButtonContent}`}
-        onClick={handlePopup}
+        onClick={handleSortPopup}
       >
         <MainButton
           sizeValue="small"
@@ -422,8 +473,8 @@ export default function ListPage() {
         />
       </div>
       <div
-        className={`${styles.modal} ${
-          !isFadingIn ? styles.fade_out : styles.fade_in
+        className={`${styles.modal} ${styles.modalSort} ${
+          !isSortFadingIn ? styles.fade_out : styles.fade_in
         }`}
       >
         <div className={styles.modalContent}>
@@ -445,7 +496,35 @@ export default function ListPage() {
           </div>
           <div
             className={`${styles.modalFooter} ${styles.modalClose}`}
-            onClick={handlePopup}
+            onClick={handleSortPopup}
+          >
+            <IconButton
+              value="close"
+              iconWidth="iconMd"
+              buttonColor="btn-secondary"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className={`${styles.modal} ${styles.modalPdf} ${
+          !isPdfFadingIn ? styles.fade_out : styles.fade_in
+        }`}
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.modalHeader}>PDFダウンロード</div>
+          <div className={styles.modalBody}>
+            <div className={`${styles.buttonContent}`}>
+              {pdfValue ? (
+                <PdfDownloadButton pdfValue={pdfValue[0]} />
+              ) : (
+                <p>データを読み込み中...</p>
+              )}
+            </div>
+          </div>
+          <div
+            className={`${styles.modalFooter} ${styles.modalClose}`}
+            onClick={handlePdfPopup}
           >
             <IconButton
               value="close"
