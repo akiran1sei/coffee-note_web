@@ -4,8 +4,20 @@
 * normalize.css のインポートと、HTML要素のベーススタイルを定義します。
 * =============================================
 */
-@import "normalize.css/normalize.css";
 
+@import "normalize.css/normalize.css";
+@font-face {
+  font-family: "NotoSansJP"; /* 任意の名前 */
+  src: url("/font/NotoSansJP-VariableFont_wght.ttf") format("truetype"); /* ファイルパスはpublicディレクトリからの相対パス */
+  font-weight: 100 900; /* Variable Font の場合はこのように設定 */
+  font-display: swap; /* フォントのロードを待つ設定 */
+}
+@font-face {
+  font-family: "Caveat"; /* 任意の名前 */
+  src: url("/font/Caveat-VariableFont_wght.ttf") format("truetype"); /* ファイルパスはpublicディレクトリからの相対パス */
+  font-weight: 100 900; /* Variable Font の場合はこのように設定 */
+  font-display: swap; /* フォントのロードを待つ設定 */
+}
 html {
   box-sizing: border-box;
   text-size-adjust: 100%;
@@ -90,6 +102,10 @@ html {
   /* image */
   --item-image-width: 100px;
   --item-image-height: 100px;
+
+  /* pdfSize */
+  --pdf-size-width: 200mm;
+  --pdf-size-height: 287mm;
 }
 
 /*
