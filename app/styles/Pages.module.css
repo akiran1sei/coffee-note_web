@@ -356,7 +356,8 @@
 .listButtonContainer .buttonContent.deleteButtonContent,
 .listButtonContainer .buttonContent.editButtonContent,
 .listButtonContainer .buttonContent.pdfButtonContent {
-  width: 100%;
+  /* width: 100%; */
+  width: auto;
   margin: var(--spacing-sm);
 }
 

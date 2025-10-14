@@ -1,6 +1,7 @@
 import styles from "@/app/styles/Button.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import React, { type PropsWithChildren } from "react";
 // アイコンコンポーネントの記述方法
 /*    <IconButton 
           value="search" //アイコンの値 →”src={`/images/${value}.svg`}”
@@ -108,11 +109,12 @@ export const LinkIconButton: React.FC<IconButtonType> = ({
  />
 */
 
-interface MainButtonType {
-  onClick?: () => void; // オプションでクリックイベントを受け取る
+interface MainButtonType extends PropsWithChildren {
+  // interface MainButtonType {
+  onClick?: () => void | Promise<void>;
   type?: "button" | "submit" | "reset"; // `type`プロパティをオプションとして追加
   sizeValue: string; //large & middle & small
-  textValue: string; // 表示したいテキスト
+  // textValue: string; // 表示したいテキスト
   buttonColor: string; // buttonColor: "btn-primary" | "btn-secondary" | "btn-success" | "btn-warning" | "btn-danger";
   widthValue: string; // width: "widthAuto" | "widthNearlyFull";
   disabled?: boolean; // ← 追加
@@ -123,11 +125,11 @@ export const MainButton: React.FC<MainButtonType> = ({
   onClick,
   type = "button",
   sizeValue,
-  textValue,
   buttonColor,
   widthValue,
   disabled,
   style,
+  children,
 }) => {
   if (sizeValue === "large") {
     return (
@@ -138,7 +140,7 @@ export const MainButton: React.FC<MainButtonType> = ({
         disabled={disabled}
         style={style}
       >
-        <span className={styles.buttonText}>{textValue}</span>
+        <span className={styles.buttonText}>{children}</span>
       </button>
     );
   } else if (sizeValue === "middle") {
@@ -150,7 +152,7 @@ export const MainButton: React.FC<MainButtonType> = ({
         disabled={disabled}
         style={style}
       >
-        <span className={styles.buttonText}>{textValue}</span>
+        <span className={styles.buttonText}>{children}</span>
       </button>
     );
   } else if (sizeValue === "small") {
@@ -162,78 +164,81 @@ export const MainButton: React.FC<MainButtonType> = ({
         disabled={disabled}
         style={style}
       >
-        <span className={styles.buttonText}>{textValue}</span>
+        <span className={styles.buttonText}>{children}</span>
       </button>
     );
   }
 };
+
 /*
  MainLinkButtonコンポーネントの作成サンプル
   <MainLinkButton
-    sizeValue="large" ボタンのサイズ （large & middle & small）
-    textValue="編集" ボタンに表示するテキスト
-    buttonColor="btn-warning" ボタンの色（buttonColor: "btn-primary" | "btn-secondary" | "btn-success" | "btn-warning" | "btn-danger";）
-    urlValue={`/pages/${value}`} 遷移先のURL
-    widthValue="widthAuto" ボタンの幅（widthValue: "widthAuto" | "width100";）
-  />;
+    sizeValue="large" 
+        buttonColor="btn-warning"
+    urlValue={`/pages/${value}`}
+    widthValue="widthAuto"
+  >編集</MainLinkButton>;
 */
-interface MainLinkButtonType {
+// 修正1: MainLinkButtonType に PropsWithChildren を適用し、textValue を削除
+interface MainLinkButtonType extends PropsWithChildren {
   sizeValue: string;
-  textValue: string;
   urlValue: string;
   buttonColor: string;
   widthValue: string;
 }
 export const MainLinkButton: React.FC<MainLinkButtonType> = ({
   sizeValue,
-  textValue,
+  // textValue, // ← 削除
   urlValue,
   buttonColor,
   widthValue,
+  children, // children を受け取る
 }) => {
   if (sizeValue === "large") {
     return (
       <Link
         href={`${urlValue}`}
-        className={`${styles.mainButton} ${styles.buttonShadow} ${styles.largeButton} ${styles[buttonColor]} ${styles[widthValue]}`}
+        className={`${styles.mainButton} ${styles.buttonShadow} ${styles.largeButton} ${styles[buttonColor]} ${styles[widthValue]} ${styles.buttonText}`}
         passHref
       >
-        <span className={styles.buttonText}>{textValue}</span>
+        {children}
       </Link>
     );
   } else if (sizeValue === "middle") {
     return (
       <Link
         href={`${urlValue}`}
-        className={`${styles.mainButton} ${styles.buttonShadow} ${styles.middleButton} ${styles[buttonColor]} ${styles[widthValue]}`}
+        className={`${styles.mainButton} ${styles.buttonShadow} ${styles.middleButton} ${styles[buttonColor]} ${styles[widthValue]} ${styles.buttonText}`}
         passHref
       >
-        <span className={styles.buttonText}>{textValue}</span>
+        {children}
       </Link>
     );
   } else if (sizeValue === "small") {
     return (
       <Link
         href={`${urlValue}`}
-        className={`${styles.mainButton} ${styles.buttonShadow} ${styles.smallButton} ${styles[buttonColor]} ${styles[widthValue]}`}
+        className={`${styles.mainButton} ${styles.buttonShadow} ${styles.smallButton} ${styles[buttonColor]} ${styles[widthValue]} ${styles.buttonText}`}
         passHref
       >
-        <span className={styles.buttonText}>{textValue}</span>
+        {children}
       </Link>
     );
   }
 };
-interface OnClickButtonType {
+
+interface OnClickButtonType extends PropsWithChildren {
   onClick: () => void;
-  textValue: string;
+  textValue: string; // ← アイコンファイル名連動のため残す
   buttonColor: string;
   iconWidth: string;
 }
 export const OnClickButton: React.FC<OnClickButtonType> = ({
   onClick,
-  textValue,
+  textValue, // textValue は残す
   buttonColor,
   iconWidth,
+  children, // children は受け取るが、今回は使用しない（またはデバッグ用として残す）
 }) => {
   return (
     <button
@@ -243,12 +248,14 @@ export const OnClickButton: React.FC<OnClickButtonType> = ({
     >
       <span className={`${styles.iconWrapper} ${styles[iconWidth]}`}>
         <Image
+          // textValue をファイル名に使用（元のロジックを維持）
           src={`/images/${textValue}.png`}
           alt={`${textValue} Icon`}
           width={50}
           height={50}
         />
       </span>
+
       <span className={styles.srOnly}>{textValue}ボタン</span>
     </button>
   );

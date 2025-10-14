@@ -153,32 +153,35 @@ export const ShopMobileCard: React.FC<CardProps> = ({
               }
             }}
             sizeValue="large"
-            textValue="削除"
             buttonColor="btn-danger"
-            widthValue="widthNearlyFull"
-          />
+            widthValue="widthAuto"
+          >
+            削除
+          </MainButton>
         </div>
         <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
           <MainLinkButton
             sizeValue={"large"}
-            textValue={"編集"}
             urlValue={`/pages/update/${value.id}`}
             buttonColor={"btn-main"}
-            widthValue={"widthNearlyFull"}
-          />
+            widthValue={"widthAuto"}
+          >
+            編集
+          </MainLinkButton>
         </div>
         <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
           <MainButton
             sizeValue="large"
-            textValue="PDFへダウンロード"
             buttonColor="btn-success"
-            widthValue="widthNearlyFull"
+            widthValue="widthAuto"
             onClick={() => {
               if (value.id) {
                 onClickDownload(value);
               }
             }}
-          />
+          >
+            PDFへダウンロード
+          </MainButton>
         </div>
       </div>
     </div>
@@ -399,28 +402,31 @@ export const ShopPcCard: React.FC<CardProps> = ({
               }
             }}
             sizeValue="large"
-            textValue="削除"
             buttonColor="btn-danger"
-            widthValue="widthNearlyFull"
-          />
+            widthValue="widthAuto"
+          >
+            削除
+          </MainButton>
         </div>
         <div className={`${styles.buttonContent} ${styles.editButtonContent}`}>
           <MainLinkButton
             sizeValue={"large"}
-            textValue={"編集"}
             urlValue={`/pages/update/${value.id}`}
             buttonColor={"btn-main"}
-            widthValue={"widthNearlyFull"}
-          />
+            widthValue={"widthAuto"}
+          >
+            編集
+          </MainLinkButton>
         </div>
         <div className={`${styles.buttonContent} ${styles.pdfButtonContent}`}>
           <MainButton
             sizeValue="large"
-            textValue="PDFへダウンロード"
             buttonColor="btn-success"
-            widthValue="widthNearlyFull"
+            widthValue="widthAuto"
             onClick={() => onClickDownload(value)}
-          />
+          >
+            PDFへダウンロード
+          </MainButton>
         </div>
       </div>
     </div>

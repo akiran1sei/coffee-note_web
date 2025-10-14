@@ -107,6 +107,7 @@
 
 .buttonText {
   color: var(--color-text-light);
+  line-height: normal;
 }
 
 .scrollButtonWrapper {

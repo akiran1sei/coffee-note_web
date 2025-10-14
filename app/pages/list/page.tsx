@@ -443,10 +443,11 @@ export default function ListPage() {
           >
             <MainButton
               sizeValue="large"
-              textValue="チェック削除"
               buttonColor="btn-danger"
               widthValue="widthAuto"
-            />
+            >
+              チェック削除
+            </MainButton>
           </div>
           <div
             className={`${styles.buttonContent} ${styles.pdfButtonContent}`}
@@ -454,10 +455,11 @@ export default function ListPage() {
           >
             <MainButton
               sizeValue="large"
-              textValue="PDFダウンロード"
-              buttonColor="btn-secondary"
+              buttonColor="btn-success"
               widthValue="widthAuto"
-            />
+            >
+              PDFダウンロード
+            </MainButton>
           </div>
         </div>
       </div>
@@ -467,10 +469,11 @@ export default function ListPage() {
       >
         <MainButton
           sizeValue="small"
-          textValue="並び替え"
           buttonColor="btn-secondary"
           widthValue="widthAuto"
-        />
+        >
+          並び替え
+        </MainButton>
       </div>
       <div
         className={`${styles.modal} ${styles.modalSort} ${

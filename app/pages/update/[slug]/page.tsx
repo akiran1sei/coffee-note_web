@@ -401,10 +401,9 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
               <MainButton
                 onClick={handleVersion}
                 sizeValue="large"
-                textValue={`Switch to ${verText} Ver.`}
                 buttonColor="btn-success"
                 widthValue="widthNearlyFull"
-              />
+              >{`Switch to ${verText} Ver.`}</MainButton>
             </div>
           ) : (
             <div
@@ -413,10 +412,9 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
               <MainButton
                 onClick={handleVersion}
                 sizeValue="large"
-                textValue={`Switch to ${verText} Ver.`}
                 buttonColor="btn-success"
                 widthValue="widthAuto"
-              />
+              >{`Switch to ${verText} Ver.`}</MainButton>
             </div>
           )}
 
@@ -489,20 +487,22 @@ const UpdatePage = ({ params, searchParams }: UpdatePageProps) => {
               <MainButton
                 type="submit"
                 sizeValue="large"
-                textValue="保存"
                 buttonColor="btn-success"
                 widthValue="widthAuto"
-              />
+              >
+                保存
+              </MainButton>
 
               <MainButton
                 type="button"
                 onClick={handleReset}
                 sizeValue="large"
-                textValue="リセット"
                 buttonColor="btn-secondary"
                 widthValue="widthAuto"
                 style={{ marginLeft: "10px" }}
-              />
+              >
+                リセット
+              </MainButton>
             </div>
           </form>
         </div>

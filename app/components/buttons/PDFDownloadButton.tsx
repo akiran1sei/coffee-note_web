@@ -45,10 +45,20 @@ export const PdfDownloadButton: React.FC<pdfValueProps> = ({ pdfValue }) => {
       console.error("PDF生成エラー:", error);
     }
   };
-
   return (
     <div>
-      <button
+      {/* 修正1: MainButtonを使用する (あるいはそのままのbuttonを使う場合はMainButtonのimportを削除) */}
+
+      <MainButton
+        onClick={handleDownload}
+        sizeValue="large" // ← 必須プロパティは追加する必要があります
+        buttonColor="btn-primary" // ← 必須プロパティ
+        widthValue="widthNearlyFull" // ← 必須プロパティ
+      >
+        PDFをダウンロード!
+      </MainButton>
+      {/* -------------------------------------------------------- */}
+      {/* <button
         onClick={handleDownload}
         // Tailwindを使わないシンプルなボタンのスタイル
         style={{
@@ -60,19 +70,19 @@ export const PdfDownloadButton: React.FC<pdfValueProps> = ({ pdfValue }) => {
           cursor: "pointer",
         }}
       >
-        PDFをダウンロード
-      </button>
-      {/* <MainButton */}
-
+        PDFをダウンロード!
+      </button> */}
       {/* -------------------------------------------------------- */}
       {/* ★ PDFに出力したいコンテンツ本体 ★ */}
       {/* -------------------------------------------------------- */}
       <div
         ref={contentRef}
-        // 普段は画面に表示しない（生成時のみ使用）
+        // 修正2: 画面に表示しない設定を適用
+        // display: "none" はhtml2pdf.jsで問題を起こす場合があるため、より確実な方法として非表示スタイルを適用
         style={{
-          // display: "none",
-          // PDFのサイズとマージンを意識したコンテナスタイル
+          position: "absolute",
+          left: "-9999px", // 画面外に移動
+          // display: "none", // こちらでも動作する可能性あり
           width: "210mm",
           padding: "10mm",
           boxSizing: "border-box",
@@ -81,9 +91,30 @@ export const PdfDownloadButton: React.FC<pdfValueProps> = ({ pdfValue }) => {
         }}
       >
         {/* PDFレイアウトのヘッダー */}
-
+        <h1>コーヒーレポート</h1> {/* 例として追加 */}
         {/* メインコンテンツ */}
-        {pdfValue ? <p> {pdfValue.name}</p> : <p>データを読み込み中...</p>}
+        {pdfValue ? (
+          <>
+            <p
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                marginBottom: "20px",
+                color: "#333",
+              }}
+            >
+              豆の名前: {pdfValue.name}
+            </p>
+            {/* ★★★ この部分に、CoffeeRecordの他のプロパティをすべて追加する ★★★ */}
+            <p>あきら</p>
+            <p>生産地: {pdfValue.productionArea}</p>
+            {/* CoffeeRecordにあると仮定 */}
+            <p>焙煎度: {pdfValue.roastingDegree}</p>
+            {/* CoffeeRecordにあると仮定 */}
+          </>
+        ) : (
+          <p>データを読み込み中...</p>
+        )}
       </div>
     </div>
   );
