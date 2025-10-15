@@ -1,6 +1,6 @@
 // app/api/export/pdf/[id]/route.ts
 
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server"; // ★ NextRequestをインポート
 import connectDB from "@/app/utils/database";
 import { CoffeeModel } from "@/app/utils/schemaModels";
 import path from "path";
@@ -10,11 +10,11 @@ import ejs from "ejs";
 import puppeteer, { Browser } from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
-// GET関数の引数の型定義: Next.js App Routerの標準的な形式
-// ★ 修正点: context全体ではなく、分割代入と同時にparamsに型を適用します。
+// GET関数の引数の型定義: Next.jsの型システムに厳密に合わせるために NextRequest を使用します。
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } } // ★ この形式が Next.js App Router の推奨パターンです
+  req: NextRequest, // ★ Request の代わりに NextRequest を使用
+  // 以前の形式（標準推奨パターン）に戻します。これでエラーが解消するはずです。
+  { params }: { params: { id: string } }
 ) {
   let browser: Browser | null = null;
 
@@ -32,13 +32,13 @@ export async function GET(
       args: chromium.args,
       executablePath: await chromium.executablePath(),
       headless: true, // サーバーレス環境向けに true に固定
-      // defaultViewport は chromium.defaultViewport が args に含まれるため省略
     });
 
     // 2. データベース接続とデータ取得
     await connectDB();
 
     // _id が jsonData のいずれかに含まれるドキュメントを検索
+    // $in は配列を受け取るため、id.split(",") で得た配列を渡すのは正しいです。
     const data = await CoffeeModel.find({ _id: { $in: jsonData } });
 
     // ユーザー名を取得 (既存ロジックを維持)
@@ -79,7 +79,7 @@ export async function GET(
       timeout: 30000,
     });
 
-    // 5. レスポンスとしてPDFを返す (Buffer.from は必須ではないが、安全のため残します)
+    // 5. レスポンスとしてPDFを返す
     return new Response(Buffer.from(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
