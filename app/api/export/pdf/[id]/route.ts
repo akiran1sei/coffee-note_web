@@ -14,7 +14,8 @@ import chromium from "@sparticuz/chromium";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  // { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   let browser: Browser | null = null;
 
@@ -29,11 +30,10 @@ export async function GET(
     // 2. データベース接続とデータ取得
     await connectDB();
 
-    // params.id は "id1,id2,id3" のような文字列
-    const jsonData = params.id.split(",");
+    const { id } = context.params;
 
-    // _id が jsonData のいずれかに含まれるドキュメントを検索
-    const data = await CoffeeModel.find({ _id: { $in: jsonData } });
+    // _id が id のいずれかに含まれるドキュメントを検索
+    const data = await CoffeeModel.find({ _id: { $in: [id] } });
 
     // ユーザー名を取得 (既存ロジックを維持)
     const username = data.length > 0 ? data[0].username : "";
