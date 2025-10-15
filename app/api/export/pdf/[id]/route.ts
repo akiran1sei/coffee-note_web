@@ -33,7 +33,7 @@ export async function GET(
     const username = data.length > 0 ? data[0].username : "report";
 
     // 4️⃣ テンプレートパスを絶対パス化
-    const templatePath = path.resolve("/app/components/pdf/page.ejs");
+    const templatePath = path.resolve("public/templates/page.ejs");
 
     const html = await ejs.renderFile(templatePath, { data, username });
 
