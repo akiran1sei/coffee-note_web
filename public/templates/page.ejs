@@ -2,144 +2,191 @@
 <html>
 
 <head>
-  <title>コーヒー評価結果 (コーヒーノート)</title>
-  <meta charset="UTF-8">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
-
+  <title>コーヒー評価結果レポート</title>
+  <meta charset="UTF-8"><!-- Puppeteerでフォントが正しく表示されるように、Google Fontsのリンクを修正しました -->
+  <link rel="preconnect" href="https://www.google.com/search?q=https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://www.google.com/search?q=https://fonts.gstatic.com" crossorigin>
+  <link href="https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DNoto%2BSans%2BJP:wght%40400%3B700%26display%3Dswap" rel="stylesheet">
   <style>
-    /* style */
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 30px;
+      color: #333333;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 10pt;
+      /* PDF出力に適したフォントサイズ */
+    }
+
+    .report-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 18pt;
+      border-bottom: 3px solid #6c5ce7;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    .header p {
+      font-size: 12pt;
+      margin-top: 10px;
+      color: #6c5ce7;
+    }
+
+    .data-table-section {
+      margin-bottom: 30px;
+    }
+
+    .data-table-section h2 {
+      font-size: 14pt;
+      border-left: 5px solid #6c5ce7;
+      padding-left: 10px;
+      margin-bottom: 15px;
+      color: #444;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+      word-break: break-word;
+      /* 長いURLなどに対応 */
+    }
+
+    .data-table th {
+      background-color: #f0f0f8;
+      /* ヘッダーの色を少し変えました */
+      font-weight: bold;
+      color: #333;
+      font-size: 10pt;
+    }
+
+    .data-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    /* メモやURLなど、詳細な情報を表示するためのレイアウト */
+    .detail-table th {
+      width: 25%;
+    }
   </style>
 </head>
 
 <body>
-  <% data.forEach((evaluation, index) => { %>
-  <% if (index === 0 || index % 5 === 0) {%>
-  <header>
-    <h2>COFFEE NOTE</h2>
-    <p><%= evaluation.name %>の評価結果</p>
-    <% } %>
+  <div class="report-container">
+    <div class="header">
+      <!-- filenameBase (nameフィールド) を username として EJSに渡しています -->
+      <h1>コーヒー評価レポート ( <%= username %> )</h1>
+      <p>全データ詳細一覧</p>
+    </div><% if (data && data.length > 0) { %><% data.forEach(function(item) { %><div class="data-table-section">
+      <h2>ID: <%= item.id %> | コーヒー名: <%= item.name %></h2> <!-- テーブル1: 基本情報とテイスティング評価 -->
+      <h3 style="font-size: 12pt; margin-top: 20px; color: #6c5ce7;">基本情報・テイスティング評価</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>品種</th>
+            <th>産地</th>
+            <th>焙煎度</th>
+            <th>酸味 (1-5)</th>
+            <th>苦味 (1-5)</th>
+            <th>コク (1-5)</th>
+            <th>アロマ (1-5)</th>
+            <th>キレ (1-5)</th>
+            <th>全体の好み (1-5)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= item.variety %></td>
+            <td><%= item.productionArea %></td>
+            <td><%= item.roastingDegree %></td>
+            <td><%= item.acidity %></td>
+            <td><%= item.bitterness %></td>
+            <td><%= item.body %></td>
+            <td><%= item.aroma %></td>
+            <td><%= item.aftertaste %></td>
+            <td><%= item.overall %></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <main>
-      <div>
-        <div>
-          <div>
+      <!-- テーブル2: 抽出データと店舗情報 -->
+      <h3 style="font-size: 12pt; margin-top: 30px; color: #6c5ce7;">抽出データ・店舗情報</h3>
+      <table class="data-table detail-table">
+        <tbody>
+          <tr>
+            <th>抽出方法</th>
+            <td><%= item.extractionMethod %></td>
+            <th>抽出器具</th>
+            <td><%= item.extractionMaker %></td>
+          </tr>
+          <tr>
+            <th>挽き目</th>
+            <td><%= item.grindSize %></td>
+            <th>計測方法</th>
+            <td><%= item.measurementMethod %></td>
+          </tr>
+          <tr>
+            <th>温度（℃）</th>
+            <td><%= item.temperature %></td>
+            <th>抽出時間</th>
+            <td><%= item.extractionTime %></td>
+          </tr>
+          <tr>
+            <th>粉量（ｇ）</th>
+            <td><%= item.coffeeAmount %></td>
+            <th>湯量（ｇ）</th>
+            <td><%= item.waterAmount %></td>
+          </tr>
+          <tr>
+            <th>**お店/自宅**</th>
+            <td><%= item.self %></td>
+            <th>飲んだ日付</th>
+            <!-- shopDateはDateオブジェクトの可能性があるため、toDateStringで整形 -->
+            <td><%= item.shopDate ? new Date(item.shopDate).toLocaleDateString('ja-JP') : '' %></td>
+          </tr>
+          <tr>
+            <th>店名</th>
+            <td><%= item.shopName %></td>
+            <th>店の価格（円）</th>
+            <td><%= item.shopPrice %></td>
+          </tr>
+          <tr>
+            <th>店の住所</th>
+            <td><%= item.shopAddress %></td>
+            <th>店のURL</th>
+            <td><%= item.shopUrl %></td>
+          </tr>
+          <tr>
+            <th>メモ</th>
+            <td colspan="3"><%= item.memo %></td>
+          </tr>
+          <tr>
+            <th>画像URL</th>
+            <td colspan="3"><%= item.imageUri %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-
-            <div>
-
-
-              <div>
-                <div>
-                  <div> <%= index + 1 %> </div>
-                </div>
-
-                <div>
-                  <div>
-                    <div>COFFEE INFO</div>
-                    <div>
-                      <p><strong>名称 (Name):</strong> <%= evaluation.name %></p>
-                      <p><strong>品種 (Variety):</strong> <%= evaluation.variety %></p>
-                      <p><strong>産地 (Area):</strong> <%= evaluation.productionArea %></p>
-                      <p><strong>焙煎度 (Roast):</strong> <%= evaluation.roastingDegree %></p>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    <div>EXTRACTION METHOD</div>
-                    <div>
-                      <p><strong>方法:</strong> <%= evaluation.extractionMethod %></p>
-                      <p><strong>器具:</strong> <%= evaluation.extractionMaker %></p>
-                      <p><strong>挽き目:</strong> <%= evaluation.grindSize %></p>
-                      <p><strong>計測方法:</strong> <%= evaluation.measurementMethod %></p>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    <div>RECIPE</div>
-                    <div>
-                      <p><strong>温度:</strong> <%= evaluation.temperature %>℃</p>
-                      <p><strong>粉量:</strong> <%= evaluation.coffeeAmount %> g</p>
-                      <p><strong>湯量:</strong> <%= evaluation.waterAmount %> g</p>
-                      <p><strong>抽出時間:</strong> <%= evaluation.extractionTime %> s</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    <div>SENSORY RATING (1-5)</div>
-                    <div>
-                      <p><strong>酸味 (Acidity):</strong> <%= evaluation.acidity %></p>
-                      <p><strong>苦味 (Bitterness):</strong> <%= evaluation.bitterness %></p>
-                      <p><strong>コク (Body):</strong> <%= evaluation.body %></p>
-                      <p><strong>香り (Aroma):</strong> <%= evaluation.aroma %></p>
-                      <p><strong>キレ (Aftertaste):</strong> <%= evaluation.aftertaste %></p>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    <div>OVERALL</div>
-                    <div>
-                      <div>
-                        <img src="<%= evaluation.imageUri %>" alt="<%= evaluation.imageAlt %>" style="max-width: 100px; max-height: 100px;">
-                      </div>
-                      <p><strong>全体の好み (Overall):</strong> <%= evaluation.overall %></p>
-                    </div>
-                  </div>
-                </div>
-
-                <% if (evaluation.self === 'shop') { %>
-                <div>
-                  <div>
-                    <div>SHOP INFO (お店で飲んだ場合)</div>
-                    <div>
-                      <p><strong>店名:</strong> <%= evaluation.shopName %></p>
-                      <p><strong>価格:</strong> <%= evaluation.shopPrice %> 円</p>
-                      <p><strong>飲んだ日付:</strong> <%= evaluation.shopDate.toLocaleDateString() %></p>
-                      <p><strong>住所:</strong> <%= evaluation.shopAddress %></p>
-                      <p><strong>URL:</strong> <a href="<%= evaluation.shopUrl %>"><%= evaluation.shopUrl %></a></p>
-                    </div>
-                  </div>
-                </div>
-                <% } else { %>
-                <div>
-                  <div>
-                    <div>TYPE</div>
-                    <div>
-                      <p><strong>自己評価 (Self-Brewed)</strong></p>
-                    </div>
-                  </div>
-                </div>
-                <% } %>
-
-                <div>
-                  <div>
-                    <div>MEMO</div>
-                    <div><%= evaluation.memo %></div>
-                  </div>
-                </div>
-
-              </div>
-
-              <% }); %>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-      </div>
-      </div>
-    </main>
-
+    <!-- ページ区切りを追加 -->
+    <div style="page-break-after: always;"></div>
+    <% }); %><% } else { %><p style="text-align: center; color: red; margin-top: 50px;">データが見つかりませんでした。IDが正しいか確認してください。</p><% } %>
+  </div>
 </body>
 
 </html>
