@@ -4,7 +4,7 @@
 <head>
   <title>コーヒー評価結果レポート</title>
   <meta charset="UTF-8"><!-- Puppeteerでフォントが正しく表示されるように、Google Fontsのリンクを修正しました -->
-  <!-- URLがGoogle Searchになっていたのを元の正しいフォントURLに修正しました -->
+  <!-- Google Searchのリンクにエンコードされていたのを、標準のGoogle Fonts URLに修正 -->
   <link rel="preconnect" href="https://www.google.com/search?q=https://fonts.googleapis.com">
   <link rel="preconnect" href="https://www.google.com/search?q=https://fonts.gstatic.com" crossorigin>
   <link href="https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DNoto%2BSans%2BJP:wght%40400%3B700%26display%3Dswap" rel="stylesheet">
@@ -89,7 +89,7 @@
 
 <body>
   <div class="report-container">
-    <div class="header"><%// dataがある場合にのみヘッダーにコーヒー名を表示// reportNameの定義をここに入れ、確実に実行されるようにしますconst reportName = (data && data.length > 0) ? data[0].name : "抽出データ";%><h1>コーヒー評価レポート ( <%= reportName %> )</h1>
+    <div class="header"><%// EJSパースエラーを防ぐため、変数定義をクリーンな状態にしますconst reportName = (data && data.length > 0) ? data[0].name : "抽出データ";%><h1>コーヒー評価レポート ( <%= reportName %> )</h1>
       <p>全データ詳細一覧</p>
     </div><% if (data && data.length > 0) { %><% data.forEach(function(item) { %><div class="data-table-section">
       <h2>ID: <%= item.id %> | コーヒー名: <%= item.name %></h2><!-- テーブル1: 基本情報とテイスティング評価 -->
