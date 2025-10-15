@@ -4,6 +4,7 @@
 <head>
   <title>コーヒー評価結果レポート</title>
   <meta charset="UTF-8"><!-- Puppeteerでフォントが正しく表示されるように、Google Fontsのリンクを修正しました -->
+  <!-- URLがGoogle Searchになっていたのを元の正しいフォントURLに修正しました -->
   <link rel="preconnect" href="https://www.google.com/search?q=https://fonts.googleapis.com">
   <link rel="preconnect" href="https://www.google.com/search?q=https://fonts.gstatic.com" crossorigin>
   <link href="https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DNoto%2BSans%2BJP:wght%40400%3B700%26display%3Dswap" rel="stylesheet">
@@ -88,8 +89,7 @@
 
 <body>
   <div class="report-container">
-    <div class="header">
-      <!-- 修正: username変数は渡されないため、直接data[0].nameを参照して表示します --><%// dataがある場合にのみヘッダーにコーヒー名を表示const reportName = (data && data.length > 0) ? data[0].name : "抽出データ";%><h1>コーヒー評価レポート ( <%= reportName %> )</h1>
+    <div class="header"><%// dataがある場合にのみヘッダーにコーヒー名を表示// reportNameの定義をここに入れ、確実に実行されるようにしますconst reportName = (data && data.length > 0) ? data[0].name : "抽出データ";%><h1>コーヒー評価レポート ( <%= reportName %> )</h1>
       <p>全データ詳細一覧</p>
     </div><% if (data && data.length > 0) { %><% data.forEach(function(item) { %><div class="data-table-section">
       <h2>ID: <%= item.id %> | コーヒー名: <%= item.name %></h2><!-- テーブル1: 基本情報とテイスティング評価 -->
@@ -121,9 +121,7 @@
             <td><%= item.overall %></td>
           </tr>
         </tbody>
-      </table>
-
-      <!-- テーブル2: 抽出データと店舗情報 -->
+      </table><!-- テーブル2: 抽出データと店舗情報 -->
       <h3 style="font-size: 12pt; margin-top: 30px; color: #6c5ce7;">抽出データ・店舗情報</h3>
       <table class="data-table detail-table">
         <tbody>
@@ -152,10 +150,9 @@
             <td><%= item.waterAmount %></td>
           </tr>
           <tr>
-            <th>**お店/自宅**</th>
+            <th>お店/自宅</th>
             <td><%= item.self %></td>
-            <th>飲んだ日付</th>
-            <!-- shopDateはDateオブジェクトの可能性があるため、toLocaleDateStringで整形 -->
+            <th>飲んだ日付</th><!-- shopDateはDateオブジェクトの可能性があるため、toLocaleDateStringで整形 -->
             <td><%= item.shopDate ? new Date(item.shopDate).toLocaleDateString('ja-JP') : '' %></td>
           </tr>
           <tr>
