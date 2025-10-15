@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>コーヒー評価結果 (コーヒーノート)</title>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+  <style>
+    /* style */
+  </style>
+</head>
+
+<body>
+  <% data.forEach((evaluation, index) => { %>
+  <% if (index === 0 || index % 5 === 0) {%>
+  <header>
+    <div>
+      <ul>
+        <li>
+          <span><%= data[index].name %></span>
+          <span>TASTER</span>
+        </li>
+        <li>
+          <span><%= evaluation.id %></span>
+          <span>ID #</span>
+        </li>
+        <li>
+          <span><%= evaluation.createdAt.toLocaleDateString() %></span>
+          <span>CREATED DATE</span>
+        </li>
+        <li>
+          <span></span>
+          <span>ROUND</span>
+        </li>
+        <div>
+          <span></span>
+          <span>SN</span>
+        </div>
+        <li>
+          <span></span>
+          <span>TLB#</span>
+        </li>
+        <li>
+          <span><%= evaluation.productionArea %></span>
+          <span>COUNTRY/AREA</span>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <% } %>
+
+  <main>
+    <div>
+      <div>
+        <div>
+
+
+          <div>
+
+
+            <div>
+              <div>
+                <div> <%= index + 1 %> </div>
+              </div>
+
+              <div>
+                <div>
+                  <div>COFFEE INFO</div>
+                  <div>
+                    <p><strong>名称 (Name):</strong> <%= evaluation.name %></p>
+                    <p><strong>品種 (Variety):</strong> <%= evaluation.variety %></p>
+                    <p><strong>産地 (Area):</strong> <%= evaluation.productionArea %></p>
+                    <p><strong>焙煎度 (Roast):</strong> <%= evaluation.roastingDegree %></p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <div>EXTRACTION METHOD</div>
+                  <div>
+                    <p><strong>方法:</strong> <%= evaluation.extractionMethod %></p>
+                    <p><strong>器具:</strong> <%= evaluation.extractionMaker %></p>
+                    <p><strong>挽き目:</strong> <%= evaluation.grindSize %></p>
+                    <p><strong>計測方法:</strong> <%= evaluation.measurementMethod %></p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <div>RECIPE</div>
+                  <div>
+                    <p><strong>温度:</strong> <%= evaluation.temperature %>℃</p>
+                    <p><strong>粉量:</strong> <%= evaluation.coffeeAmount %> g</p>
+                    <p><strong>湯量:</strong> <%= evaluation.waterAmount %> g</p>
+                    <p><strong>抽出時間:</strong> <%= evaluation.extractionTime %> s</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <div>SENSORY RATING (1-5)</div>
+                  <div>
+                    <p><strong>酸味 (Acidity):</strong> <%= evaluation.acidity %></p>
+                    <p><strong>苦味 (Bitterness):</strong> <%= evaluation.bitterness %></p>
+                    <p><strong>コク (Body):</strong> <%= evaluation.body %></p>
+                    <p><strong>香り (Aroma):</strong> <%= evaluation.aroma %></p>
+                    <p><strong>キレ (Aftertaste):</strong> <%= evaluation.aftertaste %></p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <div>OVERALL</div>
+                  <div>
+                    <div>
+                      <img src="<%= evaluation.imageUri %>" alt="<%= evaluation.imageAlt %>" style="max-width: 100px; max-height: 100px;">
+                    </div>
+                    <p><strong>全体の好み (Overall):</strong> <%= evaluation.overall %></p>
+                  </div>
+                </div>
+              </div>
+
+              <% if (evaluation.self === 'shop') { %>
+              <div>
+                <div>
+                  <div>SHOP INFO (お店で飲んだ場合)</div>
+                  <div>
+                    <p><strong>店名:</strong> <%= evaluation.shopName %></p>
+                    <p><strong>価格:</strong> <%= evaluation.shopPrice %> 円</p>
+                    <p><strong>飲んだ日付:</strong> <%= evaluation.shopDate.toLocaleDateString() %></p>
+                    <p><strong>住所:</strong> <%= evaluation.shopAddress %></p>
+                    <p><strong>URL:</strong> <a href="<%= evaluation.shopUrl %>"><%= evaluation.shopUrl %></a></p>
+                  </div>
+                </div>
+              </div>
+              <% } else { %>
+              <div>
+                <div>
+                  <div>TYPE</div>
+                  <div>
+                    <p><strong>自己評価 (Self-Brewed)</strong></p>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+
+              <div>
+                <div>
+                  <div>MEMO</div>
+                  <div><%= evaluation.memo %></div>
+                </div>
+              </div>
+
+            </div>
+
+            <% }); %>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    </div>
+    </div>
+  </main>
+
+</body>
+
+</html>
