@@ -11,13 +11,11 @@ import puppeteer, { Browser } from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
 // URLパラメータの型定義 (Next.js App Router)
-interface Params {
-  params: {
-    id: string; // カンマ区切りのID文字列
-  };
-}
 
-export async function GET(req: Request, { params }: Params) {
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   let browser: Browser | null = null;
 
   try {
