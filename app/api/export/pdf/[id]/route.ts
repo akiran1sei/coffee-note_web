@@ -30,12 +30,12 @@ export async function GET(
     await connectDB();
 
     const data = await CoffeeModel.find({ id: { $in: jsonData } });
-    const username = data.length > 0 ? data[0].username : "report";
+    const name = data.length > 0 ? data[0].name : "report";
 
     // 4️⃣ テンプレートパスを絶対パス化
     const templatePath = path.resolve("public/templates/page.ejs");
 
-    const html = await ejs.renderFile(templatePath, { data, username });
+    const html = await ejs.renderFile(templatePath, { data, name });
 
     // 5️⃣ PDF生成
     const page = await browser.newPage();
@@ -51,7 +51,7 @@ export async function GET(
     return new Response(Buffer.from(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${username}_report_${Date.now()}.pdf"`,
+        "Content-Disposition": `attachment; filename="${name}_report_${Date.now()}.pdf"`,
       },
     });
   } catch (error) {
