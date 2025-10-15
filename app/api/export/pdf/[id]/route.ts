@@ -8,40 +8,39 @@ import chromium from "@sparticuz/chromium";
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ id: string }> } // ★ Next.js 15ではPromise型
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await context.params; // ★ Promiseをawaitで解決
+  const { id } = await context.params;
   const jsonData = id.split(",");
   let browser: Browser | null = null;
 
   try {
-    // Puppeteer起動
+    // 1️⃣ Chromiumパスのフォールバック
+    const executablePath =
+      (await chromium.executablePath()) || "/usr/bin/chromium-browser";
+
+    // 2️⃣ Puppeteer起動（sandboxオフで安定）
     browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
+      executablePath,
       headless: true,
     });
 
-    // DB接続とデータ取得
+    // 3️⃣ DB接続
     await connectDB();
+
     const data = await CoffeeModel.find({ _id: { $in: jsonData } });
     const username = data.length > 0 ? data[0].username : "report";
 
-    // EJSテンプレートのレンダリング
-    const html = await new Promise<string>((resolve, reject) => {
-      ejs.renderFile(
-        path.join(process.cwd(), "/src/app/components/molecules/page.ejs"),
-        { data, username },
-        (err, str) => {
-          if (err) reject(err);
-          else resolve(str);
-        }
-      );
-    });
+    // 4️⃣ テンプレートパスを絶対パス化
+    const templatePath = path.resolve("src/app/components/molecules/page.ejs");
 
-    // PDF生成
+    const html = await ejs.renderFile(templatePath, { data, username });
+
+    // 5️⃣ PDF生成
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0" });
+
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -49,7 +48,6 @@ export async function GET(
       timeout: 30000,
     });
 
-    // PDFをレスポンスとして返す
     return new Response(Buffer.from(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
@@ -59,19 +57,12 @@ export async function GET(
   } catch (error) {
     console.error("PDF作成中にエラー:", error);
 
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "予期しないエラーが発生しました。";
+    const message =
+      error instanceof Error ? error.message : "不明なエラーが発生しました。";
 
     return NextResponse.json(
       {
-        message:
-          errorMessage.includes("Network") || errorMessage.includes("timeout")
-            ? "PDFのレンダリング中にネットワークまたはタイムアウトエラーが発生しました。"
-            : errorMessage.includes("no such file")
-            ? "EJSテンプレートファイルが見つかりません。"
-            : "システムエラーが発生しました。管理者にお問い合わせください。",
+        message: `PDF生成中にエラー: ${message}`,
         status: 500,
       },
       { status: 500 }
