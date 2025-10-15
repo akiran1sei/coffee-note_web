@@ -8,26 +8,26 @@ import chromium from "@sparticuz/chromium";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } } // ← ここで params を context 経由にする
+  context: { params: Promise<{ id: string }> } // ★ Next.js 15ではPromise型
 ) {
+  const { id } = await context.params; // ★ Promiseをawaitで解決
+  const jsonData = id.split(",");
   let browser: Browser | null = null;
 
-  // context から params.id を取り出す
-  const { id } = context.params;
-
-  const jsonData = id.split(",");
-
   try {
+    // Puppeteer起動
     browser = await puppeteer.launch({
       args: chromium.args,
       executablePath: await chromium.executablePath(),
       headless: true,
     });
 
+    // DB接続とデータ取得
     await connectDB();
     const data = await CoffeeModel.find({ _id: { $in: jsonData } });
     const username = data.length > 0 ? data[0].username : "report";
 
+    // EJSテンプレートのレンダリング
     const html = await new Promise<string>((resolve, reject) => {
       ejs.renderFile(
         path.join(process.cwd(), "/src/app/components/molecules/page.ejs"),
@@ -39,9 +39,9 @@ export async function GET(
       );
     });
 
+    // PDF生成
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0" });
-
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -49,6 +49,7 @@ export async function GET(
       timeout: 30000,
     });
 
+    // PDFをレスポンスとして返す
     return new Response(Buffer.from(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
@@ -57,6 +58,7 @@ export async function GET(
     });
   } catch (error) {
     console.error("PDF作成中にエラー:", error);
+
     const errorMessage =
       error instanceof Error
         ? error.message
