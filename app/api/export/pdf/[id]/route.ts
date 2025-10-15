@@ -29,7 +29,7 @@ export async function GET(
     // 3️⃣ DB接続
     await connectDB();
 
-    const data = await CoffeeModel.find({ _id: { $in: jsonData } });
+    const data = await CoffeeModel.find({ id: { $in: jsonData } });
     const username = data.length > 0 ? data[0].username : "report";
 
     // 4️⃣ テンプレートパスを絶対パス化
