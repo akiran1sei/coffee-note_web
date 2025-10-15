@@ -1,66 +1,81 @@
 // PdfDownloadButton.tsx (Client Component: 'use client' が必要)
 "use client";
 import styles from "/app/styles/PDF.module.css";
-import { useRef, useState } from "react"; // useState を追加
+import { useState } from "react"; // useRef は不要になるため削除
 import { MainButton } from "./Buttons";
 import { CoffeeRecord } from "@/app/types/db";
 
+// PDFコンテンツの参照（contentRef）は不要になるため削除
+// interface pdfValueProps は、IDをAPIに渡すために必要
 interface pdfValueProps {
-  pdfValue: CoffeeRecord;
+  pdfValue: CoffeeRecord; // CoffeeRecordからIDを取得
 }
 
 export const PdfDownloadButton: React.FC<pdfValueProps> = ({ pdfValue }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
+  // contentRef は削除
   const [isGenerating, setIsGenerating] = useState(false); // 1. 生成状態を管理
 
+  // APIルートに渡すIDを生成 (ここでは単一のレコードを想定)
+  const recordId = pdfValue ? pdfValue.id : null;
+
   const handleDownload = async () => {
-    if (!contentRef.current) {
-      console.error("PDFコンテンツの参照が見つかりません。");
+    // IDが取得できない場合はエラー処理
+    if (!recordId) {
+      console.error("PDF生成に必要なレコードIDが見つかりません。");
+      alert("PDF生成に必要なデータがありません。");
       return;
     }
 
     setIsGenerating(true); // 2. 生成開始時に表示を ON にする
-    console.log("PDF生成を開始します。参照要素:", contentRef.current);
+    console.log(`PDF生成APIを呼び出します: /api/export/pdf/${recordId}`);
 
-    // DOMが更新されるのを待つために、わずかな遅延を入れる（レンダリング待ち）
-    await new Promise((resolve) => setTimeout(resolve, 50));
-
+    // ★★★ サーバーサイドAPIを呼び出すロジックに置き換え ★★★
     try {
-      const { default: html2pdf } = await import("html2pdf.js");
-
-      // const options = {
-      //   margin: 10,
-      //   filename: `coffee_report.pdf`,
-      //   image: { type: "jpeg" as const, quality: 0.98 },
-      //   html2canvas: {
-      //     scale: 2,
-      //     useCORS: true,
-      //   },
-      //   jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      // };
-      const options = {
-        margin: 0,
-        filename: `coffee_report.pdf`,
-        image: { type: "jpeg" as const, quality: 0.98 },
-
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          foreignObject: "disabled",
-          // ★ 追加: セキュリティ上の制約を緩和し、キャプチャを試みる
-          allowTaint: true,
-          logging: true, // コンソールにログが出力されるか確認用
+      // データをAPIルートにフェッチ
+      const response = await fetch(`/api/export/pdf/${recordId}`, {
+        method: "GET",
+        // Next.js App RouterのAPIルートには通常不要だが、念のためキャッシュ制御を設定
+        headers: {
+          "Cache-Control": "no-store",
         },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      };
+        cache: "no-store",
+      });
 
-      await html2pdf().from(contentRef.current).set(options).save();
+      if (!response.ok) {
+        // API側でエラーメッセージがJSONで返される可能性があるため、それを取得
+        const errorText = await response.text();
+        throw new Error(
+          `サーバーエラー: ${response.status} ${response.statusText} - ${errorText}`
+        );
+      }
+
+      // 成功した場合、レスポンスをBlobとして受け取る
+      const blob = await response.blob();
+
+      // ダウンロード処理
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+
+      // ファイル名はAPIのContent-Dispositionヘッダーに依存するが、フォールバックとして設定
+      link.download = `coffee_report_${Date.now()}.pdf`;
+      link.style.display = "none";
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      console.log("PDFのダウンロードを開始しました。");
     } catch (error) {
       console.error("PDF生成エラー:", error);
+      alert(`PDF生成に失敗しました: ${(error as Error).message.split("-")[0]}`);
     } finally {
       setIsGenerating(false); // 3. 生成完了後（またはエラー後）に非表示に戻す
     }
   };
+  // ★★★ ----------------------------------------- ★★★
 
   return (
     <div className={styles.pdfWrapper}>
@@ -76,32 +91,17 @@ export const PdfDownloadButton: React.FC<pdfValueProps> = ({ pdfValue }) => {
         </MainButton>
       </div>
       {/* -------------------------------------------------------- */}
-      {/* ★ PDFに出力したいコンテンツ本体 ★ */}
+      {/* ★ PDFに出力したいコンテンツ本体（クライアントサイドの表示用）★ */}
       {/* -------------------------------------------------------- */}
       <div className={styles.pdfBody}>
-        <div ref={contentRef} className={styles.pdfContainer}>
+        {/* Puppeteer方式では、contentRefとそれ以下のDOMはAPIに渡されません。 */}
+        {/* ここは**ブラウザ表示専用**になります。 */}
+        <div className={styles.pdfContainer}>
           {/* PDFレイアウトのヘッダー */}
           <h1 className={styles.pdfHeader}>コーヒーレポート</h1>
           {/* メインコンテンツ */}
-          {/* {pdfValue ? (
-          <>
-            <p
-              style={{
-                fontSize: "24px",
-                fontWeight: "bold",
-                marginBottom: "20px",
-                color: "#333",
-              }}
-            >
-              豆の名前: {pdfValue.name}
-            </p>
-            <p>生産地: {pdfValue.productionArea}</p>
-            <p>焙煎度: {pdfValue.roastingDegree}</p>
-          </>
-        ) : (
-          <p>データを読み込み中...</p>
-        )} */}
-          <p className={styles.pdfText}>テストデータ</p>
+          {/* サーバーサイドのEJSテンプレートでレンダリングされる内容とは**別物**です */}
+          <p className={styles.pdfText}>テストデータ（ブラウザ表示用）</p>
         </div>
       </div>
     </div>
