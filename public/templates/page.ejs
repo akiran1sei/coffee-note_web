@@ -89,11 +89,10 @@
 <body>
   <div class="report-container">
     <div class="header">
-      <!-- filenameBase (nameフィールド) を username として EJSに渡しています -->
-      <h1>コーヒー評価レポート ( <%= username %> )</h1>
+      <!-- 修正: username変数は渡されないため、直接data[0].nameを参照して表示します --><%// dataがある場合にのみヘッダーにコーヒー名を表示const reportName = (data && data.length > 0) ? data[0].name : "抽出データ";%><h1>コーヒー評価レポート ( <%= reportName %> )</h1>
       <p>全データ詳細一覧</p>
     </div><% if (data && data.length > 0) { %><% data.forEach(function(item) { %><div class="data-table-section">
-      <h2>ID: <%= item.id %> | コーヒー名: <%= item.name %></h2> <!-- テーブル1: 基本情報とテイスティング評価 -->
+      <h2>ID: <%= item.id %> | コーヒー名: <%= item.name %></h2><!-- テーブル1: 基本情報とテイスティング評価 -->
       <h3 style="font-size: 12pt; margin-top: 20px; color: #6c5ce7;">基本情報・テイスティング評価</h3>
       <table class="data-table">
         <thead>
@@ -156,7 +155,7 @@
             <th>**お店/自宅**</th>
             <td><%= item.self %></td>
             <th>飲んだ日付</th>
-            <!-- shopDateはDateオブジェクトの可能性があるため、toDateStringで整形 -->
+            <!-- shopDateはDateオブジェクトの可能性があるため、toLocaleDateStringで整形 -->
             <td><%= item.shopDate ? new Date(item.shopDate).toLocaleDateString('ja-JP') : '' %></td>
           </tr>
           <tr>
@@ -181,11 +180,8 @@
           </tr>
         </tbody>
       </table>
-    </div>
-
-    <!-- ページ区切りを追加 -->
-    <div style="page-break-after: always;"></div>
-    <% }); %><% } else { %><p style="text-align: center; color: red; margin-top: 50px;">データが見つかりませんでした。IDが正しいか確認してください。</p><% } %>
+    </div><!-- ページ区切りを追加 -->
+    <div style="page-break-after: always;"></div><% }); %><% } else { %><p style="text-align: center; color: red; margin-top: 50px;">データが見つかりませんでした。IDが正しいか確認してください。</p><% } %>
   </div>
 </body>
 
