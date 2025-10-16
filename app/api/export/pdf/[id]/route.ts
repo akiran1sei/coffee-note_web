@@ -22,7 +22,12 @@ export async function GET(
 
     // 2️⃣ Puppeteer起動（sandboxオフで安定）
     browser = await puppeteer.launch({
-      args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
+      args: [
+        ...chromium.args,
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--single-process", // メモリが限られた環境で安定性を向上
+      ],
       executablePath,
       headless: true,
       env: {
