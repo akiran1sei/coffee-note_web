@@ -25,6 +25,10 @@ export async function GET(
       args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
       executablePath,
       headless: true,
+      env: {
+        LANG: "ja_JP.UTF-8",
+        LC_ALL: "ja_JP.UTF-8",
+      },
     });
 
     // 3️⃣ DB接続
@@ -38,7 +42,6 @@ export async function GET(
     const templateContent = await fs.readFile(templatePath, {
       encoding: "utf8",
     });
-
     // render() はテンプレート文字列を直接受け取るため、型エラーを回避できる
     const html = ejs.render(templateContent, { data, name });
 
