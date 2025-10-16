@@ -89,7 +89,8 @@
 
 <body>
   <div class="report-container">
-    <div class="header"><%// EJSパースエラーを防ぐため、変数定義をクリーンな状態にしますconst reportName = (data && data.length > 0) ? data[0].name : "抽出データ";%><h1>コーヒー評価レポート ( <%= reportName %> )</h1>
+    <div class="header">
+      <h1>コーヒー評価レポート</h1>
       <p>全データ詳細一覧</p>
     </div><% if (data && data.length > 0) { %><% data.forEach(function(item) { %><div class="data-table-section">
       <h2>ID: <%= item.id %> | コーヒー名: <%= item.name %></h2><!-- テーブル1: 基本情報とテイスティング評価 -->
