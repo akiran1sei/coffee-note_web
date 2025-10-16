@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/utils/database";
 import { CoffeeModel } from "@/app/utils/schemaModels";
+import * as fs from "fs/promises";
 import path from "path";
 import ejs from "ejs";
 import puppeteer, { Browser } from "puppeteer-core";
@@ -31,11 +32,15 @@ export async function GET(
 
     const data = await CoffeeModel.find({ id: { $in: jsonData } });
     const name = data.length > 0 ? data[0].name : "report";
-
     // 4️⃣ テンプレートパスを絶対パス化
     const templatePath = path.resolve("public/templates/page.ejs");
 
-    const html = await ejs.renderFile(templatePath, { data, name });
+    const templateContent = await fs.readFile(templatePath, {
+      encoding: "utf8",
+    });
+
+    // render() はテンプレート文字列を直接受け取るため、型エラーを回避できる
+    const html = ejs.render(templateContent, { data, name });
 
     // 5️⃣ PDF生成
     const page = await browser.newPage();
