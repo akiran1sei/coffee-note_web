@@ -10,13 +10,13 @@
   font-family: "NotoSansJP"; /* 任意の名前 */
   src: url("/font/NotoSansJP-VariableFont_wght.ttf") format("truetype"); /* ファイルパスはpublicディレクトリからの相対パス */
   font-weight: 100 900; /* Variable Font の場合はこのように設定 */
-  font-display: swap; /* フォントのロードを待つ設定 */
+  font-style: normal;
 }
 @font-face {
-  font-family: "Caveat"; /* 任意の名前 */
-  src: url("/font/Caveat-VariableFont_wght.ttf") format("truetype"); /* ファイルパスはpublicディレクトリからの相対パス */
-  font-weight: 100 900; /* Variable Font の場合はこのように設定 */
-  font-display: swap; /* フォントのロードを待つ設定 */
+  font-family: "Caveat";
+  src: url("/font/Caveat-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  /* font-display: swap;  */
 }
 html {
   box-sizing: border-box;

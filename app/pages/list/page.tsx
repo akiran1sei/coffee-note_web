@@ -8,7 +8,7 @@ import { IconButton, MainButton } from "@/app/components/buttons/Buttons";
 import { SelfPcCard, SelfMobileCard } from "@/app/components/list/Self";
 import { ShopPcCard, ShopMobileCard } from "@/app/components/list/Shop";
 import { CoffeeRecord } from "@/app/types/db";
-import { PdfDownloadButton } from "@/app/components/buttons/PDFDownloadButton";
+import { PdfDownloadButton } from "@/app/components/pdf/PDF_Contents";
 interface PageTitleProps {
   listItemValue: string;
 }
@@ -171,6 +171,33 @@ export default function ListPage() {
       }
     }
   };
+  /**
+   * 並び替えオプションのリスト。
+   * label: ユーザーに表示する文字列
+   * sort: Mongoose の .sort() にそのまま渡せるオブジェクト (Record<string, 1 | -1>)
+   */
+  const listSortItem = [
+    { label: "酸味 昇順", sort: { acidity: 1 } },
+    { label: "酸味 降順", sort: { acidity: -1 } },
+    { label: "苦味 昇順", sort: { bitterness: 1 } },
+    { label: "苦味 降順", sort: { bitterness: -1 } },
+    { label: "コク 昇順", sort: { body: 1 } },
+    { label: "コク 降順", sort: { body: -1 } },
+    { label: "香り 昇順", sort: { aroma: 1 } },
+    { label: "香り 降順", sort: { aroma: -1 } },
+    { label: "キレ 昇順", sort: { sharpness: 1 } },
+    { label: "キレ 降順", sort: { sharpness: -1 } },
+    { label: "全体 昇順", sort: { overall: 1 } },
+    { label: "全体 降順", sort: { overall: -1 } },
+    { label: "作成日時 昇順", sort: { createdAt: 1 } },
+    { label: "作成日時 降順", sort: { createdAt: -1 } },
+  ] as const;
+
+  // ★ 修正点 2: handleSort の引数型を Record<string, 1 | -1> に修正
+  const handleSort = (itemSortObject: Record<string, 1 | -1>) => {
+    setSortObject(itemSortObject); // オブジェクトをStateに保存
+    setIsSortOpen(false); // ポップアップを閉じる
+  };
 
   const handleCheckboxChange = useCallback(
     ({ id, isChecked }: CheckboxChangeData) => {
@@ -199,34 +226,6 @@ export default function ListPage() {
     } else {
       return <ListMobilePage />;
     }
-  };
-
-  /**
-   * 並び替えオプションのリスト。
-   * label: ユーザーに表示する文字列
-   * sort: Mongoose の .sort() にそのまま渡せるオブジェクト (Record<string, 1 | -1>)
-   */
-  const listSortItem = [
-    { label: "酸味 昇順", sort: { acidity: 1 } },
-    { label: "酸味 降順", sort: { acidity: -1 } },
-    { label: "苦味 昇順", sort: { bitterness: 1 } },
-    { label: "苦味 降順", sort: { bitterness: -1 } },
-    { label: "コク 昇順", sort: { body: 1 } },
-    { label: "コク 降順", sort: { body: -1 } },
-    { label: "香り 昇順", sort: { aroma: 1 } },
-    { label: "香り 降順", sort: { aroma: -1 } },
-    { label: "キレ 昇順", sort: { sharpness: 1 } },
-    { label: "キレ 降順", sort: { sharpness: -1 } },
-    { label: "全体 昇順", sort: { overall: 1 } },
-    { label: "全体 降順", sort: { overall: -1 } },
-    { label: "作成日時 昇順", sort: { createdAt: 1 } },
-    { label: "作成日時 降順", sort: { createdAt: -1 } },
-  ] as const;
-
-  // ★ 修正点 2: handleSort の引数型を Record<string, 1 | -1> に修正
-  const handleSort = (itemSortObject: Record<string, 1 | -1>) => {
-    setSortObject(itemSortObject); // オブジェクトをStateに保存
-    setIsSortOpen(false); // ポップアップを閉じる
   };
 
   // PC向けのレイアウト (簡略化)

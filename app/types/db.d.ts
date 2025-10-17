@@ -23,7 +23,6 @@ export interface CoffeeRecord {
   memo: string; // メモ
   imageUri: string; // 画像のパス
   imageAlt: string; // 画像の代替テキスト
-  createdAt: Date; // 追加
   self: string; // 自分で淹れたか、店で飲んだか
   shopName: string; // 店名（店で飲んだ場合のみ）
   shopPrice: number; // 店の価格（円）（店で飲んだ場合のみ）
