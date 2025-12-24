@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "next lint"
   },
-  
   "dependencies": {
     "@nivo/radar": "^0.99.0",
     "@sparticuz/chromium": "^141.0.0",
@@ -19,8 +18,8 @@
     "express": "^5.1.0",
     "html2pdf.js": "^0.10.1",
     "idb": "^8.0.3",
-    "mongodb": "^6.20.0",
-    "mongoose": "^8.18.2",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.2",
     "next": "^16.1.1",
     "normalize.css": "^8.0.1",
     "puppeteer-core": "^24.24.1",
