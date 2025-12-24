@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  
   "dependencies": {
     "@nivo/radar": "^0.99.0",
     "@sparticuz/chromium": "^141.0.0",
@@ -20,11 +21,11 @@
     "idb": "^8.0.3",
     "mongodb": "^6.20.0",
     "mongoose": "^8.18.2",
-    "next": "15.4.10",
+    "next": "^16.1.1",
     "normalize.css": "^8.0.1",
     "puppeteer-core": "^24.24.1",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -32,12 +33,12 @@
     "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.3",
     "@types/mongoose": "^5.11.96",
-    "@types/node": "^20.19.21",
+    "@types/node": "^25.0.3",
     "@types/puppeteer-core": "^5.4.0",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.5",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
