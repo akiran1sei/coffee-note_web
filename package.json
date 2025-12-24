@@ -20,7 +20,7 @@
     "idb": "^8.0.3",
     "mongodb": "^6.20.0",
     "mongoose": "^8.18.2",
-    "next": "15.4.5",
+    "next": "15.4.10",
     "normalize.css": "^8.0.1",
     "puppeteer-core": "^24.24.1",
     "react": "19.1.0",
