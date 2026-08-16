@@ -9,7 +9,7 @@ import chromium from "@sparticuz/chromium";
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
   const jsonData = id.split(",");
@@ -52,7 +52,13 @@ export async function GET(
 
     // 5️⃣ PDF生成
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
+    // 1. まずHTMLの内容をセットし、基本的な読み込み（load）を待つ
+    await page.setContent(html, { waitUntil: "load" });
+
+    // 2. そのHTML内で参照されている画像やフォントなどのネットワーク通信が完全に落ち着くまで待つ
+    await page.waitForNetworkIdle();
+
+    // 3. この後にPDF化の処理（ await page.pdf(...) など ）を実行する
 
     const pdfBuffer = await page.pdf({
       format: "A4",
@@ -78,7 +84,7 @@ export async function GET(
         message: `PDF生成中にエラー: ${message}`,
         status: 500,
       },
-      { status: 500 }
+      { status: 500 },
     );
   } finally {
     if (browser) await browser.close();
