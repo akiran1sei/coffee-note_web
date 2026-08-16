@@ -7,7 +7,7 @@ const connectDB = async () => {
     console.log("成功: MongoDB に接続しました");
   } catch (error) {
     console.log("失敗: MongoDB に接続されていません");
-    throw new Error();
+    throw error;
   }
 };
 export default connectDB;
